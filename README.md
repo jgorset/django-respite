@@ -24,7 +24,7 @@ Respite conforms Django to [Representational State Transfer (REST)](http://en.wi
     
     from django.conf.urls.defaults import *
     from respite.urls import resource
-    from views import ArticleViews
+    from views import ArticleView
     
     urlpatterns = resource(
         prefix = 'articles',
@@ -38,7 +38,7 @@ Respite conforms Django to [Representational State Transfer (REST)](http://en.wi
     from models import Article
     
     class ArticleView(View):
-        model = Post
+        model = Article
         template_path = 'articles'
         supported_formats = ['html', 'json']
     
