@@ -3,12 +3,13 @@
 ## About
 
 Respite conforms Django to [Representational State Transfer (REST)](http://en.wikipedia.org/wiki/Representational_State_Transfer).
-
 ## Requirements
 
 * Django v1.3 or later
 
-## Example
+## Usage
+
+Respite is influenced by Ruby on Rails, though in the spirit of Python it is not nearly as "magic". It will, however, save you a lot of code:
 
     # models.py
     
@@ -17,6 +18,7 @@ Respite conforms Django to [Representational State Transfer (REST)](http://en.wi
     class Article(models.Model):
         title = models.CharField(max_length=255)
         content = models.TextField()
+        published = True
         created_at = models.DateTimeField(auto_now_add=True)
 
 
@@ -70,6 +72,7 @@ Respite conforms Django to [Representational State Transfer (REST)](http://en.wi
             "id": article.id,
             "title": "{{ article.title }}",
             "content": "{{ article.content }}",
+            "published": {{ article.published|lower }}
             "created_at": "{{ article.created_at.isoformat }}",
             "url": "{% url article id=article.id %}"
         }{% if not forloop.last %},{% endif %}
@@ -77,6 +80,39 @@ Respite conforms Django to [Representational State Transfer (REST)](http://en.wi
     ]
     
     ...
+
+Respite's `View` class defines a collection of functions for viewing and manipulating model instances;
+`index`, `show`, `new`, `create`, `edit`‚ `update` and `destroy.`
+
+    HTTP method         HTTP path           Function            Purpose
+    GET                 articles/           index               Render a list of articles
+    GET                 articles/new        new                 Render a form to create a new article
+    POST                articles/           create              Create a new article
+    GET                 articles/1          show                Render a specific article
+    GET                 articles/1/edit     edit                Render a form to edit a specific article
+    PUT                 articles/1          update              Edit a specific article
+    DELETE              articles/1          destroy             Delete a specific article
+    
+In a nutshell, Respite provides you with a collection of features you probably need for most of your models and routes them
+RESTfully. You can override any or all of these functions and customize them as you'd like. For example, you could only list
+articles that have been published:
+
+    class ArticleView(View):
+        model = Article
+        template_path = 'articles'
+        supported_formats = ['html', 'json']
+        
+        def index(self):
+            articles = self.model.objects.filter(published=True)
+            
+            return self._render(
+                template = 'index',
+                context = {
+                    'articles': articles,
+                },
+                status = 200
+            )
+
 
 ## Installation
 
