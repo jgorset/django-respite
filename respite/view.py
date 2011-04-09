@@ -1,17 +1,18 @@
+import re
+
 from django.shortcuts import render
 from django.http import HttpResponse
 
-from utils import generate_form, get_content_type
+from utils import generate_form, get_content_type, get_format, parse_http_accept_header
 from inflector import pluralize
 
 class View(object):
     model = None
     template_path = ''
     supported_formats = ['html', 'json']
-    default_format = 'html'
     
     @classmethod
-    def dispatch(self, request, format, GET=False, POST=False, PUT=False, DELETE=False, **kwargs):
+    def dispatch(self, request, GET=False, POST=False, PUT=False, DELETE=False, **kwargs):
         """
         Dispatch the request to the corresponding view method.
 
@@ -22,14 +23,14 @@ class View(object):
         PUT -- A string describing the view function to call on HTTP PUT.
         DELETE -- A string describing the view function to call on HTTP DELETE.
         """
-
+        
         # Return 405 Method Not Allowed if the requested method is not available
         if request.method == 'GET' and not GET \
         or request.method == 'POST' and not POST \
         or request.method == 'PUT' and not PUT \
         or request.method == 'DELETE' and not DELETE:
             allowed_methods = []
-
+            
             if GET:
                 allowed_methods.append('GET')
             if POST:
@@ -42,36 +43,23 @@ class View(object):
             response = HttpResponse(status=405)  
             response['Allow'] = ', '.join(allowed_methods)
             return response
-        
-        if not format:
-            format = self.default_format    
-        
-        # Return 406 Not Acceptable if the requested format is not available
-        if not format in self.supported_formats:
-            return HttpResponse(status=406)
 
         # Dispatch the request
         if request.method == 'GET':
-            return getattr(self(request, format, **kwargs), GET)()
+            return getattr(self(), GET)(request, **kwargs)
         if request.method == 'POST':
-            return getattr(self(request, format, **kwargs), POST)()
+            return getattr(self(), POST)(request, **kwargs)
         if request.method == 'PUT':
-            return getattr(self(request, format, **kwargs), PUT)()
+            return getattr(self(), PUT)(request, **kwargs)
         if request.method == 'DELETE':
-            return getattr(self(request, format, **kwargs), DELETE)()
-    
-    def __init__(self, request, format=default_format, **kwargs):
-        self.request = request
-        self.format = format
-        
-        for key in kwargs:
-            self.__dict__[key] = kwargs[key]
+            return getattr(self(), DELETE)(request, **kwargs)
             
-    def index(self):
+    def index(self, request):
         """Render a list of objects."""
         objects = self.model.objects.all()
         
         return self._render(
+            request = request,
             template = 'index',
             context = {
                 pluralize(self.model.__name__).lower(): objects,
@@ -79,11 +67,12 @@ class View(object):
             status = 200
         )
         
-    def show(self):
+    def show(self, request, id):
         """Render a single object."""
-        object = self.model.objects.get(id=self.id)
+        object = self.model.objects.get(id=id)
         
         return self._render(
+            request = request,
             template = 'show',
             context = {
                 self.model.__name__.lower(): object
@@ -91,11 +80,12 @@ class View(object):
             status = 200
         )
         
-    def new(self):
+    def new(self, request):
         """Render a form to create a new object."""
         form = generate_form(self.model)()
         
         return self._render(
+            request = request,
             template = 'new',
             context = {
                 'form': form
@@ -103,9 +93,9 @@ class View(object):
             status = 200
         )
         
-    def create(self):
+    def create(self, request):
         """Create a new object."""
-        form = generate_form(self.model)(self.request.POST)
+        form = generate_form(self.model)(request.POST)
         
         if form.is_valid():
             object = form.save()
@@ -115,6 +105,7 @@ class View(object):
             return response
         else:
             return self._render(
+                request = request,
                 template = 'new',
                 context = {
                     'form': form
@@ -122,12 +113,13 @@ class View(object):
                 status = 400
             )
         
-    def edit(self):
+    def edit(self, request, id):
         """Render a form to edit an object."""
-        object = self.model.objects.get(id=self.id)
+        object = self.model.objects.get(id=id)
         form = generate_form(self.model)(instance=object)
         
         return self._render(
+            request = request,
             template = 'edit',
             context = {
                 self.model.__name__.lower(): object,
@@ -136,23 +128,18 @@ class View(object):
             status = 200
         )
         
-    def update(self):
+    def update(self, request, id):
         """Edit an object."""
-        object = self.model.objects.get(id=self.id)
-        form = generate_form(self.model)(self.request.PUT, instance=object)
+        object = self.model.objects.get(id=id)
+        form = generate_form(self.model)(request.PUT, instance=object)
         
         if form.is_valid():
             object = form.save()
             
-            return self._render(
-                template = 'show',
-                context = {
-                    self.model.__name__.lower(): object
-                },
-                status = 200
-            )
+            return self.show(request, id)
         else:
             return self._render(
+                request = request,
                 template = 'edit',
                 context = {
                     'form': form
@@ -160,22 +147,51 @@ class View(object):
                 status = 400
             )
             
-    def destroy(self):
+    def destroy(self, request, id):
         """Delete an object."""
-        object = self.model.objects.get(id=self.id)
+        object = self.model.objects.get(id=id)
         object.delete()
         
         return self._render(
+            request = request,
             template = 'destroy',
             status = 200
         )
+        
+    def _get_format(self, request):
+        """Determine the desired response format."""
+        
+        # Determine format from extension...
+        if '.' in request.path:
+            format = request.path.split('.')[-1]
+            if format in self.supported_formats:
+                return format
+
+        # ... or if no extension is given, fall back to the HTTP Accept header...
+        elif 'HTTP_ACCEPT' in request.META:
+            
+            # Derive a list of supported content types from the list of supported formats.
+            supported_content_types = []
+            for supported_format in self.supported_formats:
+                supported_content_types.append(get_content_type(supported_format))
+            
+            # Find the highest-ranking content type.
+            for accepted_content_type in parse_http_accept_header(request.META['HTTP_ACCEPT']):
+                if accepted_content_type in supported_content_types:
+                    return get_format(accepted_content_type)
     
-    def _render(self, template, status, context={}):
+    def _render(self, request, template, status, context={}):
         """Render a response."""
+
+        format = self._get_format(request)
+                    
+        if not format:
+            return HttpResponse(status=406)
+        
         return render(
-            request = self.request,
-            template_name = '%s/%s.%s' % (self.template_path, template, self.format),
+            request = request,
+            template_name = '%s/%s.%s' % (self.template_path, template, format),
             dictionary = context,
             status = status,
-            content_type = get_content_type(self.format)
+            content_type = get_content_type(format)
         )
