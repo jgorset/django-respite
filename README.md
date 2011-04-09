@@ -85,6 +85,7 @@ Respite's `View` class defines a collection of functions for viewing and manipul
 `index`, `show`, `new`, `create`, `edit`‚ `update` and `destroy.`
 
     HTTP method         HTTP path           Function            Purpose
+    
     GET                 articles/           index               Render a list of articles
     GET                 articles/new        new                 Render a form to create a new article
     POST                articles/           create              Create a new article
