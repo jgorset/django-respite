@@ -30,7 +30,7 @@ Respite is influenced by Ruby on Rails, though in the spirit of Python it is not
     
     urlpatterns = resource(
         prefix = 'articles',
-        views = ArticleView
+        view = ArticleView
     )
 
 
