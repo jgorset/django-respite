@@ -103,10 +103,11 @@ articles that have been published:
         template_path = 'articles'
         supported_formats = ['html', 'json']
         
-        def index(self):
+        def index(self, request):
             articles = self.model.objects.filter(published=True)
             
             return self._render(
+                request = request,
                 template = 'index',
                 context = {
                     'articles': articles,
