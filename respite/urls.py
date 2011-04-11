@@ -16,7 +16,7 @@ def resource(prefix, view, actions=['index', 'show', 'edit', 'update', 'new', 'c
     
     return patterns('',
         url(
-            regex = r'%s/$|%s/index(\.[a-zA-Z]+)?$' % (prefix, prefix),
+            regex = r'%s/$|%s/index\.?[a-zA-Z]*$' % (prefix, prefix),
             view = view.dispatch,
             kwargs = {
                 'GET': 'index' if 'index' in actions else False,
