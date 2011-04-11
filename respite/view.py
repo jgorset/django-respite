@@ -9,7 +9,7 @@ from inflector import pluralize
 class View(object):
     model = None
     template_path = ''
-    supported_formats = ['html', 'json']
+    supported_formats = ['html']
     
     @classmethod
     def dispatch(self, request, GET=False, POST=False, PUT=False, DELETE=False, **kwargs):
