@@ -25,7 +25,7 @@ def resource(prefix, view, actions=['index', 'show', 'edit', 'update', 'new', 'c
             name = model_name_plural
         ),
         url(
-            regex = r'%s/(?P<id>[0-9]+)(\.[a-zA-Z]+)?$' % prefix,
+            regex = r'%s/(?P<id>[0-9]+)\.?[a-zA-Z]*$' % prefix,
             view = view.dispatch,
             kwargs = {
                 'GET': 'show' if 'show' in actions else False,
@@ -35,7 +35,7 @@ def resource(prefix, view, actions=['index', 'show', 'edit', 'update', 'new', 'c
             name = model_name
         ),
         url(
-            regex = r'%s/(?P<id>[0-9]+)/edit(\.[a-zA-Z]+)?$' % prefix,
+            regex = r'%s/(?P<id>[0-9]+)/edit\.?[a-zA-Z]*$' % prefix,
             view = view.dispatch,
             kwargs = {
                 'GET': 'edit' if 'edit' in actions else False
@@ -43,7 +43,7 @@ def resource(prefix, view, actions=['index', 'show', 'edit', 'update', 'new', 'c
             name = 'edit_%s' % model_name
         ),
         url(
-            regex = r'%s/new(\.[a-zA-Z]+)?$' % prefix,
+            regex = r'%s/new\.?[a-zA-Z]*$' % prefix,
             view = view.dispatch,
             kwargs = {
                 'GET': 'new' if 'new' in actions else False
