@@ -2,6 +2,7 @@ import re
 
 from django.shortcuts import render
 from django.http import HttpResponse
+from django.core.urlresolvers import reverse
 
 from utils import generate_form, get_content_type, get_format, parse_http_accept_header
 from inflector import pluralize
@@ -101,7 +102,7 @@ class View(object):
             object = form.save()
             
             response = HttpResponse(status=303)
-            response['Location'] = object.get_absolute_url()
+            response['Location'] = reverse(self.model.__name__.lower(), args=[object.id])
             return response
         else:
             return self._render(
