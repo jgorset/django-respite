@@ -1,7 +1,9 @@
+import inspect
+
 from django.conf.urls.defaults import *
 from inflector import pluralize
 
-def resource(prefix, view, actions=['index', 'show', 'edit', 'update', 'new', 'create', 'destroy']):
+def resource(prefix, view, actions=['index', 'show', 'edit', 'update', 'new', 'create', 'destroy'], custom_actions=[]):
     """
     Generate url patterns for a view class.
     
@@ -14,7 +16,8 @@ def resource(prefix, view, actions=['index', 'show', 'edit', 'update', 'new', 'c
     model_name = view.model().__class__.__name__.lower()
     model_name_plural = pluralize(model_name)
     
-    return patterns('',
+    # Default actions defined by respite.view.View
+    urls = [
         url(
             regex = r'%s/$|%s/index\.?[a-zA-Z]*$' % (prefix, prefix),
             view = view.dispatch,
@@ -50,4 +53,35 @@ def resource(prefix, view, actions=['index', 'show', 'edit', 'update', 'new', 'c
             },
             name = 'new_%s' % model_name
         )
-    )
+    ]    
+    
+    # Custom actions defined in a subclass of respite.view.View
+    for custom_action in custom_actions:
+        urls.append(
+            url(
+                regex = r'%s/%s' % (prefix, custom_action['regex']),
+                view = view.dispatch,
+                kwargs = {
+                    'GET': custom_action['method']
+                },
+                name = custom_action['name']
+            )
+        )
+    
+    return patterns('', *urls)
+    
+def action(regex, method, name):
+    """
+    Define a custom view action. Like Django's django.conf.urls.defaults.url, this is a convenience
+    function that merely generates a dictionary from its arguments.
+    
+    Arguments:
+    regex -- A string describing a regular expression to which the request path will be matched.
+    method -- A string describing the method name to route the request to.
+    name -- A string describing the name of the URL.
+    """
+    return {
+        'regex': regex,
+        'method': method,
+        'name': name
+    }

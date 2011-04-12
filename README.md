@@ -3,11 +3,14 @@
 ## About
 
 Respite conforms Django to [Representational State Transfer (REST)](http://en.wikipedia.org/wiki/Representational_State_Transfer).
+
 ## Requirements
 
 * Django v1.3 or later
 
 ## Usage
+
+### Primer
 
 Respite is influenced by Ruby on Rails, though in the spirit of Python it is not nearly as "magic". It will, however, save you a lot of code:
 
@@ -81,7 +84,7 @@ Respite is influenced by Ruby on Rails, though in the spirit of Python it is not
     
     ...
 
-Respite's `View` class defines a collection of functions for viewing and manipulating model instances;
+Respite's `View` class defines actions for viewing and manipulating model instances;
 `index`, `show`, `new`, `create`, `edit`‚ `update` and `destroy`.
 
     HTTP method         HTTP path           Function            Purpose
@@ -111,6 +114,51 @@ articles that have been published:
                 template = 'index',
                 context = {
                     'articles': articles,
+                },
+                status = 200
+            )
+            
+### Custom actions
+            
+You are not limited to Respite's seven predefined actions; if you like, you may add any number of custom actions and
+route them however you like:
+
+    # urls.py
+    
+    from django.conf.urls.defaults import *
+    from respite.urls import resource, action
+    from views import ArticleView
+    
+    urlpatterns = resource(
+        prefix = 'articles',
+        view = ArticleView,
+        custom_actions = [
+            action(
+                regex = r'(?P<id>[0-9]+)/preview\.?[a-zA-Z]*$',
+                method = 'preview',
+                name = 'preview_article'
+            )
+        ]
+    )
+
+    # views.py
+
+    from respite import View
+    from models import Article
+
+    class ArticleView(View):
+        model = Article
+        template_path = 'articles'
+        supported_formats = ['html', 'json']
+        
+        def preview(self, request, id):
+            article = Article.objects.get(id=id)
+            
+            return self._render(
+                request = request,
+                template = 'preview',
+                context = {
+                    'article': article
                 },
                 status = 200
             )
