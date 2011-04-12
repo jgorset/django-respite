@@ -11,6 +11,7 @@ def resource(prefix, view, actions=['index', 'show', 'edit', 'update', 'new', 'c
     prefix -- A string describing the resource's URL prefix (f.ex. 'posts').
     view -- The view class.
     actions -- Route these methods.
+    custom_actions -- A list of custom actions.
     """
     
     model_name = view.model().__class__.__name__.lower()
