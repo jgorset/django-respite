@@ -171,7 +171,8 @@ route them however you like:
 ## Installation
 
 * `pip install git+http://github.com/jgorset/respite.git`
-* Add `respite.middleware.HTTPPUTMiddleware` your middleware classes.
+* Add `respite` to `INSTALLED_APPS` in your settings file
+* Add `respite.middleware.HTTPPUTMiddleware` to `MIDDLEWARE_CLASSES` in your settings file
 
 If you're not just building an API, you might also want to add `respite.middleware.HTTPMethodOverrideMiddleware`
 to your middleware classes; it facilitates for overriding the HTTP method with the `X-HTTP-Method-Override` header or a
