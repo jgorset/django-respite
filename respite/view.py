@@ -25,6 +25,13 @@ class View(object):
         DELETE -- A string describing the view function to call on HTTP DELETE.
         """
         
+        if not GET and not POST and not PUT and not DELETE:
+            return render(
+                request = request,
+                template_name = '404.html',
+                status = 404
+            )
+        
         # Return 405 Method Not Allowed if the requested method is not available
         if request.method == 'GET' and not GET \
         or request.method == 'POST' and not POST \
