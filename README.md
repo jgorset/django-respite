@@ -70,6 +70,8 @@ Respite is influenced by Ruby on Rails, though in the spirit of Python it is not
     # templates/articles/index.json
     # ...
 
+### Default actions
+
 Respite's `View` class defines actions for viewing and manipulating model instances;
 `index`, `show`, `new`, `create`, `edit`‚ `update` and `destroy`.
 
