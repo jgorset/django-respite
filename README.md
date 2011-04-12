@@ -108,7 +108,7 @@ articles that have been published:
             
 ### Custom actions
             
-You are not limited to Respite's seven predefined actions; if you like, you may add any number of custom actions and
+You are not limited to Respite's seven predefined actions; you may add any number of custom actions and
 route them however you like:
 
     # urls.py
