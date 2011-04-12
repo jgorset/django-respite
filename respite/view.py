@@ -77,7 +77,14 @@ class View(object):
         
     def show(self, request, id):
         """Render a single object."""
-        object = self.model.objects.get(id=id)
+        try:
+            object = self.model.objects.get(id=id)
+        except self.model.DoesNotExist:
+            return render(
+                request = request,
+                template_name = '404.html',
+                status = 404
+            )
         
         return self._render(
             request = request,
@@ -123,8 +130,15 @@ class View(object):
         
     def edit(self, request, id):
         """Render a form to edit an object."""
-        object = self.model.objects.get(id=id)
-        form = generate_form(self.model)(instance=object)
+        try:
+            object = self.model.objects.get(id=id)
+            form = generate_form(self.model)(instance=object)
+        except self.model.DoesNotExist:
+            return render(
+                request = request,
+                template_name = '404.html',
+                status = 404
+            )
         
         return self._render(
             request = request,
@@ -138,8 +152,15 @@ class View(object):
         
     def update(self, request, id):
         """Edit an object."""
-        object = self.model.objects.get(id=id)
-        form = generate_form(self.model)(request.PUT, instance=object)
+        try:
+            object = self.model.objects.get(id=id)
+            form = generate_form(self.model)(request.PUT, instance=object)
+        except self.model.DoesNotExist:
+            return render(
+                request = request,
+                template_name = '404.html',
+                status = 404
+            )
         
         if form.is_valid():
             object = form.save()
@@ -157,8 +178,15 @@ class View(object):
             
     def destroy(self, request, id):
         """Delete an object."""
-        object = self.model.objects.get(id=id)
-        object.delete()
+        try:
+            object = self.model.objects.get(id=id)
+            object.delete()
+        except self.model.DoesNotExist:
+            return render(
+                request = request,
+                template_name = '404.html',
+                status = 404
+            )
         
         return self._render(
             request = request,
