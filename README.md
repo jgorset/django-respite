@@ -68,21 +68,7 @@ Respite is influenced by Ruby on Rails, though in the spirit of Python it is not
     </html>
     
     # templates/articles/index.json
-    
-    [
-        {% for article in articles %}
-        {
-            "id": article.id,
-            "title": "{{ article.title }}",
-            "content": "{{ article.content }}",
-            "published": {{ article.published|lower }}
-            "created_at": "{{ article.created_at.isoformat }}",
-            "url": "{% url article id=article.id %}"
-        }{% if not forloop.last %},{% endif %}
-        {% endfor %}
-    ]
-    
-    ...
+    # ...
 
 Respite's `View` class defines actions for viewing and manipulating model instances;
 `index`, `show`, `new`, `create`, `edit`‚ `update` and `destroy`.
