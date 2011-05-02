@@ -139,7 +139,8 @@ route them however you like:
         custom_actions = [
             action(
                 regex = r'(?P<id>[0-9]+)/preview\.?[a-zA-Z]*$',
-                method = 'preview',
+                function = 'preview',
+                methods = ['GET'],
                 name = 'preview_article'
             )
         ]

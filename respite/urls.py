@@ -3,6 +3,8 @@ import inspect
 from django.conf.urls.defaults import *
 from inflector import pluralize
 
+HTTP_METHODS = ['OPTIONS', 'GET', 'HEAD', 'POST', 'PUT', 'DELETE', 'TRACE', 'CONNECT']
+
 def resource(prefix, view, actions=['index', 'show', 'edit', 'update', 'new', 'create', 'destroy'], custom_actions=[]):
     """
     Generate url patterns for a view class.
@@ -58,31 +60,39 @@ def resource(prefix, view, actions=['index', 'show', 'edit', 'update', 'new', 'c
     
     # Custom actions defined in a subclass of respite.view.View
     for custom_action in custom_actions:
+        
+        kwargs = {}
+        for method in custom_action['methods']:
+            kwargs[method] = custom_action['function']
+        
         urls.append(
             url(
                 regex = r'%s/%s' % (prefix, custom_action['regex']),
                 view = view.dispatch,
-                kwargs = {
-                    'GET': custom_action['method']
-                },
+                kwargs = kwargs,
                 name = custom_action['name']
             )
         )
     
     return patterns('', *urls)
     
-def action(regex, method, name):
+def action(regex, function, methods, name):
     """
     Define a custom view action. Like Django's django.conf.urls.defaults.url, this is a convenience
     function that merely generates a dictionary from its arguments.
     
     Arguments:
     regex -- A string describing a regular expression to which the request path will be matched.
-    method -- A string describing the method name to route the request to.
+    method -- A list of strings describing HTTP methods the action accepts.
+    function -- A string describing the function to route the request to.
     name -- A string describing the name of the URL.
     """
+    if not all([method in HTTP_METHODS for method in methods]):
+        raise ValueError('"%s" are not valid HTTP methods.' % '" and "'.join([method for method in methods if not method in HTTP_METHODS]))
+    
     return {
         'regex': regex,
-        'method': method,
+        'function': function,
+        'methods': methods,
         'name': name
     }
