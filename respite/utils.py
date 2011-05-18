@@ -73,8 +73,8 @@ def parse_http_accept_header(header):
             subcomponents = component.split(';')
             l.append(
                 (
-                    subcomponents[0], # ex. 'text/html'
-                    subcomponents[1][2:] # ex. 'q=0.9'
+                    subcomponents[0], # eg. 'text/html'
+                    subcomponents[1][2:] # eg. 'q=0.9'
                 )
             )
         else:
