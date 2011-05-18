@@ -179,4 +179,3 @@ If you're not just building an API, you might also want to add `respite.middlewa
 to your middleware classes; it facilitates for overriding the HTTP method with the `X-HTTP-Method-Override` header or a
 `_method` HTTP POST parameter, which is the only way to update (HTTP PUT) and delete (HTTP DELETE) resources from
 a web browser.
-
