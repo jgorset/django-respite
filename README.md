@@ -16,7 +16,7 @@ Respite is influenced by Ruby on Rails, though in the spirit of Python it is not
 
     # news/models.py
     
-    from django import models
+    from django.db import models
     
     class Article(models.Model):
         title = models.CharField(max_length=255)
