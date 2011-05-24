@@ -1,3 +1,3 @@
 from view import *
 
-VERSION = '0.4'
+VERSION = '0.5'
