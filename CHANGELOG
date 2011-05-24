@@ -1,0 +1,7 @@
+CHANGELOG
+
+v0.5
+- URL pattern names are now prefixed with the model's application name (e.g. 'edit_news_article').
+
+v0.4
+- Custom actions may now be routed by HTTP method.
