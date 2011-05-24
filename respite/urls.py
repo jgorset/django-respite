@@ -16,6 +16,7 @@ def resource(prefix, view, actions=['index', 'show', 'edit', 'update', 'new', 'c
     custom_actions -- A list of custom actions.
     """
     
+    model = view.model
     model_name = view.model().__class__.__name__.lower()
     model_name_plural = pluralize(model_name)
     
@@ -28,7 +29,7 @@ def resource(prefix, view, actions=['index', 'show', 'edit', 'update', 'new', 'c
                 'GET': 'index' if 'index' in actions else False,
                 'POST': 'create' if 'create' in actions else False,
             },
-            name = model_name_plural
+            name = '%s_%s' % (model._meta.app_label, model_name_plural)
         ),
         url(
             regex = r'%s/(?P<id>[0-9]+)\.?[a-zA-Z]*$' % prefix,
@@ -38,7 +39,7 @@ def resource(prefix, view, actions=['index', 'show', 'edit', 'update', 'new', 'c
                 'PUT': 'update' if 'update' in actions else False,
                 'DELETE': 'destroy' if 'destroy' in actions else False
             },
-            name = model_name
+            name = '%s_%s' % (model._meta.app_label, model_name)
         ),
         url(
             regex = r'%s/(?P<id>[0-9]+)/edit\.?[a-zA-Z]*$' % prefix,
@@ -46,7 +47,7 @@ def resource(prefix, view, actions=['index', 'show', 'edit', 'update', 'new', 'c
             kwargs = {
                 'GET': 'edit' if 'edit' in actions else False
             },
-            name = 'edit_%s' % model_name
+            name = 'edit_%s_%s' % (model._meta.app_label, model_name)
         ),
         url(
             regex = r'%s/new\.?[a-zA-Z]*$' % prefix,
@@ -54,7 +55,7 @@ def resource(prefix, view, actions=['index', 'show', 'edit', 'update', 'new', 'c
             kwargs = {
                 'GET': 'new' if 'new' in actions else False
             },
-            name = 'new_%s' % model_name
+            name = 'new_%s_%s' % (model._meta.app_label, model_name)
         )
     ]    
     
