@@ -14,7 +14,7 @@ Respite conforms Django to [Representational State Transfer (REST)](http://en.wi
 
 Respite is influenced by Ruby on Rails, though in the spirit of Python it is not nearly as "magic". It will, however, save you a lot of code:
 
-    # models.py
+    # news/models.py
     
     from django import models
     
@@ -24,30 +24,28 @@ Respite is influenced by Ruby on Rails, though in the spirit of Python it is not
         published = True
         created_at = models.DateTimeField(auto_now_add=True)
 
-
-    # urls.py
+    # news/urls.py
     
     from django.conf.urls.defaults import *
     from respite.urls import resource
     from views import ArticleView
     
     urlpatterns = resource(
-        prefix = 'articles',
+        prefix = 'news/articles',
         view = ArticleView
     )
 
-
-    # views.py
+    # news/views.py
     
     from respite import View
     from models import Article
     
     class ArticleView(View):
         model = Article
-        template_path = 'articles'
+        template_path = 'news/articles'
         supported_formats = ['html', 'json']
     
-    # templates/articles/index.html
+    # templates/news/articles/index.html
     
     <!DOCTYPE html>
     <html>
@@ -57,7 +55,7 @@ Respite is influenced by Ruby on Rails, though in the spirit of Python it is not
         <body>
             {% for article in articles %}
             <article>
-                <h1><a href="{% url article id=article.id %}">{{ article.title }}</a></h1>
+                <h1><a href="{% url news_article id=article.id %}">{{ article.title }}</a></h1>
                 <time datetime="{{ article.created_at.isoformat }}">{{ article.created_at }}</time>
                 <p>
                     {{ article.content }}
@@ -67,7 +65,7 @@ Respite is influenced by Ruby on Rails, though in the spirit of Python it is not
         </body>
     </html>
     
-    # templates/articles/index.json
+    # templates/news/articles/index.json
     # ...
 
 ### Default actions
@@ -89,11 +87,11 @@ In a nutshell, Respite provides you with a collection of features you probably n
 RESTfully. You may override any or all of these functions and customize them as you'd like. For example, you could only list
 articles that have been published:
 
-    # views.py
+    # news/views.py
 
     class ArticleView(View):
         model = Article
-        template_path = 'articles'
+        template_path = 'news/articles'
         supported_formats = ['html', 'json']
         
         def index(self, request):
@@ -110,14 +108,14 @@ articles that have been published:
             
 You may also omit one or several of the default actions altogether. For example, you could only implement the `index` and `show` actions:
 
-    # urls.py
+    # news/urls.py
     
     from django.conf.urls.defaults import *
     from respite.urls import resource
     from views import ArticleView
     
     urlpatterns = resource(
-        prefix = 'articles',
+        prefix = 'news/articles',
         view = ArticleView,
         actions = ['index', 'show']
     )
@@ -127,33 +125,33 @@ You may also omit one or several of the default actions altogether. For example,
 You are not limited to Respite's seven predefined actions; you may add any number of custom actions and
 route them however you like:
 
-    # urls.py
+    # news/urls.py
     
     from django.conf.urls.defaults import *
     from respite.urls import resource, action
     from views import ArticleView
     
     urlpatterns = resource(
-        prefix = 'articles',
+        prefix = 'news/articles',
         view = ArticleView,
         custom_actions = [
             action(
                 regex = r'(?P<id>[0-9]+)/preview\.?[a-zA-Z]*$',
                 function = 'preview',
                 methods = ['GET'],
-                name = 'preview_article'
+                name = 'preview_news_article'
             )
         ]
     )
 
-    # views.py
+    # news/views.py
 
     from respite import View
     from models import Article
 
     class ArticleView(View):
         model = Article
-        template_path = 'articles'
+        template_path = 'news/articles'
         supported_formats = ['html', 'json']
         
         def preview(self, request, id):
