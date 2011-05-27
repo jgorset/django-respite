@@ -83,9 +83,9 @@ def action(regex, function, methods, name):
     
     Arguments:
     regex -- A string describing a regular expression to which the request path will be matched.
-    method -- A list of strings describing HTTP methods the action accepts.
-    function -- A string describing the function to route the request to.
-    name -- A string describing the name of the URL.
+    method -- A list of strings describing HTTP methods that should be routed to this action.
+    function -- A string describing the name of the view function to route the request to.
+    name -- A string describing the name of the URL pattern.
     """
     
     if not all([method in HTTP_METHODS for method in methods]):
