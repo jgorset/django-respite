@@ -23,7 +23,7 @@ def resource(prefix, view, actions=['index', 'show', 'edit', 'update', 'new', 'c
     # Default actions defined by respite.view.View
     urls = [
         url(
-            regex = r'%s/$|%s/index\.?[a-zA-Z]*$' % (prefix, prefix),
+            regex = r'%s$|%sindex\.?[a-zA-Z]*$' % (prefix, prefix),
             view = view.dispatch,
             kwargs = {
                 'GET': 'index' if 'index' in actions else False,
@@ -32,7 +32,7 @@ def resource(prefix, view, actions=['index', 'show', 'edit', 'update', 'new', 'c
             name = '%s_%s' % (model._meta.app_label, model_name_plural)
         ),
         url(
-            regex = r'%s/(?P<id>[0-9]+)\.?[a-zA-Z]*$' % prefix,
+            regex = r'%s(?P<id>[0-9]+)\.?[a-zA-Z]*$' % prefix,
             view = view.dispatch,
             kwargs = {
                 'GET': 'show' if 'show' in actions else False,
@@ -42,7 +42,7 @@ def resource(prefix, view, actions=['index', 'show', 'edit', 'update', 'new', 'c
             name = '%s_%s' % (model._meta.app_label, model_name)
         ),
         url(
-            regex = r'%s/(?P<id>[0-9]+)/edit\.?[a-zA-Z]*$' % prefix,
+            regex = r'%s(?P<id>[0-9]+)/edit\.?[a-zA-Z]*$' % prefix,
             view = view.dispatch,
             kwargs = {
                 'GET': 'edit' if 'edit' in actions else False
@@ -50,7 +50,7 @@ def resource(prefix, view, actions=['index', 'show', 'edit', 'update', 'new', 'c
             name = 'edit_%s_%s' % (model._meta.app_label, model_name)
         ),
         url(
-            regex = r'%s/new\.?[a-zA-Z]*$' % prefix,
+            regex = r'%snew\.?[a-zA-Z]*$' % prefix,
             view = view.dispatch,
             kwargs = {
                 'GET': 'new' if 'new' in actions else False
