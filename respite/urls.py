@@ -1,6 +1,7 @@
 import inspect
 
 from django.conf.urls.defaults import *
+from django.http import HttpResponse
 from inflector import pluralize
 
 HTTP_METHODS = ['OPTIONS', 'GET', 'HEAD', 'POST', 'PUT', 'DELETE', 'TRACE', 'CONNECT']
@@ -20,11 +21,47 @@ def resource(prefix, view, actions=['index', 'show', 'edit', 'update', 'new', 'c
     model_name = view.model().__class__.__name__.lower()
     model_name_plural = pluralize(model_name)
     
-    # Default actions defined by respite.views.Views
+    def dispatch(request, GET=False, POST=False, PUT=False, DELETE=False, **kwargs):
+        """
+        Dispatch the request according to the request method and the string contained in
+        the corresponding argument.
+        
+        For example, if the request method is HTTP GET and the 'GET' argument to this function is
+        set to 'index', the 'index' function of the view will be invoked and returned.
+
+        Arguments:
+        request -- A django.http.HttpRequest object.
+        GET -- A string describing the function to call on HTTP GET.
+        POST -- A string describing the function to call on HTTP POST.
+        PUT -- A string describing the function to call on HTTP PUT.
+        DELETE -- A string describing the function to call on HTTP DELETE.
+        """
+        
+        # Return HTTP 405 Method Not Allowed if no function is mapped to the request method
+        if not locals()[request.method]:
+            allowed_methods = []
+            
+            if GET:
+                allowed_methods.append('GET')
+            if POST:
+                allowed_methods.append('POST')
+            if PUT:
+                allowed_methods.append('PUT')
+            if DELETE:
+                allowed_methods.append('DELETE')
+
+            response = HttpResponse(status=405)  
+            response['Allow'] = ', '.join(allowed_methods)
+            return response
+        
+        # Dispatch the request
+        return getattr(view(), locals()[request.method])(request, **kwargs)
+            
+    # Configure URL patterns for default actions (i.e. actions defined in respite.views.Views).
     urls = [
         url(
             regex = r'%s$|%sindex\.?[a-zA-Z]*$' % (prefix, prefix),
-            view = view.dispatch,
+            view = dispatch,
             kwargs = {
                 'GET': 'index' if 'index' in actions else False,
                 'POST': 'create' if 'create' in actions else False,
@@ -33,7 +70,7 @@ def resource(prefix, view, actions=['index', 'show', 'edit', 'update', 'new', 'c
         ),
         url(
             regex = r'%s(?P<id>[0-9]+)\.?[a-zA-Z]*$' % prefix,
-            view = view.dispatch,
+            view = dispatch,
             kwargs = {
                 'GET': 'show' if 'show' in actions else False,
                 'PUT': 'update' if 'update' in actions else False,
@@ -43,7 +80,7 @@ def resource(prefix, view, actions=['index', 'show', 'edit', 'update', 'new', 'c
         ),
         url(
             regex = r'%s(?P<id>[0-9]+)/edit\.?[a-zA-Z]*$' % prefix,
-            view = view.dispatch,
+            view = dispatch,
             kwargs = {
                 'GET': 'edit' if 'edit' in actions else False
             },
@@ -51,7 +88,7 @@ def resource(prefix, view, actions=['index', 'show', 'edit', 'update', 'new', 'c
         ),
         url(
             regex = r'%snew\.?[a-zA-Z]*$' % prefix,
-            view = view.dispatch,
+            view = dispatch,
             kwargs = {
                 'GET': 'new' if 'new' in actions else False
             },
@@ -59,7 +96,7 @@ def resource(prefix, view, actions=['index', 'show', 'edit', 'update', 'new', 'c
         )
     ]    
     
-    # Custom actions defined in a subclass of respite.views.Views
+    # Configure URL patterns for custom actions (i.e. actions defined in a suclass of respite.views.Views).
     for custom_action in custom_actions:
         
         kwargs = {}
@@ -69,7 +106,7 @@ def resource(prefix, view, actions=['index', 'show', 'edit', 'update', 'new', 'c
         urls.append(
             url(
                 regex = r'%s/%s' % (prefix, custom_action['regex']),
-                view = view.dispatch,
+                view = dispatch,
                 kwargs = kwargs,
                 name = custom_action['name']
             )

@@ -11,56 +11,6 @@ class Views(object):
     model = None
     template_path = ''
     supported_formats = ['html']
-    
-    @classmethod
-    def dispatch(self, request, GET=False, POST=False, PUT=False, DELETE=False, **kwargs):
-        """
-        Dispatch the request to the corresponding method.
-
-        Arguments:
-        request -- A Django HTTP request object.
-        GET -- A string describing the function to call on HTTP GET.
-        POST -- A string describing the function to call on HTTP POST.
-        PUT -- A string describing the function to call on HTTP PUT.
-        DELETE -- A string describing the function to call on HTTP DELETE.
-        """
-        
-        if not GET and not POST and not PUT and not DELETE:
-            return render(
-                request = request,
-                template_name = '404.html',
-                status = 404
-            )
-        
-        # Return 405 Method Not Allowed if the requested method is not available
-        if request.method == 'GET' and not GET \
-        or request.method == 'POST' and not POST \
-        or request.method == 'PUT' and not PUT \
-        or request.method == 'DELETE' and not DELETE:
-            allowed_methods = []
-            
-            if GET:
-                allowed_methods.append('GET')
-            if POST:
-                allowed_methods.append('POST')
-            if PUT:
-                allowed_methods.append('PUT')
-            if DELETE:
-                allowed_methods.append('DELETE')
-
-            response = HttpResponse(status=405)  
-            response['Allow'] = ', '.join(allowed_methods)
-            return response
-
-        # Dispatch the request
-        if request.method == 'GET':
-            return getattr(self(), GET)(request, **kwargs)
-        if request.method == 'POST':
-            return getattr(self(), POST)(request, **kwargs)
-        if request.method == 'PUT':
-            return getattr(self(), PUT)(request, **kwargs)
-        if request.method == 'DELETE':
-            return getattr(self(), DELETE)(request, **kwargs)
             
     def index(self, request):
         """Render a list of objects."""
