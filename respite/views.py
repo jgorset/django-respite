@@ -7,7 +7,7 @@ from django.core.urlresolvers import reverse
 from utils import generate_form, get_content_type, get_format, parse_http_accept_header
 from inflector import pluralize
 
-class View(object):
+class Views(object):
     model = None
     template_path = ''
     supported_formats = ['html']
@@ -15,14 +15,14 @@ class View(object):
     @classmethod
     def dispatch(self, request, GET=False, POST=False, PUT=False, DELETE=False, **kwargs):
         """
-        Dispatch the request to the corresponding view method.
+        Dispatch the request to the corresponding method.
 
         Arguments:
         request -- A Django HTTP request object.
-        GET -- A string describing the view function to call on HTTP GET.
-        POST -- A string describing the view function to call on HTTP POST.
-        PUT -- A string describing the view function to call on HTTP PUT.
-        DELETE -- A string describing the view function to call on HTTP DELETE.
+        GET -- A string describing the function to call on HTTP GET.
+        POST -- A string describing the function to call on HTTP POST.
+        PUT -- A string describing the function to call on HTTP PUT.
+        DELETE -- A string describing the function to call on HTTP DELETE.
         """
         
         if not GET and not POST and not PUT and not DELETE:

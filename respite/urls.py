@@ -7,20 +7,20 @@ HTTP_METHODS = ['OPTIONS', 'GET', 'HEAD', 'POST', 'PUT', 'DELETE', 'TRACE', 'CON
 
 def resource(prefix, view, actions=['index', 'show', 'edit', 'update', 'new', 'create', 'destroy'], custom_actions=[]):
     """
-    Generate url patterns for a view class.
+    Generate url patterns for a collection of views.
     
     Arguments:
     prefix -- A string describing the resource's URL prefix (f.ex. 'posts').
-    view -- The view class.
-    actions -- Route these methods.
-    custom_actions -- A list of custom actions.
+    view -- A reference to the class in which views are defined.
+    actions -- An optional list of strings describing which of the default actions to route for this resource. Defaults to all.
+    custom_actions -- An optional list of custom actions as returned by the `action` function. Defaults to an empty list.
     """
     
     model = view.model
     model_name = view.model().__class__.__name__.lower()
     model_name_plural = pluralize(model_name)
     
-    # Default actions defined by respite.view.View
+    # Default actions defined by respite.views.Views
     urls = [
         url(
             regex = r'%s$|%sindex\.?[a-zA-Z]*$' % (prefix, prefix),
@@ -59,7 +59,7 @@ def resource(prefix, view, actions=['index', 'show', 'edit', 'update', 'new', 'c
         )
     ]    
     
-    # Custom actions defined in a subclass of respite.view.View
+    # Custom actions defined in a subclass of respite.views.Views
     for custom_action in custom_actions:
         
         kwargs = {}
@@ -79,8 +79,7 @@ def resource(prefix, view, actions=['index', 'show', 'edit', 'update', 'new', 'c
     
 def action(regex, function, methods, name):
     """
-    Define a custom view action. Like Django's django.conf.urls.defaults.url, this is a convenience
-    function that merely generates a dictionary from its arguments.
+    Define a route to a custom view action.
     
     Arguments:
     regex -- A string describing a regular expression to which the request path will be matched.
@@ -88,6 +87,7 @@ def action(regex, function, methods, name):
     function -- A string describing the function to route the request to.
     name -- A string describing the name of the URL.
     """
+    
     if not all([method in HTTP_METHODS for method in methods]):
         raise ValueError('"%s" are not valid HTTP methods.' % '" and "'.join([method for method in methods if not method in HTTP_METHODS]))
     
