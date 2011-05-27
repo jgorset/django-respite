@@ -226,7 +226,7 @@ class Views(object):
         
         return render(
             request = request,
-            template_name = '%s/%s.%s' % (self.template_path, template, format),
+            template_name = '%s%s.%s' % (self.template_path, template, format),
             dictionary = context,
             status = status,
             content_type = get_content_type(format)
