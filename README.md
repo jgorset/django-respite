@@ -28,21 +28,21 @@ Respite is influenced by Ruby on Rails, though in the spirit of Python it is not
     
     from django.conf.urls.defaults import *
     from respite.urls import resource
-    from views import ArticleView
+    from views import ArticleViews
     
     urlpatterns = resource(
-        prefix = 'news/articles',
-        view = ArticleView
+        prefix = 'news/articles/',
+        view = ArticleViews
     )
 
     # news/views.py
     
-    from respite import View
+    from respite import Views
     from models import Article
     
-    class ArticleView(View):
+    class ArticleViews(Views):
         model = Article
-        template_path = 'news/articles'
+        template_path = 'news/articles/'
         supported_formats = ['html', 'json']
     
     # templates/news/articles/index.html
@@ -89,9 +89,9 @@ articles that have been published:
 
     # news/views.py
 
-    class ArticleView(View):
+    class ArticleViews(Views):
         model = Article
-        template_path = 'news/articles'
+        template_path = 'news/articles/'
         supported_formats = ['html', 'json']
         
         def index(self, request):
@@ -112,11 +112,11 @@ You may also omit one or several of the default actions altogether. For example,
     
     from django.conf.urls.defaults import *
     from respite.urls import resource
-    from views import ArticleView
+    from views import ArticleViews
     
     urlpatterns = resource(
-        prefix = 'news/articles',
-        view = ArticleView,
+        prefix = 'news/articles/',
+        view = ArticleViews,
         actions = ['index', 'show']
     )
             
@@ -129,11 +129,11 @@ route them however you like:
     
     from django.conf.urls.defaults import *
     from respite.urls import resource, action
-    from views import ArticleView
+    from views import ArticleViews
     
     urlpatterns = resource(
-        prefix = 'news/articles',
-        view = ArticleView,
+        prefix = 'news/articles/',
+        view = ArticleViews,
         custom_actions = [
             action(
                 regex = r'(?P<id>[0-9]+)/preview\.?[a-zA-Z]*$',
@@ -146,12 +146,12 @@ route them however you like:
 
     # news/views.py
 
-    from respite import View
+    from respite import Views
     from models import Article
 
-    class ArticleView(View):
+    class ArticleViews(Views):
         model = Article
-        template_path = 'news/articles'
+        template_path = 'news/articles/'
         supported_formats = ['html', 'json']
         
         def preview(self, request, id):
