@@ -4,9 +4,9 @@
 
 Respite conforms Django to [Representational State Transfer (REST)](http://en.wikipedia.org/wiki/Representational_State_Transfer).
 
-## Requirements
+## Disclaimer
 
-* Django v1.3 or later
+Respite is under development.
 
 ## Usage
 
@@ -166,6 +166,10 @@ route them however you like:
                 status = 200
             )
 
+
+## Requirements
+
+* Django v1.3 or later
 
 ## Installation
 
