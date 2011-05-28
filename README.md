@@ -6,7 +6,7 @@ Respite conforms Django to [Representational State Transfer (REST)](http://en.wi
 
 ## Disclaimer
 
-Respite is under development.
+Respite is under development. Things may change on a whim, and the changes probably won't be backwards-compatible.
 
 ## Usage
 
