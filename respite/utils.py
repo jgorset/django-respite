@@ -53,7 +53,7 @@ def get_format(content_type):
         if s[0] == content_type:
             return s[1]
 
-    raise ValueError('Content type not known for format "%s"' % format)
+    raise ValueError('Format not known for content type "%s"' % content_type)
 
 def parse_http_accept_header(header):
     """
