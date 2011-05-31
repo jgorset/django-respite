@@ -3,6 +3,7 @@ import re
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.core.urlresolvers import reverse
+from django.forms import CharField, HiddenInput
 
 from utils import generate_form, get_content_type, get_format, parse_http_accept_header
 from inflector import pluralize
@@ -93,6 +94,9 @@ class Views(object):
                 form = generate_form(self.model)(instance=object)
             else:
                 form = self.form(instance=object)
+            # Add _method to the forms field list, this is needed
+            # to do updating with PUT in html forms
+            form.fields['_method'] = CharField(label="method", required=True, initial="PUT", widget=HiddenInput)
 
         except self.model.DoesNotExist:
             return render(
