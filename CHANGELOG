@@ -1,5 +1,9 @@
 CHANGELOG
 
+v0.6.1
+- Fixed a bug that caused views with no prefix to be routed incorrectly
+- Fixed a bug that caused the regular expressions to allow arbitrary input between the prefix and action (e.g. news/articles/FOO/index.html).
+
 v0.6
 - Fixed a bug that caused an empty prefix to produce URLs with double slashes.
 - The 'View' class has been renamed to 'Views'.
