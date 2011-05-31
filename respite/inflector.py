@@ -4,7 +4,7 @@ import re
 
 def pluralize(word) :
         """Pluralize an English noun."""
-        
+
         rules = [
             ['(?i)(quiz)$' , '\\1zes'],
             ['^(?i)(ox)$' , '\\1en'],
@@ -25,9 +25,9 @@ def pluralize(word) :
             ['(?i)s$' , 's'],
             ['(?i)$' , 's']
         ]
-        
+
         uncountable_words = ['equipment', 'information', 'rice', 'money', 'species', 'series', 'fish', 'sheep']
-        
+
         irregular_words = {
             'person' : 'people',
             'man' : 'men',
@@ -35,18 +35,18 @@ def pluralize(word) :
             'sex' : 'sexes',
             'move' : 'moves'
         }
-        
+
         lower_cased_word = word.lower();
-        
+
         for uncountable_word in uncountable_words:
             if lower_cased_word[-1*len(uncountable_word):] == uncountable_word :
                 return word
-        
+
         for irregular in irregular_words.keys():
             match = re.search('('+irregular+')$',word, re.IGNORECASE)
             if match:
                 return re.sub('(?i)'+irregular+'$', match.expand('\\1')[0]+irregular_words[irregular][1:], word)
-        
+
         for rule in range(len(rules)):
             match = re.search(rules[rule][0], word, re.IGNORECASE)
             if match :
@@ -54,14 +54,14 @@ def pluralize(word) :
                 for k in range(0,len(groups)) :
                     if groups[k] == None :
                         rules[rule][1] = rules[rule][1].replace('\\'+str(k+1), '')
-                        
+
                 return re.sub(rules[rule][0], rules[rule][1], word)
-        
+
         return word
-        
+
 def singularize(word) :
         """Singularize an English noun."""
-        
+
         rules = [
             ['(?i)(quiz)zes$' , '\\1'],
             ['(?i)(matr)ices$' , '\\1ix'],
@@ -88,9 +88,9 @@ def singularize(word) :
             ['(?i)(n)ews$' , '\\1ews'],
             ['(?i)s$' , ''],
         ];
-    
+
         uncountable_words = ['equipment', 'information', 'rice', 'money', 'species', 'series', 'fish', 'sheep','sms'];
-    
+
         irregular_words = {
             'people' : 'person',
             'men' : 'man',
@@ -98,18 +98,17 @@ def singularize(word) :
             'sexes' : 'sex',
             'moves' : 'move'
         }
-    
+
         lower_cased_word = word.lower();
-    
+
         for uncountable_word in uncountable_words:
             if lower_cased_word[-1*len(uncountable_word):] == uncountable_word :
                 return word
-            
+
         for irregular in irregular_words.keys():
             match = re.search('('+irregular+')$',word, re.IGNORECASE)
             if match:
                 return re.sub('(?i)'+irregular+'$', match.expand('\\1')[0]+irregular_words[irregular][1:], word)
-            
 
         for rule in range(len(rules)):
             match = re.search(rules[rule][0], word, re.IGNORECASE)
@@ -118,7 +117,7 @@ def singularize(word) :
                 for k in range(0,len(groups)) :
                     if groups[k] == None :
                         rules[rule][1] = rules[rule][1].replace('\\'+str(k+1), '')
-                        
+
                 return re.sub(rules[rule][0], rules[rule][1], word)
-        
+
         return word
