@@ -1,7 +1,7 @@
 CHANGELOG
 
 v0.6
-- Fix a bug that caused an empty prefix to produce URLs with double slashes.
+- Fixed a bug that caused an empty prefix to produce URLs with double slashes.
 - The 'View' class has been renamed to 'Views'.
 - The trailing slash of the 'resource' function's 'prefix' argument is no longer implicit.
 - The trailing slash of the 'View' class' 'template_path' property is no longer implicit.
