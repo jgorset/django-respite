@@ -22,11 +22,9 @@ def get_content_type(format):
     """
     formats = [
         ('html', 'text/html'),
-        ('html', 'application/xhtml+xml'),
         ('txt', 'text/plain'),
         ('json', 'application/json'),
         ('xml', 'text/xml'),
-        ('xml', 'application/xml')
     ]
 
     for f in formats:
