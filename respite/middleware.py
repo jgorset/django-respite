@@ -1,6 +1,6 @@
 from django.http import QueryDict
 
-class HTTPMethodOverrideMiddleware:
+class HttpMethodOverrideMiddleware:
     """
     Facilitate for overriding the HTTP method with the X-HTTP-Method-Override
     header or a '_method' HTTP POST parameter.
@@ -14,7 +14,7 @@ class HTTPMethodOverrideMiddleware:
                 request.POST.get('_method')
             ).upper()
 
-class HTTPPUTMiddleware:
+class HttpPutMiddleware:
     """
     Facilitate for HTTP PUT in the same way Django facilitates for HTTP GET
     and HTTP POST; populate a QueryDict instance with the request body in request.PUT.

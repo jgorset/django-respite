@@ -175,9 +175,9 @@ route them however you like:
 
 * `pip install git+http://github.com/jgorset/respite.git`
 * Add `respite` to `INSTALLED_APPS` in your settings file
-* Add `respite.middleware.HTTPPUTMiddleware` to `MIDDLEWARE_CLASSES` in your settings file
+* Add `respite.middleware.HttpPutMiddleware` to `MIDDLEWARE_CLASSES` in your settings file
 
-If you're not just building an API, you might also want to add `respite.middleware.HTTPMethodOverrideMiddleware`
+If you're not just building an API, you might also want to add `respite.middleware.HttpMethodOverrideMiddleware`
 to your middleware classes; it facilitates for overriding the HTTP method with the `X-HTTP-Method-Override` header or a
 `_method` HTTP POST parameter, which is the only way to update (HTTP PUT) and delete (HTTP DELETE) resources from
 a web browser.
