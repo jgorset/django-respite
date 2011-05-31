@@ -11,6 +11,7 @@ class Views(object):
     model = None
     template_path = ''
     supported_formats = ['html']
+    form = None
             
     def index(self, request):
         """Render a list of objects."""
@@ -47,8 +48,11 @@ class Views(object):
         
     def new(self, request):
         """Render a form to create a new object."""
-        form = generate_form(self.model)()
-        
+        if not self.form:
+            form = generate_form(self.model)()
+        else:
+            form = self.form()
+
         return self._render(
             request = request,
             template = 'new',
@@ -60,8 +64,11 @@ class Views(object):
         
     def create(self, request):
         """Create a new object."""
-        form = generate_form(self.model)(request.POST)
-        
+        if not self.form:
+            form = generate_form(self.model)(request.POST)
+        else:
+            form = self.form(request.POST)
+
         if form.is_valid():
             object = form.save()
             
@@ -82,7 +89,11 @@ class Views(object):
         """Render a form to edit an object."""
         try:
             object = self.model.objects.get(id=id)
-            form = generate_form(self.model)(instance=object)
+            if not self.form:
+                form = generate_form(self.model)(instance=object)
+            else:
+                form = self.form(instance=object)
+
         except self.model.DoesNotExist:
             return render(
                 request = request,
@@ -104,7 +115,10 @@ class Views(object):
         """Edit an object."""
         try:
             object = self.model.objects.get(id=id)
-            form = generate_form(self.model)(request.PUT, instance=object)
+            if not self.form:
+                form = generate_form(self.model)(request.PUT, instance=object)
+            else:
+                form = self.form(request.PUT, instance=object)
         except self.model.DoesNotExist:
             return render(
                 request = request,
