@@ -85,26 +85,23 @@ class Views(object):
                 },
                 status = 400
             )
-        
+    
     def edit(self, request, id):
         """Render a form to edit an object."""
         try:
             object = self.model.objects.get(id=id)
-            if not self.form:
-                form = generate_form(self.model)(instance=object)
-            else:
-                form = self.form(instance=object)
-            # Add _method to the forms field list, this is needed
-            # to do updating with PUT in html forms
-            form.fields['_method'] = CharField(label="method", required=True, initial="PUT", widget=HiddenInput)
-
         except self.model.DoesNotExist:
             return render(
                 request = request,
                 template_name = '404.html',
                 status = 404
             )
-        
+
+        form = (self.form or generate_form(self.model))(instance=object)
+
+        # Add "_method" field to override request method to PUT
+        form.fields['_method'] = CharField(required=True, initial='PUT', widget=HiddenInput)
+
         return self._render(
             request = request,
             template = 'edit',
@@ -114,25 +111,23 @@ class Views(object):
             },
             status = 200
         )
-        
+
     def update(self, request, id):
         """Edit an object."""
         try:
             object = self.model.objects.get(id=id)
-            if not self.form:
-                form = generate_form(self.model)(request.PUT, instance=object)
-            else:
-                form = self.form(request.PUT, instance=object)
         except self.model.DoesNotExist:
             return render(
                 request = request,
                 template_name = '404.html',
                 status = 404
             )
-        
+
+        form = (self.form or generate_form(self.model))(request.PUT, instance=object)
+
         if form.is_valid():
             object = form.save()
-            
+
             return self.show(request, id)
         else:
             return self._render(
