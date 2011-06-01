@@ -6,19 +6,19 @@ from inflector import pluralize
 
 HTTP_METHODS = ['OPTIONS', 'GET', 'HEAD', 'POST', 'PUT', 'DELETE', 'TRACE', 'CONNECT']
 
-def resource(prefix, view, actions=['index', 'show', 'edit', 'update', 'new', 'create', 'destroy'], custom_actions=[]):
+def resource(prefix, views, actions=['index', 'show', 'edit', 'update', 'new', 'create', 'destroy'], custom_actions=[]):
     """
     Generate url patterns for a collection of views.
 
     Arguments:
     prefix -- A string describing the resource's URL prefix (f.ex. 'posts').
-    view -- A reference to the class in which views are defined.
+    views -- A reference to the class in which views are defined.
     actions -- An optional list of strings describing which of the default actions to route for this resource. Defaults to all.
     custom_actions -- An optional list of custom actions as returned by the `action` function. Defaults to an empty list.
     """
 
-    model = view.model
-    model_name = view.model().__class__.__name__.lower()
+    model = views.model
+    model_name = views.model().__class__.__name__.lower()
     model_name_plural = pluralize(model_name)
 
     def dispatch(request, GET=False, POST=False, PUT=False, DELETE=False, **kwargs):
@@ -27,7 +27,7 @@ def resource(prefix, view, actions=['index', 'show', 'edit', 'update', 'new', 'c
         the corresponding argument.
 
         For example, if the request method is HTTP GET and the 'GET' argument to this function is
-        set to 'index', the 'index' function of the view will be invoked and returned.
+        set to 'index', the 'index' function of the views class will be invoked and returned.
 
         Arguments:
         request -- A django.http.HttpRequest object.
@@ -55,7 +55,7 @@ def resource(prefix, view, actions=['index', 'show', 'edit', 'update', 'new', 'c
             return response
 
         # Dispatch the request
-        return getattr(view(), locals()[request.method])(request, **kwargs)
+        return getattr(views(), locals()[request.method])(request, **kwargs)
 
     # Configure URL patterns for default actions (i.e. actions defined in respite.views.Views).
     urls = [
