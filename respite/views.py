@@ -74,7 +74,10 @@ class Views(object):
             object = form.save()
 
             response = HttpResponse(status=303)
-            response['Location'] = reverse(self.model.__name__.lower(), args=[object.id])
+            response['Location'] = reverse(
+                viewname = '%s_%s' % (self.model._meta.app_label, self.model.__name__.lower()),
+                args = [object.id]
+            )
             return response
         else:
             return self._render(
