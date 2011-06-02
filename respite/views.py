@@ -51,10 +51,7 @@ class Views(object):
 
     def new(self, request):
         """Render a form to create a new object."""
-        if not self.form:
-            form = generate_form(self.model)()
-        else:
-            form = self.form()
+        form = (self.form or generate_form(self.model))()
 
         return self._render(
             request = request,
@@ -66,11 +63,8 @@ class Views(object):
         )
 
     def create(self, request):
-        """Create a new object."""
-        if not self.form:
-            form = generate_form(self.model)(request.POST)
-        else:
-            form = self.form(request.POST)
+        """Create a new object."""    
+        form = (self.form or generate_form(self.model))(request.POST)
 
         if form.is_valid():
             object = form.save()
