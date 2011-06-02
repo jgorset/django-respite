@@ -4,8 +4,10 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.core.urlresolvers import reverse
 from django.forms import CharField, HiddenInput
+from django.template import TemplateDoesNotExist
 
 from utils import generate_form, get_content_type, get_format, parse_http_accept_header
+from serializers import serializers
 from inflector import pluralize
 
 class Views(object):
@@ -190,10 +192,23 @@ class Views(object):
         if not format:
             return HttpResponse(status=406)
 
-        return render(
-            request = request,
-            template_name = '%s%s.%s' % (self.template_path, template, format),
-            dictionary = context,
-            status = status,
-            content_type = get_content_type(format)
-        )
+        # Render template...
+        try:
+            return render(
+                request = request,
+                template_name = '%s%s.%s' % (self.template_path, template, format),
+                dictionary = context,
+                status = status,
+                content_type = get_content_type(format)
+            )
+        # ... or if no template exists, look for an appropriate serializer.
+        except TemplateDoesNotExist:
+
+            if format in serializers:
+                return HttpResponse(
+                    content = serializers[format](context).serialize(),
+                    content_type = get_content_type(format),
+                    status = status
+                )
+            else:
+                raise
