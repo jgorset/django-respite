@@ -54,7 +54,9 @@ class Serializer(object):
                 # Serialize model as a dictionary with keys and values
                 # corresponding to the model's fields
                 for field in model._meta.fields:
-                    data.update({ field.name: getattr(model, field.name )})
+                    data.update({
+                        field.name: serialize(getattr(model, field.name ))
+                    })
 
                 return data
 
