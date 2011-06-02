@@ -5,6 +5,7 @@ except ImportError:
 
 import django.db.models
 import django.forms
+import datetime
 
 class Serializer(object):
     """Base class for serializers."""
@@ -84,6 +85,9 @@ class Serializer(object):
             def serialize_integer(integer):
                 return integer
 
+            def serialize_date(datetime):
+                return datetime.isoformat()
+
             if isinstance(anything, dict):
                 return serialize_dictionary(anything)
 
@@ -104,5 +108,8 @@ class Serializer(object):
 
             if isinstance(anything, int):
                 return serialize_integer(anything)
+
+            if isinstance(anything, (datetime.date, datetime.datetime)):
+                return serialize_date(anything)
 
         return serialize(self.source)
