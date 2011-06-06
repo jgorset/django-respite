@@ -4,7 +4,7 @@ v0.7
 - You may now pass a custom form class in Views#form to override automatic form generation
   in Views#new, Views#create, Views#edit and Views#update.
 - 'HTTPMethodOverrideMiddleware' has been renamed to 'HttpMethodOverrideMiddleware'.
-- 'HTTPPUTMiddleware' has been renamed to 'HTTPPutMiddleware'.
+- 'HTTPPUTMiddleware' has been renamed to 'HttpPutMiddleware'.
 - Respite now automatically serializes request context as JSON if no JSON template for the
   view exists.
 
