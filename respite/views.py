@@ -6,9 +6,11 @@ from django.core.urlresolvers import reverse
 from django.forms import CharField, HiddenInput
 from django.template import TemplateDoesNotExist
 
-from utils import generate_form, get_content_type, get_format, parse_http_accept_header
+from settings import DEFAULT_FORMAT
+from utils import generate_form, parse_http_accept_header
 from serializers import serializers
 from inflector import pluralize
+import formats
 
 class Views(object):
     model = None
@@ -157,32 +159,60 @@ class Views(object):
         )
 
     def _get_format(self, request):
-        """Determine the desired response format."""
+        """
+        Determine and return a 'formats.Format' instance describing the most desired response format
+        that is supported by these views.
 
-        # Determine format from extension...
+        Formats specified by extension (e.g. '/articles/index.html') take precedence over formats
+        given in the HTTP Accept header, even if it's a format that isn't known by Respite.
+
+        If the request doesn't specify a format by extension (e.g. '/articles/' or '/articles/new')
+        and none of the formats in the HTTP Accept header are supported, Respite will fall back
+        on the format given in DEFAULT_FORMAT.
+
+        Arguments:
+        request -- The request object.
+        """
+
+        # Derive a list of 'formats.Format' instances from the list of formats these views support.
+        supported_formats = [formats.find(format) for format in self.supported_formats]
+
+        # Determine format by extension...
         if '.' in request.path:
-            format = request.path.split('.')[-1]
-            if format in self.supported_formats:
-                return format
+            extension = request.path.split('.')[-1]
 
-        # ... or if no extension is given, fall back to the HTTP Accept header...
-        elif 'HTTP_ACCEPT' in request.META:
+            try:
+                format = formats.find_by_extension(extension)
+            except formats.UnknownFormat:
+                return None
 
-            # Derive a list of supported content types from the list of supported formats.
-            supported_content_types = []
-            for supported_format in self.supported_formats:
-                supported_content_types.append(get_content_type(supported_format))
+            return format if format in supported_formats else None
 
-            # Find the highest-ranking content type.
+        # Determine format by HTTP Accept header...
+        if 'HTTP_ACCEPT' in request.META:
+
+            # Parse the HTTP Accept header, returning a list of accepted content types sorted by quality
             for accepted_content_type in parse_http_accept_header(request.META['HTTP_ACCEPT']):
-                if accepted_content_type in supported_content_types:
-                    return get_format(accepted_content_type)
+                try:
+                    format = formats.find_by_content_type(accepted_content_type)
+                except formats.UnknownFormat:
+                    continue
+
+                if format in supported_formats:
+                    return format
+                else:
+                    continue
+
+            # If none of the formats given in the HTTP Accept header are supported by these views,
+            # default to the format given in DEFAULT_FORMAT (or return None if none is given).
+            return formats.find(DEFAULT_FORMAT) if DEFAULT_FORMAT else None
 
     def _render(self, request, template, status, context={}):
         """Render a response."""
 
         format = self._get_format(request)
 
+        # Render 406 Not Acceptable if the requested format isn't supported.
         if not format:
             return HttpResponse(status=406)
 
@@ -190,10 +220,10 @@ class Views(object):
         try:
             return render(
                 request = request,
-                template_name = '%s%s.%s' % (self.template_path, template, format),
+                template_name = '%s%s.%s' % (self.template_path, template, format.extension),
                 dictionary = context,
                 status = status,
-                content_type = get_content_type(format)
+                content_type = format.content_type
             )
         # ... or if no template exists, look for an appropriate serializer.
         except TemplateDoesNotExist:
