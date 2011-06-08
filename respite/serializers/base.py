@@ -117,6 +117,6 @@ class Serializer(object):
             if isinstance(anything, (datetime.date, datetime.datetime)):
                 return serialize_date(anything)
 
-            raise TypeError("Respite doesn't know how to serialize %s objects" % anything.__class__.__name__)
+            raise TypeError("Respite doesn't know how to serialize %s" % anything.__class__.__name__)
 
         return serialize(self.source)
