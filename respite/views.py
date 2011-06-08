@@ -228,10 +228,10 @@ class Views(object):
         # ... or if no template exists, look for an appropriate serializer.
         except TemplateDoesNotExist:
 
-            if format in serializers:
+            if format.acronym in serializers:
                 return HttpResponse(
-                    content = serializers[format](context).serialize(),
-                    content_type = get_content_type(format),
+                    content = serializers[format.acronym](context).serialize(),
+                    content_type = format.content_type,
                     status = status
                 )
             else:
