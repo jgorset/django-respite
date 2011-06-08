@@ -49,16 +49,19 @@ class Serializer(object):
                 return data
 
             def serialize_model(model):
-                data = OrderedDict()
 
-                # Serialize model as a dictionary with keys and values
-                # corresponding to the model's fields
-                for field in model._meta.fields:
-                    data.update({
-                        field.name: serialize(getattr(model, field.name ))
-                    })
+                # Attempt to serialize the model by calling its 'serialize' method...
+                try:
+                    return model.serialize()
+                # ... otherwise, serialize it automatically.
+                except AttributeError:
+                    data = OrderedDict()
+                    for field in model._meta.fields:
+                        data.update({
+                            field.name: serialize(getattr(model, field.name ))
+                        })
 
-                return data
+                    return data
 
             def serialize_form(form):
                 data = OrderedDict()
