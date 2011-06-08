@@ -50,11 +50,11 @@ class Serializer(object):
 
             def serialize_model(model):
 
-                # Attempt to serialize the model by calling its 'serialize' method...
-                try:
+                # Serialize the model by calling its 'serialize' method...
+                if hasattr(model, 'serialize'):
                     return model.serialize()
-                # ... otherwise, serialize it automatically.
-                except AttributeError:
+                # ... or serialize it automatically.
+                else:
                     data = OrderedDict()
                     for field in model._meta.fields:
                         data.update({
