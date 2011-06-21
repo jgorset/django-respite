@@ -2,7 +2,7 @@ import inspect
 
 from django.conf.urls.defaults import *
 from django.http import HttpResponse
-from inflector import pluralize
+from respite.inflector import pluralize
 
 HTTP_METHODS = ['OPTIONS', 'GET', 'HEAD', 'POST', 'PUT', 'DELETE', 'TRACE', 'CONNECT']
 

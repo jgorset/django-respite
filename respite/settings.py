@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured
 
-import formats
+from respite import formats
 
 # A string describing the format that Respite will fall back to if
 # none of the formats the client requested are supported by the view.

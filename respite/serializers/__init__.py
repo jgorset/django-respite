@@ -1,4 +1,4 @@
-from jsonserializer import JSONSerializer
+from respite.serializers.jsonserializer import JSONSerializer
 from respite import formats
 
 serializers = {

@@ -6,11 +6,11 @@ from django.core.urlresolvers import reverse
 from django.forms import CharField, HiddenInput
 from django.template import TemplateDoesNotExist
 
-from settings import DEFAULT_FORMAT
-from utils import generate_form, parse_http_accept_header
+from respite.settings import DEFAULT_FORMAT
+from respite.utils import generate_form, parse_http_accept_header
 from respite.serializers import serializers
-from inflector import pluralize
-import formats
+from respite.inflector import pluralize
+from respite import formats
 
 class Views(object):
     model = None

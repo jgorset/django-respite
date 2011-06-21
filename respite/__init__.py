@@ -1,3 +1,3 @@
-from views import *
+from respite.views import *
 
 VERSION = '0.7'
