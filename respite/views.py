@@ -8,7 +8,7 @@ from django.template import TemplateDoesNotExist
 
 from settings import DEFAULT_FORMAT
 from utils import generate_form, parse_http_accept_header
-from serializers import serializers
+from respite.serializers import serializers
 from inflector import pluralize
 import formats
 
@@ -215,7 +215,7 @@ class Views(object):
         # Render 406 Not Acceptable if the requested format isn't supported.
         if not format:
             return HttpResponse(status=406)
-
+        
         # Render template...
         try:
             return render(
@@ -228,9 +228,9 @@ class Views(object):
         # ... or if no template exists, look for an appropriate serializer.
         except TemplateDoesNotExist:
 
-            if format.acronym in serializers:
+            if format in serializers:
                 return HttpResponse(
-                    content = serializers[format.acronym](context).serialize(),
+                    content = serializers[format](context).serialize(),
                     content_type = format.content_type,
                     status = status
                 )

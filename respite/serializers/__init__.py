@@ -1,5 +1,6 @@
 from jsonserializer import JSONSerializer
+from respite import formats
 
 serializers = {
-    'json': JSONSerializer
+    formats.find('JavaScript Object Notation'): JSONSerializer
 }
