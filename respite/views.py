@@ -215,7 +215,7 @@ class Views(object):
         # Render 406 Not Acceptable if the requested format isn't supported.
         if not format:
             return HttpResponse(status=406)
-        
+
         # Render template...
         try:
             return render(
