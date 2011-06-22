@@ -20,7 +20,7 @@ class Serializer(object):
         """
 
         def serialize(anything):
-
+            
             def serialize_dictionary(dictionary):
                 data = OrderedDict()
 
@@ -93,9 +93,15 @@ class Serializer(object):
             def serialize_date(datetime):
                 return datetime.isoformat()
             
-            def serialize_fieldfile(fieldfile):
+            def serialize_field_file(field_file):
                 try:
-                    return fieldfile.url
+                    return field_file.url
+                except ValueError:
+                    return None
+
+            def serialize_image_field_file(image_field_file):
+                try:
+                    return image_field_file.url
                 except ValueError:
                     return None
 
@@ -123,8 +129,11 @@ class Serializer(object):
             if isinstance(anything, (datetime.date, datetime.datetime)):
                 return serialize_date(anything)
 
-            if isinstance(anything, django.db.models.fields.files.FieldFile):
-                return serialize_fieldfile(anything)
+            if type(anything) is django.db.models.fields.files.FieldFile:
+                return serialize_field_file(anything)
+
+            if type(anything) is django.db.models.fields.files.ImageFieldFile:
+                return serialize_image_field_file(anything)
 
             if anything is None:
                 return None
