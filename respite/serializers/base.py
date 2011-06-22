@@ -119,7 +119,7 @@ class Serializer(object):
 
             if isinstance(anything, (datetime.date, datetime.datetime)):
                 return serialize_date(anything)
-            
+
             if isinstance(anything, (django.db.models.fields.files.FieldFile)):
                 return serialize_fieldfile(anything)
 
