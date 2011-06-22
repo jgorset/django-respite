@@ -123,8 +123,12 @@ class Serializer(object):
             if isinstance(anything, (datetime.date, datetime.datetime)):
                 return serialize_date(anything)
 
-            if isinstance(anything, (django.db.models.fields.files.FieldFile)):
+            if isinstance(anything, django.db.models.fields.files.FieldFile):
                 return serialize_fieldfile(anything)
+
+            if anything is None:
+                return None
+
 
             raise TypeError("Respite doesn't know how to serialize %s" % anything.__class__.__name__)
 
