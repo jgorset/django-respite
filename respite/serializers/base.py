@@ -94,7 +94,10 @@ class Serializer(object):
                 return datetime.isoformat()
             
             def serialize_fieldfile(fieldfile):
-                return fieldfile.url
+                try:
+                    return fieldfile.url
+                except ValueError:
+                    return None
 
             if isinstance(anything, dict):
                 return serialize_dictionary(anything)
