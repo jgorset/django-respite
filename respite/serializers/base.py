@@ -92,6 +92,9 @@ class Serializer(object):
 
             def serialize_date(datetime):
                 return datetime.isoformat()
+            
+            def serialize_fieldfile(fieldfile):
+                return fieldfile.url
 
             if isinstance(anything, dict):
                 return serialize_dictionary(anything)
@@ -116,6 +119,9 @@ class Serializer(object):
 
             if isinstance(anything, (datetime.date, datetime.datetime)):
                 return serialize_date(anything)
+            
+            if isinstance(anything, (django.db.models.fields.files.FieldFile)):
+                return serialize_fieldfile(anything)
 
             raise TypeError("Respite doesn't know how to serialize %s" % anything.__class__.__name__)
 
