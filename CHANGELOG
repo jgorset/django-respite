@@ -3,7 +3,6 @@ CHANGELOG
 v0.7.1
 - Add serializer for filefields
 - Fix bug when trying to serialize a NoneType
-- Fix bug that broke serialization to json
 
 v0.7
 - You may now pass a custom form class in Views#form to override automatic form generation
