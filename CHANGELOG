@@ -1,5 +1,8 @@
 CHANGELOG
 
+v0.7.2
+- Fixed a bug that caused custom actions to be prefixed by an additional slash.
+
 v0.7.1
 - Add serializer for filefields
 - Fix bug when trying to serialize a NoneType
