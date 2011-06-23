@@ -105,7 +105,7 @@ def resource(prefix, views, actions=['index', 'show', 'edit', 'update', 'new', '
 
         urls.append(
             url(
-                regex = r'%s/%s' % (prefix, custom_action['regex']),
+                regex = r'%s%s' % (prefix, custom_action['regex']),
                 view = dispatch,
                 kwargs = kwargs,
                 name = custom_action['name']
