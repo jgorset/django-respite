@@ -87,9 +87,6 @@ class Serializer(object):
             def serialize_string(string):
                 return string
 
-            def serialize_integer(integer):
-                return integer
-
             def serialize_date(datetime):
                 return datetime.isoformat()
             
@@ -123,8 +120,8 @@ class Serializer(object):
             if isinstance(anything, (str, unicode)):
                 return serialize_string(anything)
 
-            if isinstance(anything, int):
-                return serialize_integer(anything)
+            if isinstance(anything, (int, float)):
+                return anything
 
             if isinstance(anything, (datetime.date, datetime.datetime)):
                 return serialize_date(anything)
