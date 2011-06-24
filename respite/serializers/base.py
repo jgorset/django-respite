@@ -52,7 +52,7 @@ class Serializer(object):
 
                 # Serialize the model by calling its 'serialize' method...
                 if hasattr(model, 'serialize'):
-                    return model.serialize()
+                    return serialize(model.serialize())
                 # ... or serialize it automatically.
                 else:
                     data = OrderedDict()
