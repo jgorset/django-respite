@@ -6,7 +6,7 @@ from respite.inflector import pluralize
 
 HTTP_METHODS = ['OPTIONS', 'GET', 'HEAD', 'POST', 'PUT', 'DELETE', 'TRACE', 'CONNECT']
 
-def resource(prefix, views, actions=['index', 'show', 'edit', 'update', 'new', 'create', 'destroy'], custom_actions=[]):
+def resource(prefix, views, actions=['index', 'show', 'edit', 'update', 'new', 'create', 'destroy'], custom_actions=[], id_regex=r"[0-9]+"):
     """
     Generate url patterns for a collection of views.
 
@@ -69,7 +69,7 @@ def resource(prefix, views, actions=['index', 'show', 'edit', 'update', 'new', '
             name = '%s_%s' % (model._meta.app_label, model_name_plural)
         ),
         url(
-            regex = r'^%s(?P<id>[0-9]+)\.?[a-zA-Z]*$' % prefix,
+            regex = r'^%s(?P<id>%s)\.?[a-zA-Z]*$' % (prefix, id_regex),
             view = dispatch,
             kwargs = {
                 'GET': 'show' if 'show' in actions else False,
@@ -79,7 +79,7 @@ def resource(prefix, views, actions=['index', 'show', 'edit', 'update', 'new', '
             name = '%s_%s' % (model._meta.app_label, model_name)
         ),
         url(
-            regex = r'^%s(?P<id>[0-9]+)/edit\.?[a-zA-Z]*$' % prefix,
+            regex = r'^%s(?P<id>%s)/edit\.?[a-zA-Z]*$' % (prefix, id_regex),
             view = dispatch,
             kwargs = {
                 'GET': 'edit' if 'edit' in actions else False
