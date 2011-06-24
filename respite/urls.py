@@ -6,7 +6,7 @@ from respite.inflector import pluralize
 
 HTTP_METHODS = ['OPTIONS', 'GET', 'HEAD', 'POST', 'PUT', 'DELETE', 'TRACE', 'CONNECT']
 
-def resource(prefix, views, actions=['index', 'show', 'edit', 'update', 'new', 'create', 'destroy'], custom_actions=[], id_regex=r"[0-9]+"):
+def resource(prefix, views, actions=['index', 'show', 'edit', 'update', 'new', 'create', 'destroy'], custom_actions=[], id_regex=r'[0-9]+'):
     """
     Generate url patterns for a collection of views.
 
