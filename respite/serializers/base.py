@@ -84,9 +84,6 @@ class Serializer(object):
 
                 return data
 
-            def serialize_string(string):
-                return string
-
             def serialize_date(datetime):
                 return datetime.isoformat()
             
@@ -118,7 +115,7 @@ class Serializer(object):
                 return serialize_form(anything)
 
             if isinstance(anything, (str, unicode)):
-                return serialize_string(anything)
+                return anything
 
             if isinstance(anything, (int, float)):
                 return anything
