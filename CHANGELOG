@@ -1,5 +1,11 @@
 CHANGELOG
 
+v0.7.3
+- You may now decorate methods with the 'override_supported_formats' decorator to override
+  the view class' supported formats.
+- Fixed a bug that caused a TypeError upon returning non-simple datatypes from a
+  model's 'serialize' method.
+
 v0.7.2
 - Fixed a bug that caused custom actions to be prefixed by an additional slash.
 
