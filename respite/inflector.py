@@ -1,5 +1,3 @@
-"""Singularize or pluralize English nouns, courtesy of Bermi Ferrer Martinez."""
-
 import re
 
 def pluralize(word) :
@@ -121,3 +119,19 @@ def singularize(word) :
                 return re.sub(rules[rule][0], rules[rule][1], word)
 
         return word
+
+def cc2us(string):
+    """Transform a CamelCase string to an underscore_case string."""
+    return re.sub(r'(?<=[a-z])[A-Z]|(?<!^)[A-Z](?=[a-z])', r"_\g<0>", string).lower()
+
+def mc2us(string):
+    """Transform a mixedCase string to an underscore_case string."""
+    return cc2us(string)
+
+def us2mc(string):
+    """Transform an underscore_case string to a mixedCase string"""
+    return re.sub(r'_([a-z])', lambda m: (m.group(1).upper()), string)
+
+def us2cc(string):
+    """Transform an underscore_case string to a CamelCase string"""
+    return us2mc(string)[0].upper()+us2mc(string)[1:]
