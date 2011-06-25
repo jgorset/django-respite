@@ -9,7 +9,7 @@ from django.template import TemplateDoesNotExist
 from respite.settings import DEFAULT_FORMAT
 from respite.utils import generate_form, parse_http_accept_header
 from respite.serializers import serializers
-from respite.inflector import pluralize
+from respite.inflector import pluralize, cc2us
 from respite import formats
 
 class Views(object):
@@ -73,7 +73,7 @@ class Views(object):
 
             response = HttpResponse(status=303)
             response['Location'] = reverse(
-                viewname = '%s_%s' % (self.model._meta.app_label, self.model.__name__.lower()),
+                viewname = '%s_%s' % (self.model._meta.app_label, cc2us(self.model.__name__)),
                 args = [object.id]
             )
             return response

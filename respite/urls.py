@@ -2,7 +2,7 @@ import inspect
 
 from django.conf.urls.defaults import *
 from django.http import HttpResponse
-from respite.inflector import pluralize
+from respite.inflector import pluralize, cc2us
 
 HTTP_METHODS = ['OPTIONS', 'GET', 'HEAD', 'POST', 'PUT', 'DELETE', 'TRACE', 'CONNECT']
 
@@ -16,10 +16,6 @@ def resource(prefix, views, actions=['index', 'show', 'edit', 'update', 'new', '
     actions -- An optional list of strings describing which of the default actions to route for this resource. Defaults to all.
     custom_actions -- An optional list of custom actions as returned by the `action` function. Defaults to an empty list.
     """
-
-    model = views.model
-    model_name = views.model().__class__.__name__.lower()
-    model_name_plural = pluralize(model_name)
 
     def dispatch(request, GET=False, POST=False, PUT=False, DELETE=False, **kwargs):
         """
@@ -66,7 +62,7 @@ def resource(prefix, views, actions=['index', 'show', 'edit', 'update', 'new', '
                 'GET': 'index' if 'index' in actions else False,
                 'POST': 'create' if 'create' in actions else False,
             },
-            name = '%s_%s' % (model._meta.app_label, model_name_plural)
+            name = '%s_%s' % (views.model._meta.app_label, pluralize(cc2us(views.model.__name__)))
         ),
         url(
             regex = r'^%s(?P<id>%s)\.?[a-zA-Z]*$' % (prefix, id_regex),
@@ -76,7 +72,7 @@ def resource(prefix, views, actions=['index', 'show', 'edit', 'update', 'new', '
                 'PUT': 'update' if 'update' in actions else False,
                 'DELETE': 'destroy' if 'destroy' in actions else False
             },
-            name = '%s_%s' % (model._meta.app_label, model_name)
+            name = '%s_%s' % (views.model._meta.app_label, cc2us(views.model.__name__))
         ),
         url(
             regex = r'^%s(?P<id>%s)/edit\.?[a-zA-Z]*$' % (prefix, id_regex),
@@ -84,7 +80,7 @@ def resource(prefix, views, actions=['index', 'show', 'edit', 'update', 'new', '
             kwargs = {
                 'GET': 'edit' if 'edit' in actions else False
             },
-            name = 'edit_%s_%s' % (model._meta.app_label, model_name)
+            name = 'edit_%s_%s' % (views.model._meta.app_label, cc2us(views.model.__name__))
         ),
         url(
             regex = r'^%snew\.?[a-zA-Z]*$' % prefix,
@@ -92,7 +88,7 @@ def resource(prefix, views, actions=['index', 'show', 'edit', 'update', 'new', '
             kwargs = {
                 'GET': 'new' if 'new' in actions else False
             },
-            name = 'new_%s_%s' % (model._meta.app_label, model_name)
+            name = 'new_%s_%s' % (views.model._meta.app_label, cc2us(views.model.__name__))
         )
     ]    
 
