@@ -36,8 +36,12 @@ def test_create():
 
     response = client.post('/news/articles/', {'title': 'Title', 'content': 'Content'})
     assert response.status_code == 303
-
+    
 def test_edit():
+    response = client.get('/news/articles/1/edit')
+    assert response.status_code == 200
+
+def test_update():
     from urllib import urlencode
     
     response = client.put('/news/articles/1')
