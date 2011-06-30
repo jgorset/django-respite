@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block body %}
+
+    {% for article in articles %}
+        <h1>{{ article.title }}</h1>
+        {{ article.content|linebreaks }}
+    {% endfor %}
+
+{% endblock %}

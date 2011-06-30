@@ -1,15 +1,8 @@
 """Tests for respite.utils."""
 
-import mockdjango
-
 def test_generate_form():
     from respite.utils import generate_form
-    from django.db import models
-
-    class Article(models.Model):
-        title = models.CharField(max_length=255)
-        content = models.TextField()
-        created_at = models.DateTimeField(auto_now_add=True)
+    from news.models import Article
 
     assert generate_form(Article)
 

@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block body %}
+
+    <form method="POST" action="{% url new_news_article %}">
+        {{ form.as_p }}
+        <input type="submit" />
+    </form>
+
+{% endblock %}
