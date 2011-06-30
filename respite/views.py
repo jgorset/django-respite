@@ -203,14 +203,15 @@ class Views(object):
                 else:
                     continue
 
-            # If none of the formats given in the HTTP Accept header are supported by these views,
-            # default to the format given in DEFAULT_FORMAT if that's supported.
-            if DEFAULT_FORMAT:
-                default_format = formats.find(DEFAULT_FORMAT)
-                if default_format in supported_formats:
-                    return default_format
-                else:
-                    return None
+        # If none of the formats given in the HTTP 'accept' header are supported by these views,
+        # or no HTTP 'accept' header was given at all, default to the format given in
+        # DEFAULT_FORMAT if that's supported.
+        if DEFAULT_FORMAT:
+            default_format = formats.find(DEFAULT_FORMAT)
+            if default_format in supported_formats:
+                return default_format
+            else:
+                return None
 
     def _render(self, request, template, status, context={}):
         """Render a response."""
