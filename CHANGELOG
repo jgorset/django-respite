@@ -1,5 +1,11 @@
 CHANGELOG
 
+v0.7.5
+- Fixed a bug that caused views for models in CamelCase to be routed incorrectly.
+- Fix a bug that caused views to default to the format given in DEFAULT_FORMAT
+  regardless of whether or not it was supported.
+- Fix a bug that allowed for arbitrary URL suffixes
+
 v0.7.4
 - You may now override the regular expression used to match resource IDs in the 'id_regex'
   argument to the 'resource' function.
