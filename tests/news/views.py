@@ -22,5 +22,8 @@ class ArticleViews(Views):
         return self._render(
             request = request,
             template = 'preview',
+            context = {
+                'article': article
+            },
             status = 200
         )
