@@ -7,7 +7,7 @@ urlpatterns = resource(
     views = ArticleViews,
     custom_actions = [
         action(
-            regex = r'(?P<id>[0-9]+)/preview\.?[a-zA-Z]*',
+            regex = r'(?P<id>[0-9]+)/preview(?:\.[a-zA-Z]+)?',
             function = 'preview',
             methods = ['GET'],
             name = 'preview_news_article'

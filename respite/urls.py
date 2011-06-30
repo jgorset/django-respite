@@ -56,7 +56,7 @@ def resource(prefix, views, actions=['index', 'show', 'edit', 'update', 'new', '
     # Configure URL patterns for default actions (i.e. actions defined in respite.views.Views).
     urls = [
         url(
-            regex = r'^%s(?:$|index\.?[a-zA-Z]*$)' % prefix,
+            regex = r'^%s(?:$|index(?:\.[a-zA-Z]+)?$)' % prefix,
             view = dispatch,
             kwargs = {
                 'GET': 'index' if 'index' in actions else False,
@@ -65,7 +65,7 @@ def resource(prefix, views, actions=['index', 'show', 'edit', 'update', 'new', '
             name = '%s_%s' % (views.model._meta.app_label, pluralize(cc2us(views.model.__name__)))
         ),
         url(
-            regex = r'^%s(?P<id>%s)\.?[a-zA-Z]*$' % (prefix, id_regex),
+            regex = r'^%s(?P<id>%s)(?:\.[a-zA-Z]+)?$' % (prefix, id_regex),
             view = dispatch,
             kwargs = {
                 'GET': 'show' if 'show' in actions else False,
@@ -75,7 +75,7 @@ def resource(prefix, views, actions=['index', 'show', 'edit', 'update', 'new', '
             name = '%s_%s' % (views.model._meta.app_label, cc2us(views.model.__name__))
         ),
         url(
-            regex = r'^%s(?P<id>%s)/edit\.?[a-zA-Z]*$' % (prefix, id_regex),
+            regex = r'^%s(?P<id>%s)/edit(?:\.[a-zA-Z]+)?$' % (prefix, id_regex),
             view = dispatch,
             kwargs = {
                 'GET': 'edit' if 'edit' in actions else False
@@ -83,7 +83,7 @@ def resource(prefix, views, actions=['index', 'show', 'edit', 'update', 'new', '
             name = 'edit_%s_%s' % (views.model._meta.app_label, cc2us(views.model.__name__))
         ),
         url(
-            regex = r'^%snew\.?[a-zA-Z]*$' % prefix,
+            regex = r'^%snew(?:\.[a-zA-Z]+)?$' % prefix,
             view = dispatch,
             kwargs = {
                 'GET': 'new' if 'new' in actions else False
@@ -101,7 +101,7 @@ def resource(prefix, views, actions=['index', 'show', 'edit', 'update', 'new', '
 
         urls.append(
             url(
-                regex = r'%s%s' % (prefix, custom_action['regex']),
+                regex = r'^%s%s$' % (prefix, custom_action['regex']),
                 view = dispatch,
                 kwargs = kwargs,
                 name = custom_action['name']
