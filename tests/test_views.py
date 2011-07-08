@@ -64,3 +64,8 @@ def test_preview():
 
     response = client.get('/news/articles/2/preview')
     assert response.status_code == 404
+
+def test_options():
+    response = client.options('/news/articles/', HTTP_ACCEPT='application/json')
+    assert response.status_code == 200
+    assert set(response['Allow'].split(', ')) == set(['GET', 'POST'])

@@ -158,6 +158,24 @@ class Views(object):
             status = 200
         )
 
+    def options(self, request, map, *args, **kwargs):
+        """List communication options."""
+        options = {}
+        for method, function in map.items():
+            options[method] = function.__doc__
+
+        return self._render(
+            request = request,
+            template = None,
+            context = {
+                'options': options
+            },
+            status = 200,
+            headers = {
+                'Allow': ', '.join(options.keys())
+            }
+        )
+
     def _get_format(self, request):
         """
         Determine and return a 'formats.Format' instance describing the most desired response format

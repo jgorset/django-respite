@@ -33,8 +33,25 @@ def resource(prefix, views, actions=['index', 'show', 'edit', 'update', 'new', '
         DELETE -- A string describing the function to call on HTTP DELETE.
         """
 
+        if request.method == 'OPTIONS':
+            map = {}
+
+            if GET:
+                map['GET'] = getattr(views(), GET)
+            if POST:
+                map['POST'] = getattr(views(), POST)
+            if PUT:
+                map['PUT'] = getattr(views(), PUT)
+            if DELETE:
+                map['DELETE'] = getattr(views(), DELETE)
+
+            return getattr(views(), 'options')(request, map, **kwargs)
+
         # Return HTTP 405 Method Not Allowed if no function is mapped to the request method
-        if not request.method in locals():
+        if request.method == 'GET' and not GET \
+        or request.method == 'POST' and not POST \
+        or request.method == 'PUT' and not PUT \
+        or request.method == 'DELETE' and not DELETE:
             allowed_methods = []
 
             if GET:
