@@ -213,7 +213,7 @@ class Views(object):
             else:
                 return None
 
-    def _render(self, request, template, status, context={}, headers={}):
+    def _render(self, request, template=None, status=200, context={}, headers={}):
         """Render a response."""
 
         format = self._get_format(request)
