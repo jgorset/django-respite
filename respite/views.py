@@ -213,7 +213,7 @@ class Views(object):
             else:
                 return None
 
-    def _render(self, request, template, status, context={}):
+    def _render(self, request, template, status, context={}, headers={}):
         """Render a response."""
 
         format = self._get_format(request)
@@ -224,7 +224,7 @@ class Views(object):
 
         # Render template...
         try:
-            return render(
+            response = render(
                 request = request,
                 template_name = '%s%s.%s' % (self.template_path, template, format.extension),
                 dictionary = context,
@@ -235,10 +235,15 @@ class Views(object):
         except TemplateDoesNotExist:
 
             if format in serializers:
-                return HttpResponse(
+                response = HttpResponse(
                     content = serializers[format](context).serialize(),
                     content_type = format.content_type,
                     status = status
                 )
             else:
                 raise
+
+        for header, value in headers.items():
+            response[header] = value
+
+        return response
