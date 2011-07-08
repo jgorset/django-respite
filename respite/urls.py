@@ -45,7 +45,7 @@ def resource(prefix, views, actions=['index', 'show', 'edit', 'update', 'new', '
             if DELETE:
                 map['DELETE'] = getattr(views(), DELETE)
 
-            return getattr(views(), 'options')(request, map, **kwargs)
+            return views().options(request, map, **kwargs)
 
         # Return HTTP 405 Method Not Allowed if no function is mapped to the request method
         if request.method == 'GET' and not GET \
