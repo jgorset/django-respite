@@ -22,6 +22,7 @@ class Serializer(object):
         def serialize(anything):
             
             def serialize_dictionary(dictionary):
+                """Dictionaries are serialized recursively."""
                 data = OrderedDict()
 
                 # Serialize each of the dictionary's keys
@@ -31,6 +32,7 @@ class Serializer(object):
                 return data
                 
             def serialize_list(list):
+                """Lists are serialized recursively."""
                 data = []
                 
                 # Serialize each of the list's items
@@ -40,6 +42,7 @@ class Serializer(object):
                 return data
 
             def serialize_queryset(queryset):
+                """Querysets are serialized as lists of models."""
                 data = []
 
                 # Serialize queryset as a list of models
@@ -49,11 +52,24 @@ class Serializer(object):
                 return data
 
             def serialize_model(model):
+                """
+                Models are serialized by calling their 'serialize' method.
 
-                # Serialize the model by calling its 'serialize' method...
+                Models that don't define a 'serialize' method are
+                serialized as a dictionary of fields.
+
+                Example:
+
+                    {
+                        'id': 1,
+                        'title': 'Mmmm pie',
+                        'content: 'Pie is good!'
+                    }
+
+                """
+
                 if hasattr(model, 'serialize'):
                     return serialize(model.serialize())
-                # ... or serialize it automatically.
                 else:
                     data = OrderedDict()
                     for field in model._meta.fields:
@@ -64,6 +80,19 @@ class Serializer(object):
                     return data
 
             def serialize_form(form):
+                """
+                Forms are serialized as a dictionary of fields and errors (if any).
+
+                Example:
+
+                    {
+                        'fields': ['title', 'content'],
+                        'errors': {
+                            'content': 'Must describe pie.'
+                        }
+                    }
+
+                """
                 data = OrderedDict()
 
                 # Serialize form fields as a list of strings
@@ -85,15 +114,18 @@ class Serializer(object):
                 return data
 
             def serialize_date(datetime):
+                """Dates are serialized as ISO 8601-compatible strings."""
                 return datetime.isoformat()
             
             def serialize_field_file(field_file):
+                """Filefields are serialized as strings describing their URL."""
                 try:
                     return field_file.url
                 except ValueError:
                     return None
 
             def serialize_image_field_file(image_field_file):
+                """Imagefields are serialized as strings describing their URL."""
                 try:
                     return image_field_file.url
                 except ValueError:
