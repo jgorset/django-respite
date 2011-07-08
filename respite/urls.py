@@ -34,7 +34,7 @@ def resource(prefix, views, actions=['index', 'show', 'edit', 'update', 'new', '
         """
 
         # Return HTTP 405 Method Not Allowed if no function is mapped to the request method
-        if not locals()[request.method]:
+        if not request.method in locals():
             allowed_methods = []
 
             if GET:
