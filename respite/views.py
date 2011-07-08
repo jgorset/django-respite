@@ -240,8 +240,10 @@ class Views(object):
                     content_type = format.content_type,
                     status = status
                 )
-            else:
+            elif template:
                 raise
+            else:
+                response = HttpResponse()
 
         for header, value in headers.items():
             response[header] = value
