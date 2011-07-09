@@ -70,6 +70,11 @@ def test_options():
     assert response.status_code == 200
     assert set(response['Allow'].split(', ')) == set(['GET', 'POST'])
 
+def test_head():
+    response = client.head('/news/articles/1', HTTP_ACCEPT='application/json')
+    assert response.status_code == 200
+    assert response.content == ''
+
 def test_unsupported_method():
     response = client.post('/news/articles/1')
     assert response.status_code == 405

@@ -4,7 +4,7 @@ from django.conf.urls.defaults import *
 from django.http import HttpResponse
 from respite.inflector import pluralize, cc2us
 
-HTTP_METHODS = ['OPTIONS', 'GET', 'HEAD', 'POST', 'PUT', 'DELETE', 'TRACE', 'CONNECT']
+SUPPORTED_HTTP_METHODS = ['OPTIONS', 'GET', 'HEAD', 'POST', 'PUT', 'DELETE']
 
 def resource(prefix, views, actions=['index', 'show', 'edit', 'update', 'new', 'create', 'destroy'], custom_actions=[], id_regex=r'[0-9]+'):
     """
@@ -33,22 +33,9 @@ def resource(prefix, views, actions=['index', 'show', 'edit', 'update', 'new', '
         DELETE -- A string describing the function to call on HTTP DELETE.
         """
 
-        if request.method == 'OPTIONS':
-            map = {}
-
-            if GET:
-                map['GET'] = getattr(views(), GET)
-            if POST:
-                map['POST'] = getattr(views(), POST)
-            if PUT:
-                map['PUT'] = getattr(views(), PUT)
-            if DELETE:
-                map['DELETE'] = getattr(views(), DELETE)
-
-            return views().options(request, map, **kwargs)
-
-        # Return HTTP 405 Method Not Allowed if no function is mapped to the request method
-        if request.method == 'GET' and not GET \
+        # Return HTTP 405 Method Not Allowed if the method is not supported
+        if request.method not in SUPPORTED_HTTP_METHODS \
+        or request.method == 'GET' and not GET \
         or request.method == 'POST' and not POST \
         or request.method == 'PUT' and not PUT \
         or request.method == 'DELETE' and not DELETE:
@@ -68,7 +55,27 @@ def resource(prefix, views, actions=['index', 'show', 'edit', 'update', 'new', '
             return response
 
         # Dispatch the request
-        return getattr(views(), locals()[request.method])(request, **kwargs)
+        if request.method in ['GET', 'HEAD']:
+            return getattr(views(), GET)(request, **kwargs)
+        if request.method == 'POST':
+            return getattr(views(), POST)(request, **kwargs)
+        if request.method == 'PUT':
+            return getattr(views(), PUT)(request, **kwargs)
+        if request.method == 'DELETE':
+            return getattr(views(), DELETE)(request, **kwargs)
+        if request.method == 'OPTIONS':
+            map = {}
+
+            if GET:
+                map['GET'] = getattr(views(), GET)
+            if POST:
+                map['POST'] = getattr(views(), POST)
+            if PUT:
+                map['PUT'] = getattr(views(), PUT)
+            if DELETE:
+                map['DELETE'] = getattr(views(), DELETE)
+
+            return views().options(request, map, **kwargs)
 
     # Configure URL patterns for default actions (i.e. actions defined in respite.views.Views).
     urls = [
@@ -138,8 +145,8 @@ def action(regex, function, methods, name):
     name -- A string describing the name of the URL pattern.
     """
 
-    if not all([method in HTTP_METHODS for method in methods]):
-        raise ValueError('"%s" are not valid HTTP methods.' % '" and "'.join([method for method in methods if not method in HTTP_METHODS]))
+    if not all([method in SUPPORTED_HTTP_METHODS for method in methods]):
+        raise ValueError('"%s" are not supported HTTP methods.' % '" and "'.join([method for method in methods if not method in SUPPORTED_HTTP_METHODS]))
 
     return {
         'regex': regex,
