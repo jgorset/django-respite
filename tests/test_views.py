@@ -58,7 +58,7 @@ def test_destroy():
     response = client.delete('/news/articles/1')
     assert response.status_code == 200
     
-def test_preview():
+def test_custom_action():
     response = client.get('/news/articles/1/preview')
     assert response.status_code == 200
 
