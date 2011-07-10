@@ -10,7 +10,7 @@ def setup():
         title = 'Title',
         content = 'Content'
     )
-    
+
     Article.objects.create(
         title = 'Another title',
         content = 'Another content'
@@ -49,7 +49,7 @@ def test_queryset_serialization():
 
 def test_form_serialization():
     import django.forms
-    
+
     form = generate_form(Article)()
 
     assert Serializer(form).preprocess() == {

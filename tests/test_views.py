@@ -36,14 +36,14 @@ def test_create():
 
     response = client.post('/news/articles/', {'title': 'Title', 'content': 'Content'})
     assert response.status_code == 303
-    
+
 def test_edit():
     response = client.get('/news/articles/1/edit')
     assert response.status_code == 200
 
 def test_update():
     from urllib import urlencode
-    
+
     response = client.put('/news/articles/1')
     assert response.status_code == 400
 
@@ -57,7 +57,7 @@ def test_update():
 def test_destroy():
     response = client.delete('/news/articles/1')
     assert response.status_code == 200
-    
+
 def test_custom_action():
     response = client.get('/news/articles/1/preview')
     assert response.status_code == 200
@@ -78,7 +78,7 @@ def test_head():
 def test_unsupported_method():
     response = client.post('/news/articles/1')
     assert response.status_code == 405
-    
+
 def test_reverse():
     from django.core.urlresolvers import reverse
 
