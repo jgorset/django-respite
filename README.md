@@ -83,7 +83,7 @@ Respite's `View` class defines a number of views that facilitate for viewing and
     DELETE              articles/1          destroy             Delete a specific article
     
 In a nutshell, Respite provides you with a collection of features you probably need for most of your models and routes them
-RESTfully. You may override any or all of these functions and customize them as you'd like. For example, you could only list
+RESTfully. You may override any or all of these views and customize them as you'd like. For example, you could only list
 articles that have been published:
 
     # news/views.py
@@ -105,7 +105,7 @@ articles that have been published:
                 status = 200
             )
             
-You may also omit one or several of the default routes altogether. For example, you could only route `index` and `show`:
+You may also omit one or several of the default views altogether. For example, you could only route `index` and `show`:
 
     # news/urls.py
     
