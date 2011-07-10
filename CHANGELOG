@@ -1,5 +1,15 @@
 CHANGELOG
 
+v0.7.6
+- Fixed a bug that caused a KeyError upon receiving requests whose methods
+  were not GET, POST, PUT or DELETE
+- You may now pass a dictionary of HTTP headers to View#_render.
+- View#_render no longer requires a template.
+- View#_render's 'template' argument now defaults to 'None'.
+- View#_render's 'status' argument now defaults to '200'.
+- Respite now responds to HTTP OPTIONS.
+- Respite now responds to HTTP HEAD.
+
 v0.7.5
 - Fixed a bug that caused views for models in CamelCase to be routed incorrectly.
 - Fix a bug that caused views to default to the format given in DEFAULT_FORMAT
