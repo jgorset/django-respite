@@ -35,7 +35,7 @@ class Format(object):
 
 FORMATS = [
     Format('HyperText Markup Language', 'HTML', ['html'], ['text/html']),
-    Format('Extensible Markup Language', 'XML', ['xml'], ['text/xml', 'application/xml']),
+    Format('Extensible Markup Language', 'XML', ['xml'], ['application/xml', 'text/xml']),
     Format('JavaScript Object Notation', 'JSON', ['json'], ['application/json']),
 ]
 
