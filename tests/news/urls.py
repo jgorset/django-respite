@@ -17,7 +17,7 @@ urlpatterns = resource(
             regex = lambda prefix: r'^%s(?P<id>[0-9]+)/preview(?:\.[a-zA-Z]+)?$' % prefix,
             view = 'preview',
             method = 'GET',
-            name = lambda views: 'preview_%s_%s' % (views.model._meta.app_label, views.model.__name__)
+            name = lambda views: 'preview_%s_%s' % (views.model._meta.app_label, views.model.__name__.lower())
         )
     ]
 )

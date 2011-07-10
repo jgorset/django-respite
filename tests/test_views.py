@@ -78,3 +78,12 @@ def test_head():
 def test_unsupported_method():
     response = client.post('/news/articles/1')
     assert response.status_code == 405
+    
+def test_reverse():
+    from django.core.urlresolvers import reverse
+
+    assert reverse('news_articles')
+    assert reverse('news_article', args=[1])
+    assert reverse('edit_news_article', args=[1])
+    assert reverse('new_news_article')
+    assert reverse('preview_news_article', args=[1])
