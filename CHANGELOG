@@ -1,5 +1,8 @@
 CHANGELOG
 
+v0.8
+- Routing has been redesigned (see README for details).
+
 v0.7.6
 - Fixed a bug that caused a KeyError upon receiving requests whose methods
   were not GET, POST, PUT or DELETE
