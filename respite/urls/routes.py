@@ -72,18 +72,3 @@ new = route(
 )
 
 all = [index, create, show, update, delete, edit, new]
-
-def route(regex, view, method, name):
-    """
-    Define a route.
-
-    Arguments:
-    regex   --  A string describing a regular expression to which the request path will be
-                matched, or a function that accepts the parent resource's 'prefix' argument and returns it.
-    view    --  A string describing the name of the view to delegate the request to.
-    method  --  A string describing the HTTP method that this action accepts.
-    name    --  A string describing the name of the URL pattern, or a function that accepts
-               the parent resource's 'views' argument and returns it.
-    """
-
-    return Route(regex, view, method, name)
