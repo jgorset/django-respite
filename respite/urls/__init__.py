@@ -1,8 +1,10 @@
 from django.conf.urls.defaults import *
 from django.http import HttpResponse
-from respite.inflector import pluralize, cc2us
 
-def resource(prefix, views, routes):
+from respite.inflector import pluralize, cc2us
+from respite.urls import routes
+
+def resource(prefix, views, routes=routes.all):
     """
     Generate a collection of urlpatterns for a class of views.
 
