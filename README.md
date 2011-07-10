@@ -26,7 +26,6 @@ Respite is influenced by Ruby on Rails, though in the spirit of Python it is not
 
     # news/urls.py
     
-    from django.conf.urls.defaults import *
     from respite.urls import resource
     from views import ArticleViews
     
@@ -68,9 +67,9 @@ Respite is influenced by Ruby on Rails, though in the spirit of Python it is not
     # templates/news/articles/index.json
     # ...
 
-### Default actions
+### Default views
 
-Respite's `View` class defines actions for viewing and manipulating model instances;
+Respite's `View` class defines a number of views that facilitate for viewing and manipulating model instances;
 `index`, `show`, `new`, `create`, `edit`‚ `update` and `destroy`.
 
     HTTP method         HTTP path           Function            Purpose
@@ -106,39 +105,43 @@ articles that have been published:
                 status = 200
             )
             
-You may also omit one or several of the default actions altogether. For example, you could only implement the `index` and `show` actions:
+You may also omit one or several of the default routes altogether. For example, you could only route `index` and `show`:
 
     # news/urls.py
     
-    from django.conf.urls.defaults import *
-    from respite.urls import resource
+    from respite.urls import resource, routes
+    
     from views import ArticleViews
     
     urlpatterns = resource(
         prefix = 'news/articles/',
         view = ArticleViews,
-        actions = ['index', 'show']
+        routes = [
+            routes.index,
+            routes.show
+        ]
     )
             
-### Custom actions
+### Custom views
             
-You are not limited to Respite's seven predefined actions; you may add any number of custom actions and
+You are not limited to Respite's seven predefined views; you may add any number of custom views and
 route them however you like:
 
     # news/urls.py
     
-    from django.conf.urls.defaults import *
-    from respite.urls import resource, action
+    from respite.urls import resource, routes
     from views import ArticleViews
     
     urlpatterns = resource(
         prefix = 'news/articles/',
         view = ArticleViews,
-        custom_actions = [
-            action(
-                regex = r'(?P<id>[0-9]+)/preview\.?[a-zA-Z]*$',
-                function = 'preview',
-                methods = ['GET'],
+        routes = [
+            routes.index,
+            routes.show,
+            routes.route(
+                regex = '^/news/articles/(?P<id>[0-9]+)/preview(?:\.[a-zA-Z]+)?$',
+                view = 'preview',
+                method = 'GET',
                 name = 'preview_news_article'
             )
         ]
