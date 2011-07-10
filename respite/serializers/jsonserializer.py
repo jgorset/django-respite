@@ -8,7 +8,6 @@ from base import Serializer
 class JSONSerializer(Serializer):
 
     def serialize(self):
-        """Serialize the model to JSON."""
         data = self.preprocess()
 
         return json.dumps(data)
