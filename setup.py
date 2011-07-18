@@ -2,7 +2,7 @@ from distutils.core import setup
 
 setup(
     name = 'respite',
-    version = '0.8',
+    version = '0.9',
     description = "Respite conforms Django to Representational State Transfer (REST)",
     author = "Johannes Gorset",
     author_email = "jgorset@gmail.com",

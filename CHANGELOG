@@ -1,5 +1,9 @@
 CHANGELOG
 
+v0.9
+- Respite now supports HTTP PATCH, and routes it to Views#update.
+- HTTP PUT is now routed to Views#replace instead of Views#update.
+
 v0.8
 - Routing has been redesigned (see README for details).
 
