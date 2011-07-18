@@ -70,7 +70,7 @@ Respite is influenced by Ruby on Rails, though in the spirit of Python it is not
 ### Default views
 
 Respite's `Views` class defines a number of views that facilitate for viewing and manipulating model instances;
-`index`, `show`, `new`, `create`, `edit`‚ `update` and `destroy`.
+`index`, `show`, `new`, `create`, `edit`‚ `replace`, `update` and `destroy`.
 
     HTTP method         HTTP path           Function            Purpose
     
