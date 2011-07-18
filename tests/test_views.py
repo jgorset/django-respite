@@ -50,7 +50,7 @@ def test_update():
     response = client.put(
         path = '/news/articles/1.json',
         data = urlencode({'title': 'Title', 'content': 'Content'}),
-        content_type='form/x-www-urlencoded'
+        content_type='application/x-www-form-urlencoded'
     )
     assert response.status_code == 200
 
