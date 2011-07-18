@@ -79,7 +79,8 @@ Respite's `Views` class defines a number of views that facilitate for viewing an
     POST                articles/           create              Create a new article
     GET                 articles/1          show                Render a specific article
     GET                 articles/1/edit     edit                Render a form to edit a specific article
-    PUT                 articles/1          update              Edit a specific article
+    PUT                 articles/1          replace             Replace a specific article
+    PATCH               articles/1          update              Update a specific article
     DELETE              articles/1          destroy             Delete a specific article
     
 In a nutshell, Respite provides you with a collection of features you probably need for most of your models and routes them
@@ -179,6 +180,7 @@ route them however you like:
 * `pip install git+http://github.com/jgorset/respite.git`
 * Add `respite` to `INSTALLED_APPS` in your settings file
 * Add `respite.middleware.HttpPutMiddleware` to `MIDDLEWARE_CLASSES` in your settings file
+* Add `respite.middleware.HttpPatchMiddleware` to `MIDDLEWARE_CLASSES` in your settings file
 
 If you're not just building an API, you might also want to add `respite.middleware.HttpMethodOverrideMiddleware`
 to your middleware classes; it facilitates for overriding the HTTP method with the `X-HTTP-Method-Override` header or a
