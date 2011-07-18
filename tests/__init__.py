@@ -21,6 +21,7 @@ settings.configure(
         'django.contrib.auth.middleware.AuthenticationMiddleware',
         'django.contrib.messages.middleware.MessageMiddleware',
         'respite.middleware.HttpPutMiddleware',
+        'respite.middleware.HttpPatchMiddleware',
         'respite.middleware.HttpMethodOverrideMiddleware'
     ]
 )

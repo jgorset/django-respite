@@ -1,8 +1,7 @@
 """Tests for respite.views."""
 
-from django.test.client import Client
-
-from news.models import Article
+from tests.client import Client
+from tests.news.models import Article
 
 client = Client()
 
@@ -41,7 +40,7 @@ def test_edit():
     response = client.get('/news/articles/1/edit')
     assert response.status_code == 200
 
-def test_update():
+def test_replace():
     from urllib import urlencode
 
     response = client.put('/news/articles/1')
@@ -53,6 +52,20 @@ def test_update():
         content_type='application/x-www-form-urlencoded'
     )
     assert response.status_code == 200
+
+def test_update():
+    response = client.patch(
+        path = '/news/articles/1',
+        data = {
+            'title': 'New title',
+            'is_published': 'true'
+        },
+        content_type='application/x-www-form-urlencoded'
+    )
+
+    article = Article.objects.get(id=1)
+    assert article.title == 'New title'
+    assert article.is_published == True
 
 def test_destroy():
     response = client.delete('/news/articles/1')

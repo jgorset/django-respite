@@ -23,3 +23,13 @@ class HttpPutMiddleware:
     def process_request(self, request):
         if request.method == 'PUT':
             request.PUT = QueryDict(request.raw_post_data)
+
+class HttpPatchMiddleware:
+    """
+    Facilitate for HTTP PATCH in the same way Django facilitates for HTTP GET
+    and HTTP POST; populate a QueryDict instance with the request body in request.PATCH.
+    """
+
+    def process_request(self, request):
+        if request.method == 'PATCH':
+            request.PATCH = QueryDict(request.raw_post_data)

@@ -4,6 +4,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.core.urlresolvers import reverse
 from django.forms import CharField, HiddenInput
+from django.forms.models import model_to_dict
 from django.template import TemplateDoesNotExist
 
 from respite.settings import DEFAULT_FORMAT
@@ -114,7 +115,38 @@ class Views(object):
         )
 
     def update(self, request, id):
-        """Edit an object."""
+        """Update an object."""
+        try:
+            object = self.model.objects.get(id=id)
+        except self.model.DoesNotExist:
+            return render(
+                request = request,
+                template_name = '404.html',
+                status = 404
+            )
+
+        data = request.PATCH.copy()
+        for field in model_to_dict(object):
+            data[field] = data.get(field) or getattr(object, field)
+
+        form = (self.form or generate_form(self.model))(data, instance=object)
+
+        if form.is_valid():
+            object = form.save()
+
+            return self.show(request, id)
+        else:
+            return self._render(
+                request = request,
+                template = 'edit',
+                context = {
+                    'form': form
+                },
+                status = 400
+            )
+
+    def replace(self, request, id):
+        """Replace an object."""
         try:
             object = self.model.objects.get(id=id)
         except self.model.DoesNotExist:

@@ -46,6 +46,13 @@ show = route(
 update = route(
     regex = lambda prefix: r'^%s(?P<id>[0-9]+)(?:\.[a-zA-Z]+)?$' % prefix,
     view = 'update',
+    method = 'PATCH',
+    name = lambda views: '%s_%s' % (views.model._meta.app_label, cc2us(views.model.__name__))
+)
+
+replace = route(
+    regex = lambda prefix: r'^%s(?P<id>[0-9]+)(?:\.[a-zA-Z]+)?$' % prefix,
+    view = 'replace',
     method = 'PUT',
     name = lambda views: '%s_%s' % (views.model._meta.app_label, cc2us(views.model.__name__))
 )

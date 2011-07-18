@@ -26,6 +26,7 @@ def test_model_serialization():
         'id': article.id,
         'title': article.title,
         'content': article.content,
+        'is_published': article.is_published,
         'created_at': article.created_at.isoformat()
     }
 
@@ -37,12 +38,14 @@ def test_queryset_serialization():
             'id': articles[0].id,
             'title': articles[0].title,
             'content': articles[0].content,
+            'is_published': articles[1].is_published,
             'created_at': articles[0].created_at.isoformat()
         },
         {
             'id': articles[1].id,
             'title': articles[1].title,
             'content': articles[1].content,
+            'is_published': articles[1].is_published,
             'created_at': articles[1].created_at.isoformat()
         }
     ]
@@ -53,5 +56,5 @@ def test_form_serialization():
     form = generate_form(Article)()
 
     assert Serializer(form).preprocess() == {
-        'fields': ['title', 'content']
+        'fields': ['title', 'content', 'is_published']
     }

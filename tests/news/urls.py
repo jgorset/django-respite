@@ -10,6 +10,7 @@ urlpatterns = resource(
         routes.create,
         routes.show,
         routes.update,
+        routes.replace,
         routes.delete,
         routes.edit,
         routes.new,

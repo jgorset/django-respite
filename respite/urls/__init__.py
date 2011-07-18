@@ -14,7 +14,7 @@ def resource(prefix, views, routes=routes.all):
     routes  --  A list of routes to generate URL patterns for.
     """
 
-    def dispatch(request, GET=False, POST=False, PUT=False, DELETE=False, **kwargs):
+    def dispatch(request, GET=False, POST=False, PUT=False, DELETE=False, PATCH=False, **kwargs):
         """
         Dispatch the request according to the request method and the string contained in
         the corresponding keyword argument.
@@ -34,7 +34,9 @@ def resource(prefix, views, routes=routes.all):
         if request.method == 'GET' and not GET \
         or request.method == 'POST' and not POST \
         or request.method == 'PUT' and not PUT \
-        or request.method == 'DELETE' and not DELETE:
+        or request.method == 'DELETE' and not DELETE \
+        or request.method == 'PATCH' and not PATCH \
+        or request.method not in ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS', 'HEAD']:
             allowed_methods = []
 
             if GET:
@@ -60,6 +62,8 @@ def resource(prefix, views, routes=routes.all):
             return getattr(views(), PUT)(request, **kwargs)
         if request.method == 'DELETE':
             return getattr(views(), DELETE)(request, **kwargs)
+        if request.method == 'PATCH':
+            return getattr(views(), PATCH)(request, **kwargs)
         if request.method == 'OPTIONS':
             map = {}
 
