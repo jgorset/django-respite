@@ -10,10 +10,10 @@ v0.8
 v0.7.6
 - Fixed a bug that caused a KeyError upon receiving requests whose methods
   were not GET, POST, PUT or DELETE
-- You may now pass a dictionary of HTTP headers to View#_render.
-- View#_render no longer requires a template.
-- View#_render's 'template' argument now defaults to 'None'.
-- View#_render's 'status' argument now defaults to '200'.
+- You may now pass a dictionary of HTTP headers to Views#_render.
+- Views#_render no longer requires a template.
+- Views#_render's 'template' argument now defaults to 'None'.
+- Views#_render's 'status' argument now defaults to '200'.
 - Respite now responds to HTTP OPTIONS.
 - Respite now responds to HTTP HEAD.
 
