@@ -1,5 +1,10 @@
 CHANGELOG
 
+v0.9.1
+- Fixed a bug that caused lambas to be expanded into the default route object, producing
+  issues with consequent resource declarations.
+- Added route for Views#replace to 'routes.all'.
+
 v0.9
 - Respite now supports HTTP PATCH, and routes it to Views#update.
 - HTTP PUT is now routed to Views#replace instead of Views#update.
