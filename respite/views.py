@@ -243,6 +243,13 @@ class Views(object):
 
             # Parse the HTTP Accept header, returning a list of accepted content types sorted by quality
             for accepted_content_type in parse_http_accept_header(request.META['HTTP_ACCEPT']):
+
+                # Default to the format given in DEFAULT_FORMAT for the '*/*' content type.
+                if accepted_content_type == '*/*' and DEFAULT_FORMAT:
+                    default_format = formats.find(DEFAULT_FORMAT)
+                    if default_format in supported_formats:
+                        return default_format
+
                 try:
                     format = formats.find_by_content_type(accepted_content_type)
                 except formats.UnknownFormat:
@@ -260,8 +267,6 @@ class Views(object):
             default_format = formats.find(DEFAULT_FORMAT)
             if default_format in supported_formats:
                 return default_format
-            else:
-                return None
 
     def _render(self, request, template=None, status=200, context={}, headers={}):
         """Render a response."""
