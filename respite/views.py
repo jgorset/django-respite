@@ -242,20 +242,22 @@ class Views(object):
         if 'HTTP_ACCEPT' in request.META:
 
             # Parse the HTTP Accept header, returning a list of accepted content types sorted by quality
-            for accepted_content_type in parse_http_accept_header(request.META['HTTP_ACCEPT']):
-                try:
-                    format = formats.find_by_content_type(accepted_content_type)
-                except formats.UnknownFormat:
-                    continue
+            # If the client send '*.*' as accepted format use the DEFAULT_FORMAT if any
+            if not '*.*' in request.META['HTTP_ACCEPT']:
+                for accepted_content_type in parse_http_accept_header(request.META['HTTP_ACCEPT']):
+                    try:
+                        format = formats.find_by_content_type(accepted_content_type)
+                    except formats.UnknownFormat:
+                        continue
 
-                if format in supported_formats:
-                    return format
-                else:
-                    continue
+                    if format in supported_formats:
+                        return format
+                    else:
+                        continue
 
         # If none of the formats given in the HTTP 'accept' header are supported by these views,
-        # or no HTTP 'accept' header was given at all, default to the format given in
-        # DEFAULT_FORMAT if that's supported.
+        # or no HTTP 'accept' header was given at all, or the client accepts all formats, 
+        # default to the format given in DEFAULT_FORMAT if that's supported.
         if DEFAULT_FORMAT:
             default_format = formats.find(DEFAULT_FORMAT)
             if default_format in supported_formats:
