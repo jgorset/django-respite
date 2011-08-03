@@ -78,4 +78,4 @@ new = route(
     name = lambda views: 'new_%s_%s' % (views.model._meta.app_label, cc2us(views.model.__name__))
 )
 
-all = [index, create, show, update, delete, edit, new]
+all = [index, create, show, update, delete, edit, replace, new]
