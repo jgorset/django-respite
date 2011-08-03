@@ -1,3 +1,5 @@
+from copy import deepcopy
+
 from django.conf.urls.defaults import *
 from django.http import HttpResponse
 
@@ -13,6 +15,7 @@ def resource(prefix, views, routes=routes.all):
     views   --  A reference to the class in which views are defined.
     routes  --  A list of routes to generate URL patterns for.
     """
+    routes = deepcopy(routes)
 
     def dispatch(request, GET=False, POST=False, PUT=False, DELETE=False, PATCH=False, **kwargs):
         """
