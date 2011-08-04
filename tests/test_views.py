@@ -100,3 +100,13 @@ def test_reverse():
     assert reverse('edit_news_article', args=[1])
     assert reverse('new_news_article')
     assert reverse('preview_news_article', args=[1])
+
+def test_content_types():
+    from django.conf import settings
+    from respite import formats
+
+    response = client.get('/news/articles/1', HTTP_ACCEPT='*/*,application/json')
+    assert response['Content-Type'] == formats.find(settings.RESPITE_DEFAULT_FORMAT).content_type
+
+    response = client.get('/news/articles/1', HTTP_ACCEPT='unsupported/format, */*')
+    assert response['Content-Type'] == formats.find(settings.RESPITE_DEFAULT_FORMAT).content_type
