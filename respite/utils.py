@@ -21,12 +21,12 @@ def parse_http_accept_header(header):
     Arguments:
     header -- A string describing the contents of the HTTP Accept header.
     """
-    components = header.split(',')
+    components = [item.strip() for item in header.split(',')]
 
     l = []
     for component in components:
         if ';' in component:
-            subcomponents = component.split(';')
+            subcomponents = [item.strip() for item in component.split(';')]
             l.append(
                 (
                     subcomponents[0], # eg. 'text/html'
