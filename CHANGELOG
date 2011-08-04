@@ -1,5 +1,8 @@
 CHANGELOG
 
+v0.9.2
+- The '*/*' content type now defaults to the format given in RESPITE_DEFAULT_FORMAT.
+
 v0.9.1
 - Fixed a bug that caused lambas to be expanded into the default route object, producing
   issues with consequent resource declarations.
