@@ -6,7 +6,7 @@ from django.http import HttpResponse
 from respite.inflector import pluralize, cc2us
 from respite.urls import routes
 
-def resource(prefix, views, routes=routes.all):
+def resource(prefix, views, routes):
     """
     Generate a collection of urlpatterns for a class of views.
 
@@ -94,6 +94,9 @@ def resource(prefix, views, routes=routes.all):
         for i, route in enumerate(routes):
             if callable(route.regex):
                 routes[i].regex = route.regex(prefix)
+            else:
+                routes[i].regex = '^%s' % prefix + (route.regex[1:] if route.regex[0] == '^' else route.regex)
+
             if callable(route.name):
                 routes[i].name = route.name(views)
 

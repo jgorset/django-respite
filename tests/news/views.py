@@ -1,14 +1,16 @@
 from django.shortcuts import render
 
-from respite.views import Views
+from respite import Views, Resource
+from respite.decorators import route
 
 from models import Article
 
-class ArticleViews(Views):
+class ArticleViews(Views, Resource):
     model = Article
     template_path = 'articles/'
     supported_formats = ['html', 'json']
 
+    @route(r'^(?P<id>[0-9]+)/preview(?:\.[a-zA-Z]+)?$', 'GET', 'preview_news_article')
     def preview(self, request, id):
         try:
             article = Article.objects.get(id=id)

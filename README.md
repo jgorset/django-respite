@@ -31,15 +31,25 @@ Respite is influenced by Ruby on Rails, though in the spirit of Python it is not
     
     urlpatterns = resource(
         prefix = 'news/articles/',
-        view = ArticleViews
+        view = ArticleViews,
+        routes = [
+            ArticleViews.index.route,
+            ArticleViews.show.route,
+            ArticleViews.new.route,
+            ArticleViews.create.route,
+            ArticleViews.edit.route,
+            ArticleViews.update.route,
+            ArticleViews.replace.route,
+            ArticleViews.destroy.route
+        ]
     )
 
     # news/views.py
     
-    from respite import Views
+    from respite import Views, Resource
     from models import Article
     
-    class ArticleViews(Views):
+    class ArticleViews(Views, Resource):
         model = Article
         template_path = 'news/articles/'
         supported_formats = ['html', 'json']
@@ -89,7 +99,7 @@ articles that have been published:
 
     # news/views.py
 
-    class ArticleViews(Views):
+    class ArticleViews(Views, Resource):
         model = Article
         template_path = 'news/articles/'
         supported_formats = ['html', 'json']
@@ -110,7 +120,7 @@ You may also omit one or several of the default views altogether. For example, y
 
     # news/urls.py
     
-    from respite.urls import resource, routes
+    from respite.urls import resource
     
     from views import ArticleViews
     
@@ -118,8 +128,8 @@ You may also omit one or several of the default views altogether. For example, y
         prefix = 'news/articles/',
         view = ArticleViews,
         routes = [
-            routes.index,
-            routes.show
+            ArticleViews.index.route,
+            ArticleViews.show.route
         ]
     )
             
@@ -130,27 +140,23 @@ route them however you like:
 
     # news/urls.py
     
-    from respite.urls import resource, routes
+    from respite.urls import resource
     from views import ArticleViews
     
     urlpatterns = resource(
         prefix = 'news/articles/',
         view = ArticleViews,
         routes = [
-            routes.index,
-            routes.show,
-            routes.route(
-                regex = '^/news/articles/(?P<id>[0-9]+)/preview(?:\.[a-zA-Z]+)?$',
-                view = 'preview',
-                method = 'GET',
-                name = 'preview_news_article'
-            )
+            ArticleViews.index.route,
+            ArticleViews.show.route,
+            ArticleViews.preview.route
         ]
     )
 
     # news/views.py
 
     from respite import Views
+    from respite.decorators import route
     from models import Article
 
     class ArticleViews(Views):
@@ -158,6 +164,7 @@ route them however you like:
         template_path = 'news/articles/'
         supported_formats = ['html', 'json']
         
+        @route(regex=r'^(?P<id>[0-9]+)/preview(?:\.[a-zA-Z]+)?$', method='GET', name='preview_news_article')
         def preview(self, request, id):
             article = Article.objects.get(id=id)
             

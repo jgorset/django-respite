@@ -6,19 +6,14 @@ urlpatterns = resource(
     prefix = 'articles/',
     views = ArticleViews,
     routes = [
-        routes.index,
-        routes.create,
-        routes.show,
-        routes.update,
-        routes.replace,
-        routes.delete,
-        routes.edit,
-        routes.new,
-        routes.route(
-            regex = lambda prefix: r'^%s(?P<id>[0-9]+)/preview(?:\.[a-zA-Z]+)?$' % prefix,
-            view = 'preview',
-            method = 'GET',
-            name = lambda views: 'preview_%s_%s' % (views.model._meta.app_label, views.model.__name__.lower())
-        )
+        ArticleViews.index.route,
+        ArticleViews.create.route,
+        ArticleViews.show.route,
+        ArticleViews.update.route,
+        ArticleViews.replace.route,
+        ArticleViews.destroy.route,
+        ArticleViews.edit.route,
+        ArticleViews.new.route,
+        ArticleViews.preview.route
     ]
 )
