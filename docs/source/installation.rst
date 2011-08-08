@@ -1,34 +1,58 @@
 .. _installation:
 
-Installation
-============
+Installation and configuration
+==============================
 
 Respite is best installed via `pip`_::
 
-    $ pip install django-respite
+    $ pip install git+git://github.com/jgorset/respite.git
     
+.. _configuration:
+
+Configuration
+-------------
+
+In your ``settings`` module...
+
+* Add ``respite`` to ``INSTALLED_APPS``
+* Add ``respite.middleware.HttpPutMiddleware`` to ``MIDDLEWARE_CLASSES``
+* Add ``respite.middleware.HttpPatchMiddleware`` to ``MIDDLEWARE_CLASSES``
+
+If you're not just building an API, you might also want to add ``respite.middleware.HttpMethodOverrideMiddleware``
+to your middleware classes; it facilitates for overriding the HTTP method with the ``X-HTTP-Method-Override`` header or a
+``_method`` HTTP POST parameter, which is the only way to replace, update and delete resources from a web browser.
+
+.. note::
+
+    ``HttpMethoOverridedMiddleware`` must be processed before ``HttpPutMiddleware`` and ``HttpPatchMiddleware``.
+
+.. _dependencies:
+
 Dependencies
 ------------
 
-In order for Respite's installation to succeed, you will need four primary pieces
-of software:
+In order to install and use Respite, you will need four primary pieces of software:
 
 * the Python programming language.
 * the ``setuptools`` packaging/installation library.
 * Django version 1.3 or later.
 
+.. _development dependencies:
+
 Development dependencies
 ------------------------
 
-If you are interested in doing development work on Respite, you will also need to install
+If you are interested in contributing to Respite, you will also need to install
 some or all of the following packages:
 
 * `pytest`_
 * `sphinx`_
 
 For an up-to-date list of exact testing/development requirements, including version numbers, please
-see the ``requirements.txt`` file included with the source distribution. This file is intended to be used
-with ``pip``, e.g. ``pip install -r requirements.txt``.
+see the ``DEPENDENCIES`` file included with the source distribution. This file is intended to be used
+with ``pip``, e.g. ``pip install -r DEPENDENCIES``.
+
+.. _source-code-checkouts:
 
 Source code checkouts
 ---------------------

@@ -12,11 +12,38 @@
 # serve to show the default.
 
 import sys, os
+from django.conf import settings
 
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
-#sys.path.insert(0, os.path.abspath('.'))
+sys.path.insert(0, os.path.abspath('../../'))
+
+# Configure Django so it doesn't throw a fit and allows autodoc to work.
+settings.configure(
+    DATABASES = {
+        'default': {
+            'ENGINE': 'sqlite3',
+            'NAME': ':memory:'
+        }
+    },
+    INSTALLED_APPS = [
+        'respite',
+        'tests.news'
+    ],
+    ROOT_URLCONF = 'tests.urls',
+    RESPITE_DEFAULT_FORMAT = 'html',
+    MIDDLEWARE_CLASSES = [
+        'django.middleware.common.CommonMiddleware',
+        'django.contrib.sessions.middleware.SessionMiddleware',
+        'django.middleware.csrf.CsrfViewMiddleware',
+        'django.contrib.auth.middleware.AuthenticationMiddleware',
+        'django.contrib.messages.middleware.MessageMiddleware',
+        'respite.middleware.HttpPutMiddleware',
+        'respite.middleware.HttpPatchMiddleware',
+        'respite.middleware.HttpMethodOverrideMiddleware'
+    ]
+)
 
 # -- General configuration -----------------------------------------------------
 
@@ -25,7 +52,7 @@ import sys, os
 
 # Add any Sphinx extension module names here, as strings. They can be extensions
 # coming with Sphinx (named 'sphinx.ext.*') or your custom ones.
-extensions = []
+extensions = ['sphinx.ext.autodoc']
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -92,6 +119,7 @@ pygments_style = 'sphinx'
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 html_theme = 'default'
+html_style = 'rtd.css'
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the

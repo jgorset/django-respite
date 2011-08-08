@@ -9,6 +9,12 @@ from respite.serializers import serializers
 from respite import formats
 
 class Views(object):
+    """
+    Base class for views.
+    
+    :attribute template_path: A string describing a path to prefix templates with, or ``''`` by default.
+    :attribute supported_formats: A list of strings describing formats supported by these views, or ``['html']`` by default.
+    """
     template_path = ''
     supported_formats = ['html']
 
@@ -35,15 +41,14 @@ class Views(object):
         Determine and return a 'formats.Format' instance describing the most desired response format
         that is supported by these views.
 
+        :param request: A django.http.HttpRequest instance.
+
         Formats specified by extension (e.g. '/articles/index.html') take precedence over formats
         given in the HTTP Accept header, even if it's a format that isn't known by Respite.
 
         If the request doesn't specify a format by extension (e.g. '/articles/' or '/articles/new')
         and none of the formats in the HTTP Accept header are supported, Respite will fall back
         on the format given in DEFAULT_FORMAT.
-
-        Arguments:
-        request -- The request object.
         """
 
         # Derive a list of 'formats.Format' instances from the list of formats these views support.
@@ -91,7 +96,25 @@ class Views(object):
                 return default_format
 
     def _render(self, request, template=None, status=200, context={}, headers={}):
-        """Render a response."""
+        """
+        Render a HTTP response.
+        
+        :param request: A django.http.HttpRequest instance.
+        :param template: A string describing the path to a template.
+        :param status: An integer describing the HTTP status code to respond with.
+        :param context: A dictionary describing variables to populate the template with.
+        :param headers: A dictionary describing HTTP headers.
+        
+        Please note that ``template`` must not specify an extension, as one will be appended
+        according to the request format. For example, a value of ``blog/posts/index``
+        would populate ``blog/posts/index.html`` for requests that query the resource's
+        HTML representation. If no template that matches the request format exists at the given location,
+        or if ``template`` is ``None``, Respite will attempt to serialize the template context automatically.
+        
+        If the request format is not supported by the view (as determined by the ``supported_formats``
+        property or a specific view's ``override_supported_formats`` decorator), this function will
+        yield HTTP 406 Not Acceptable.
+        """
 
         format = self._get_format(request)
 

@@ -8,12 +8,11 @@ from respite.urls import routes
 
 def resource(prefix, views, routes):
     """
-    Generate a collection of urlpatterns for a class of views.
+    Route a collection of views.
 
-    Arguments:
-    prefix  --  A string describing the resource's URL prefix (f.ex. 'posts').
-    views   --  A reference to the class in which views are defined.
-    routes  --  A list of routes to generate URL patterns for.
+    :param prefix: A string to prefix the routes by (e.g. 'posts/').
+    :param views: A reference to the views class.
+    :param routes: A list of routes.
     """
     routes = deepcopy(routes)
 
@@ -26,11 +25,12 @@ def resource(prefix, views, routes):
         set to 'index', the 'index' function of the views class will be invoked and returned.
 
         Arguments:
-        request  --  A django.http.HttpRequest object.
-        GET      --  A string describing the function to call on HTTP GET.
-        POST     --  A string describing the function to call on HTTP POST.
-        PUT      --  A string describing the function to call on HTTP PUT.
-        DELETE   --  A string describing the function to call on HTTP DELETE.
+        :param request: A django.http.HttpRequest object.
+        :param GET: A string describing the function to delegate the request to on HTTP GET.
+        :param POST: A string describing the function to delegate the request to on HTTP POST.
+        :param PUT: A string describing the function to delegate the request to on HTTP PUT.
+        :param DELETE: A string describing the function to delegate the request to on HTTP DELETE.
+        :param PATCH: A string describing the function to delegate the request to on HTTP PATCH.
         """
 
         # Return HTTP 405 Method Not Allowed if the request method isn't routed

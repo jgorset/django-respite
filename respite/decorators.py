@@ -4,7 +4,7 @@ from respite.urls import routes
 
 def override_supported_formats(formats):
     """
-    Override the views class' list of supported formats for a single action.
+    Override the views class' supported formats for the decorated function.
 
     Arguments:
     formats -- A list of strings describing formats, e.g. ['html', 'json']
@@ -19,14 +19,11 @@ def override_supported_formats(formats):
 
 def route(regex, method, name):
     """
-    Route the view.
+    Route the decorated view.
 
-    Arguments:
-    regex   --  A string describing a regular expression to which the request path will be
-                matched, or a function that accepts the parent resource's 'prefix' argument and returns it.
-    method  --  A string describing the HTTP method that this view accepts.
-    name    --  A string describing the name of the URL pattern, or a function that accepts
-                the parent resource's 'views' argument and returns it.
+    :param regex: A string describing a regular expression to which the request path will be matched.
+    :param method: A string describing the HTTP method that this view accepts.
+    :param name: A string describing the name of the URL pattern.
     """
 
     def decorator(function):
