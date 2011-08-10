@@ -104,6 +104,7 @@ articles that have been published:
         template_path = 'news/articles/'
         supported_formats = ['html', 'json']
         
+        @route(regex=r'^(?:$|index(?:\.[a-zA-Z]+)?$)', method='GET', name='news_articles')
         def index(self, request):
             articles = self.model.objects.filter(published=True)
             
