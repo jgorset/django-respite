@@ -1,5 +1,9 @@
 CHANGELOG
 
+v0.10.1
+- Fixed a bug that caused JSON to be serialized as a byte stream with unicode code points
+- Respite now expliticly specifies the charset in the HTTP 'Content-Type' header
+
 v0.10
 - Respite's default views are now defined in the 'Resource' class.
 - Routing has been changed to leverage decorators (see README for details).
