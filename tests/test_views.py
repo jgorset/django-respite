@@ -1,5 +1,7 @@
 """Tests for respite.views."""
 
+from django.conf import settings
+
 from tests.client import Client
 from tests.news.models import Article
 
@@ -19,7 +21,8 @@ def test_index():
     assert response.status_code == 200
 
 def test_show():
-    response = client.get('/news/articles/1')
+    response = client.get('/news/articles/1.json')
+
     assert response.status_code == 200
 
     response = client.get('/news/articles/2')
@@ -106,7 +109,13 @@ def test_content_types():
     from respite import formats
 
     response = client.get('/news/articles/1', HTTP_ACCEPT='*/*,application/json')
-    assert response['Content-Type'] == formats.find(settings.RESPITE_DEFAULT_FORMAT).content_type
+    assert response['Content-Type'] == '%s; charset=%s' % (
+        formats.find(settings.RESPITE_DEFAULT_FORMAT).content_type,
+        settings.DEFAULT_CHARSET
+    )
 
     response = client.get('/news/articles/1', HTTP_ACCEPT='unsupported/format, */*')
-    assert response['Content-Type'] == formats.find(settings.RESPITE_DEFAULT_FORMAT).content_type
+    assert response['Content-Type'] == '%s; charset=%s' % (
+        formats.find(settings.RESPITE_DEFAULT_FORMAT).content_type,
+        settings.DEFAULT_CHARSET
+    )

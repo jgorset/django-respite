@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.template import TemplateDoesNotExist
+from django.conf import settings
 
 from respite.settings import DEFAULT_FORMAT
 from respite.utils import parse_http_accept_header
@@ -105,7 +106,7 @@ class Views(object):
                 template_name = '%s%s.%s' % (self.template_path, template, format.extension),
                 dictionary = context,
                 status = status,
-                content_type = format.content_type
+                content_type = '%s; charset=%s' % (format.content_type, settings.DEFAULT_CHARSET)
             )
         # ... or if no template exists, look for an appropriate serializer.
         except TemplateDoesNotExist:
@@ -113,7 +114,7 @@ class Views(object):
             if format in serializers:
                 response = HttpResponse(
                     content = serializers[format](context).serialize(),
-                    content_type = format.content_type,
+                    content_type = '%s; charset=%s' % (format.content_type, settings.DEFAULT_CHARSET),
                     status = status
                 )
             elif template:
