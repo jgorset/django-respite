@@ -10,4 +10,4 @@ class JSONSerializer(Serializer):
     def serialize(self):
         data = self.preprocess()
 
-        return json.dumps(data)
+        return json.dumps(data, ensure_ascii=False)
