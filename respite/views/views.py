@@ -108,8 +108,22 @@ class Views(object):
         Please note that ``template`` must not specify an extension, as one will be appended
         according to the request format. For example, a value of ``blog/posts/index``
         would populate ``blog/posts/index.html`` for requests that query the resource's
-        HTML representation. If no template that matches the request format exists at the given location,
-        or if ``template`` is ``None``, Respite will attempt to serialize the template context automatically.
+        HTML representation.
+        
+        If no template that matches the request format exists at the given location, or if ``template`` is ``None``,
+        Respite will attempt to serialize the template context automatically. You can change the way your models
+        are serialized by defining ``serialize`` methods that return a dictionary::
+        
+            class NuclearMissile(models.Model):
+                serial_number = models.IntegerField()
+                is_armed = models.BooleanField()
+                launch_code = models.IntegerField()
+                
+                def serialize(self):
+                    return {
+                        'serial_number': self.serial_number,
+                        'is_armed': self.is_armed
+                    }
         
         If the request format is not supported by the view (as determined by the ``supported_formats``
         property or a specific view's ``override_supported_formats`` decorator), this function will
