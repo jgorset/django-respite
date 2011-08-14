@@ -105,13 +105,10 @@ articles/1/edit     GET                 edit                Render a form to edi
 articles/1          PUT                 replace             Replace a specific article
 articles/1          PATCH               update              Update a specific article
 articles/1          DELETE              destroy             Delete a specific article
-=================== =================== =================== ========================================    
+=================== =================== =================== ========================================
 
-.. note::
-
-    You're free to construct the HTTP response in any way you'd like, but in the end you'll probably want
-    to use ``self._render`` because it does some really cool things that would be un-RESTful and evil
-    to not do.
+You can construct your views' HTTP responses however you like, too, but in the end you'll probably want
+to use ``self._render`` because it allows your views to be format-agnostic.
 
 .. admonition:: See also
 
@@ -219,7 +216,7 @@ app to do something really silly (like reading your blog) and so HTML just doesn
 
 In an ordinary Django application, you would need to write another set of views or use a library
 like `Piston`_ to represent your blog posts in different formats. In an application that leverages
-Respite, though, these things are already facilitated for. For example, you might remember that
+Respite, though, your views are inherently format-agnostic. For example, you might remember that
 we configured our views to support JSON, too.
 
 .. note::
