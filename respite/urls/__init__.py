@@ -11,7 +11,7 @@ def resource(prefix, views, routes):
     Route a collection of views.
 
     :param prefix: A string to prefix the routes by (e.g. 'posts/').
-    :param views: A reference to the views class.
+    :param views: A reference to the class that defines the views.
     :param routes: A list of routes.
     """
     routes = deepcopy(routes)

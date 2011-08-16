@@ -1,6 +1,6 @@
-.. _routes:
+.. _routing:
 
-Routes
+Routing
 ======
 
 Respite connects views to URLs through ``resource`` declarations, each of which define routes
@@ -10,7 +10,7 @@ for a particular collection of views.
 
 There are two ways to go about providing a ``resource`` declaration with its ``routes`` argument: You can
 either declare them using the ``route`` function, or attach them to their respective view using the ``route``
-decorator.
+decorator:
 
 .. autofunction:: respite.urls.routes.route
 

@@ -53,8 +53,10 @@ Models are unchanged in Respite, but let's define one for good measure::
 Views
 ^^^^^
 
-Next, let's make some views for our ``Post`` model. Our application should have an index of all posts
-and separate pages for each individual post::
+Next, let's make some views for our ``Post`` model. Our application should
+have an index of all posts and separate pages for each individual post.
+In Respite, views are encapsulated in classes according to the model
+they supervise::
 
     # blog/views.py
     
@@ -91,8 +93,8 @@ and separate pages for each individual post::
                 status = 200
             )
 
-In Respite, views are encapsulated in classes according to the model they supervise. You can name
-and route views however you like, but the canonical way to go about it is as follows:
+You can name and route views however you like, but the canonical way to go about
+it is as follows:
 
 =================== =================== =================== ========================================
 HTTP path           HTTP method         View                Purpose
@@ -107,8 +109,8 @@ articles/1          PATCH               update              Update a specific ar
 articles/1          DELETE              destroy             Delete a specific article
 =================== =================== =================== ========================================
 
-You can construct your views' HTTP responses however you like, too, but in the end you'll probably want
-to use ``self._render`` because it allows your views to be format-agnostic.
+You can construct your views' HTTP responses however you like, too, but in the end you'll
+probably want to use ``self._render`` because it allows your views to be format-agnostic.
 
 .. admonition:: See also
 
@@ -117,9 +119,9 @@ to use ``self._render`` because it allows your views to be format-agnostic.
 Routes
 ^^^^^^
 
-Respite encapsulates Django's ``urlpatterns`` in ``resource`` declarations,
-each of which define routes for a particular collection of views. For example,
-one might route the ``PostViews`` class that we defined earlier like so::
+Respite routes views through ``resource`` declarations, each of which define routes for a
+particular collection of views. For example, one might route the ``PostViews`` class that
+we defined earlier like so::
 
     # blog/urls.py
 
@@ -150,7 +152,7 @@ one might route the ``PostViews`` class that we defined earlier like so::
 
 .. admonition:: See also
 
-    :ref:`Usage documentation for routes <routes>`
+    :ref:`Usage documentation for routing <routing>`
     
 Templates
 ^^^^^^^^^
