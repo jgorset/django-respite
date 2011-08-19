@@ -34,7 +34,7 @@ class Resource(object):
             request = request,
             template = 'index',
             context = {
-                pluralize(self.model.__name__).lower(): objects,
+                cc2us(pluralize(self.model.__name__)): objects,
             },
             status = 200
         )
