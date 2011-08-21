@@ -157,12 +157,13 @@ class Resource(object):
                 status = 404
             )
 
-        data = request.PATCH.copy()
-        for field in model_to_dict(object):
-            data[field] = data.get(field) or getattr(object, field)
+        Form = generate_form(
+            model = self.model,
+            form = self.form,
+            fields = tuple(request.PATCH)
+        )
 
-        form = (self.form or generate_form(self.model))(data, instance=object)
-
+        form = Form(request.PATCH, instance=object)
         if form.is_valid():
             object = form.save()
 
