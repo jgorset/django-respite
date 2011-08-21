@@ -1,5 +1,7 @@
 """Tests for respite.views."""
 
+from datetime import datetime
+
 from django.conf import settings
 
 from tests.client import Client
@@ -13,7 +15,8 @@ def setup():
         content = 'Content',
         author = Author.objects.create(
             name = 'John Doe'
-        )
+        ),
+        created_at = datetime(1970, 1, 1)
     )
 
 def teardown():
@@ -42,7 +45,8 @@ def test_create():
     response = client.post('/news/articles/', {
         'title': 'Title',
         'content': 'Content',
-        'author': '1'
+        'author': '1',
+        'created_at': '1970-01-01 00:00:00'
     })
     assert response.status_code == 303
 
@@ -61,7 +65,8 @@ def test_replace():
         data = urlencode({
             'title': 'Title',
             'content': 'Content',
-            'author': '1'
+            'author': '1',
+            'created_at': '1970-01-01 00:00:00'
         }),
         content_type='application/x-www-form-urlencoded'
     )
