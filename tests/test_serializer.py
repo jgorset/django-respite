@@ -56,5 +56,5 @@ def test_form_serialization():
     form = generate_form(Article)()
 
     assert Serializer(form).preprocess() == {
-        'fields': ['title', 'content', 'is_published']
+        'fields': ['title', 'content', 'is_published', 'tags']
     }
