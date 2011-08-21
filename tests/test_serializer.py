@@ -5,30 +5,39 @@ from datetime import datetime
 from respite.serializers.base import Serializer
 from respite.utils import generate_form
 
-from news.models import Article, Author
+from news.models import Article, Author, Tag
 
 def setup():
+    tag = Tag.objects.create(
+        name = 'sports'
+    )
+
     author = Author.objects.create(
         name = 'John Doe'
     )
-    
-    Article.objects.create(
+
+    article1 = Article.objects.create(
         title = 'Title',
         content = 'Content',
         author = author,
         created_at = datetime(1970, 1, 1)
     )
 
-    Article.objects.create(
+    article1.tags.add(tag)
+
+    article2 = Article.objects.create(
         title = 'Another title',
         content = 'Another content',
         author = author,
         created_at = datetime(1970, 1, 1)
     )
 
+    article2.tags.add(tag)
+
 def teardown():
     Author.objects.all().delete()
     Article.objects.all().delete()
+    Tag.objects.all().delete()
 
 def test_model_serialization():
     article = Article.objects.get(id=1)
@@ -42,7 +51,11 @@ def test_model_serialization():
         'author': {
             'id': 1,
             'name': 'John Doe'
-        }
+        },
+        'tags': [{
+            'id': 1,
+            'name': 'sports'
+        }]
     }
 
 def test_queryset_serialization():
@@ -58,7 +71,11 @@ def test_queryset_serialization():
             'author': {
                 'id': 1,
                 'name': 'John Doe'
-            }
+            },
+            'tags': [{
+                'id': 1,
+                'name': 'sports'
+            }]
         },
         {
             'id': 2,
@@ -69,7 +86,11 @@ def test_queryset_serialization():
             'author': {
                 'id': 1,
                 'name': 'John Doe'
-            }
+            },
+            'tags': [{
+                'id': 1,
+                'name': 'sports'
+            }]
         }
     ]
 

@@ -51,6 +51,15 @@ class Serializer(object):
 
                 return data
 
+            def serialize_manager(manager):
+                """Managers are serialized as list of models."""
+                data = []
+
+                for model in manager.all():
+                    data.append(serialize_model(model))
+
+                return data
+
             def serialize_model(model):
                 """
                 Models are serialized by calling their 'serialize' method.
@@ -72,7 +81,7 @@ class Serializer(object):
                     return serialize(model.serialize())
                 else:
                     data = OrderedDict()
-                    for field in model._meta.fields:
+                    for field in model._meta.fields + model._meta.many_to_many:
                         data.update({
                             field.name: serialize(getattr(model, field.name ))
                         })
@@ -154,6 +163,9 @@ class Serializer(object):
 
             if isinstance(anything, (datetime.date, datetime.datetime)):
                 return serialize_date(anything)
+
+            if isinstance(anything, django.db.models.manager.Manager):
+                return serialize_manager(anything)
 
             if type(anything) is django.db.models.fields.files.FieldFile:
                 return serialize_field_file(anything)
