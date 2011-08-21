@@ -3,14 +3,17 @@
 from django.conf import settings
 
 from tests.client import Client
-from tests.news.models import Article
+from tests.news.models import Article, Author
 
 client = Client()
 
 def setup():
     Article.objects.create(
         title = 'Title',
-        content = 'Content'
+        content = 'Content',
+        author = Author.objects.create(
+            name = 'John Doe'
+        )
     )
 
 def teardown():
@@ -36,7 +39,11 @@ def test_create():
     response = client.post('/news/articles/')
     assert response.status_code == 400
 
-    response = client.post('/news/articles/', {'title': 'Title', 'content': 'Content'})
+    response = client.post('/news/articles/', {
+        'title': 'Title',
+        'content': 'Content',
+        'author': '1'
+    })
     assert response.status_code == 303
 
 def test_edit():
@@ -51,7 +58,11 @@ def test_replace():
 
     response = client.put(
         path = '/news/articles/1.json',
-        data = urlencode({'title': 'Title', 'content': 'Content'}),
+        data = urlencode({
+            'title': 'Title',
+            'content': 'Content',
+            'author': '1'
+        }),
         content_type='application/x-www-form-urlencoded'
     )
     assert response.status_code == 200
