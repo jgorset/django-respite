@@ -1,5 +1,10 @@
 CHANGELOG
 
+v0.10.2
+- Respite now automatically serializes many-to-many fields
+- Fixed a bug that caused Resource#update to fail form validation for models with many-to-many fields or foreign keys
+- Fixed a bug that caused the model in the template context of Resource#index to be in mixedCase rather than underscore_case.
+
 v0.10.1
 - Fixed a bug that caused JSON to be serialized as a byte stream with unicode code points.
 - Respite now explicitly specifies the charset in the HTTP 'Content-Type' header.
