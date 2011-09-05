@@ -3,7 +3,7 @@ try:
 except ImportError:
     from django.utils import simplejson as json
     
-from base import Serializer
+from respite.serializers.base import Serializer
     
 class JSONSerializer(Serializer):
 

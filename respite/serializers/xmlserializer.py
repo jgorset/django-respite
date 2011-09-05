@@ -1,7 +1,7 @@
 from xml.etree import ElementTree as ET
 
 from respite.inflector import singularize
-from base import Serializer
+from respite.serializers.base import Serializer
 
 class XMLSerializer(Serializer):
 
