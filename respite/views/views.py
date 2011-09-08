@@ -155,7 +155,13 @@ class Views(object):
                     status = status
                 )
             elif template:
-                raise
+                raise TemplateDoesNotExist(
+                    "%(template)s.%(extension)s does not exist and no serializer for %(format)s could be found." % {
+                        'template': template,
+                        'extension': format.extension,
+                        'format': format.acronym
+                    }
+                )
             else:
                 response = HttpResponse()
 
