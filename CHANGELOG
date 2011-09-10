@@ -1,5 +1,10 @@
 CHANGELOG
 
+v0.10.3
+- Resource now has a 'routes' property that contains a list of routes for each of the default views.
+- Respite now automatically serializes request context as XML if no XML template for the
+  view exists.
+
 v0.10.2
 - Respite now automatically serializes many-to-many fields
 - Fixed a bug that caused Resource#update to fail form validation for models with many-to-many fields or foreign keys
