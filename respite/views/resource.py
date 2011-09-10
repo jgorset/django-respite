@@ -232,3 +232,8 @@ class Resource(object):
             template = 'destroy',
             status = 200
         )
+
+    routes = [
+        index.route, show.route, new.route, create.route,
+        edit.route, update.route, replace.route, destroy.route
+    ]
