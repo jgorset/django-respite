@@ -9,6 +9,24 @@ class ArticleViews(Views, Resource):
     model = Article
     template_path = 'articles/'
     supported_formats = ['html', 'json']
+    
+    @route(
+        regex = Resource.index.route.regex,
+        method = Resource.index.route.method,
+        name = Resource.index.route.name
+    )
+    def index(self, request):
+        """Render a list of objects."""
+        articles = Article.objects.all()
+
+        return self._render(
+            request = request,
+            template = 'index',
+            context = {
+                'articles': articles,
+            },
+            status = 200
+        )
 
     @route(
         regex = r'^(?P<id>[0-9]+)/preview(?:\.[a-zA-Z]+)?$',
