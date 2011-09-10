@@ -114,11 +114,11 @@ def test_unsupported_method():
 def test_reverse():
     from django.core.urlresolvers import reverse
 
-    assert reverse('news_articles')
-    assert reverse('news_article', args=[1])
-    assert reverse('edit_news_article', args=[1])
-    assert reverse('new_news_article')
-    assert reverse('preview_news_article', args=[1])
+    assert reverse('articles')
+    assert reverse('article', args=[1])
+    assert reverse('edit_article', args=[1])
+    assert reverse('new_article')
+    assert reverse('preview_article', args=[1])
 
 def test_content_types():
     from django.conf import settings
