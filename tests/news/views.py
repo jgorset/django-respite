@@ -10,7 +10,11 @@ class ArticleViews(Views, Resource):
     template_path = 'articles/'
     supported_formats = ['html', 'json']
 
-    @route(r'^(?P<id>[0-9]+)/preview(?:\.[a-zA-Z]+)?$', 'GET', 'preview_news_article')
+    @route(
+        regex = r'^(?P<id>[0-9]+)/preview(?:\.[a-zA-Z]+)?$',
+        method = 'GET',
+        name = 'preview_news_article'
+    )
     def preview(self, request, id):
         try:
             article = Article.objects.get(id=id)
