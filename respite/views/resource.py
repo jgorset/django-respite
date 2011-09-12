@@ -24,7 +24,7 @@ class Resource(object):
     @route(
         regex = lambda prefix: r'^%s(?:$|index(?:\.[a-zA-Z]+)?$)' % prefix,
         method = 'GET',
-        name = lambda views: '%s_%s' % (views.model._meta.app_label, pluralize(cc2us(views.model.__name__)))
+        name = lambda views: pluralize(cc2us(views.model.__name__))
     )
     def index(self, request):
         """Render a list of objects."""
@@ -42,7 +42,7 @@ class Resource(object):
     @route(
         regex = lambda prefix: r'^%s(?P<id>[0-9]+)(?:\.[a-zA-Z]+)?$' % prefix,
         method = 'GET',
-        name = lambda views: '%s_%s' % (views.model._meta.app_label, cc2us(views.model.__name__))
+        name = lambda views: cc2us(views.model.__name__)
     )
     def show(self, request, id):
         """Render a single object."""
@@ -67,7 +67,7 @@ class Resource(object):
     @route(
         regex = lambda prefix: r'^%snew(?:\.[a-zA-Z]+)?$' % prefix,
         method = 'GET',
-        name = lambda views: 'new_%s_%s' % (views.model._meta.app_label, cc2us(views.model.__name__))
+        name = lambda views: 'new_%s' % cc2us(views.model.__name__)
     )
     def new(self, request):
         """Render a form to create a new object."""
@@ -85,7 +85,7 @@ class Resource(object):
     @route(
         regex = lambda prefix: r'^%s(?:$|index(?:\.[a-zA-Z]+)?$)' % prefix,
         method = 'POST',
-        name = lambda views: '%s_%s' % (views.model._meta.app_label, pluralize(cc2us(views.model.__name__)))
+        name = lambda views: pluralize(cc2us(views.model.__name__))
     )
     def create(self, request):
         """Create a new object."""    
@@ -96,7 +96,7 @@ class Resource(object):
 
             response = HttpResponse(status=303)
             response['Location'] = reverse(
-                viewname = '%s_%s' % (self.model._meta.app_label, cc2us(self.model.__name__)),
+                viewname = cc2us(self.model.__name__),
                 args = [object.id]
             )
             return response
@@ -113,7 +113,7 @@ class Resource(object):
     @route(
         regex = lambda prefix: r'^%s(?P<id>[0-9]+)/edit(?:\.[a-zA-Z]+)?$' % prefix,
         method = 'GET',
-        name = lambda views: 'edit_%s_%s' % (views.model._meta.app_label, cc2us(views.model.__name__))
+        name = lambda views: 'edit_%s' % cc2us(views.model.__name__)
     )
     def edit(self, request, id):
         """Render a form to edit an object."""
@@ -144,7 +144,7 @@ class Resource(object):
     @route(
         regex = lambda prefix: r'^%s(?P<id>[0-9]+)(?:\.[a-zA-Z]+)?$' % prefix,
         method = 'PATCH',
-        name = lambda views: '%s_%s' % (views.model._meta.app_label, cc2us(views.model.__name__))
+        name = lambda views: cc2us(views.model.__name__)
     )
     def update(self, request, id):
         """Update an object."""
@@ -181,7 +181,7 @@ class Resource(object):
     @route(
         regex = lambda prefix: r'^%s(?P<id>[0-9]+)(?:\.[a-zA-Z]+)?$' % prefix,
         method = 'PUT',
-        name = lambda views: '%s_%s' % (views.model._meta.app_label, cc2us(views.model.__name__))
+        name = lambda views: cc2us(views.model.__name__)
     )
     def replace(self, request, id):
         """Replace an object."""
@@ -213,7 +213,7 @@ class Resource(object):
     @route(
         regex = lambda prefix: r'^%s(?P<id>[0-9]+)(?:\.[a-zA-Z]+)?$' % prefix,
         method = 'DELETE',
-        name = lambda views: '%s_%s' % (views.model._meta.app_label, cc2us(views.model.__name__))
+        name = lambda views: cc2us(views.model.__name__)
     )
     def destroy(self, request, id):
         """Delete an object."""
@@ -232,3 +232,8 @@ class Resource(object):
             template = 'destroy',
             status = 200
         )
+
+    routes = [
+        index.route, show.route, new.route, create.route,
+        edit.route, update.route, replace.route, destroy.route
+    ]
