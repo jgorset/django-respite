@@ -9,8 +9,8 @@ class HttpMethodOverrideMiddleware:
     """
 
     def process_request(self, request):
-        if request.META.has_key('HTTP_X_HTTP_METHOD_OVERRIDE') \
-        or request.POST.has_key('_method'):
+        if 'HTTP_X_HTTP_METHOD_OVERRIDE' in request.META \
+        or '_method' in request.POST:
             request.method = (
                 request.META.get('HTTP_X_HTTP_METHOD_OVERRIDE') or
                 request.POST.get('_method')
