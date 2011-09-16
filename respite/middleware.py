@@ -1,3 +1,5 @@
+import re
+
 from django.http import QueryDict
 
 class HttpMethodOverrideMiddleware:
@@ -13,6 +15,9 @@ class HttpMethodOverrideMiddleware:
                 request.META.get('HTTP_X_HTTP_METHOD_OVERRIDE') or
                 request.POST.get('_method')
             ).upper()
+            
+        if '_method' in request.POST:
+            request._raw_post_data = re.sub(r'_method=(PUT|PATCH|DELETE)&?', '', request.raw_post_data)
 
 class HttpPutMiddleware:
     """
