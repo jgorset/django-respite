@@ -1,5 +1,8 @@
 CHANGELOG
 
+v0.10.4
+- Respite now discards the '_method' parameter on HTTP POST.
+
 v0.10.3
 - Resource now has a 'routes' property that contains a list of routes for each of the default views.
 - Respite now automatically serializes request context as XML if no XML template for the
