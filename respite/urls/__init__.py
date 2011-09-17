@@ -6,7 +6,7 @@ from django.http import HttpResponse
 from respite.inflector import pluralize, cc2us
 from respite.urls import routes
 
-def resource(views, routes, prefix=''):
+def resource(prefix, views, routes):
     """
     Route a collection of views.
 
