@@ -176,6 +176,9 @@ class Serializer(object):
             if anything is None:
                 return None
 
+            if hasattr(anything, 'serialize'):
+                return serialize(anything.serialize())
+
             raise TypeError("Respite doesn't know how to serialize %s" % anything.__class__.__name__)
 
         return serialize(self.source)
