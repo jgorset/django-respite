@@ -94,6 +94,18 @@ def test_queryset_serialization():
         }
     ]
 
+def test_serializible_object_serialization():
+
+    class SerializibleClass(object):
+
+        def serialize(self):
+            return {
+                'key': 'value'
+            }
+
+    assert Serializer(SerializibleClass()).preprocess() == {
+        'key': 'value'
+    }
 
 def test_form_serialization():
     import django.forms
