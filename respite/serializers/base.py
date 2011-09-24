@@ -158,7 +158,7 @@ class Serializer(object):
             if isinstance(anything, (str, unicode)):
                 return anything
 
-            if isinstance(anything, (int, float)):
+            if isinstance(anything, (int, float, long)):
                 return anything
 
             if isinstance(anything, (datetime.date, datetime.datetime)):
