@@ -123,15 +123,16 @@ def test_reverse():
 def test_content_types():
     from django.conf import settings
     from respite import formats
+    from news.views import ArticleViews
 
     response = client.get('/news/articles/1', HTTP_ACCEPT='*/*,application/json')
     assert response['Content-Type'] == '%s; charset=%s' % (
-        formats.find(settings.RESPITE_DEFAULT_FORMAT).content_type,
+        formats.find(ArticleViews.supported_formats[0]).content_type,
         settings.DEFAULT_CHARSET
     )
 
     response = client.get('/news/articles/1', HTTP_ACCEPT='unsupported/format, */*')
     assert response['Content-Type'] == '%s; charset=%s' % (
-        formats.find(settings.RESPITE_DEFAULT_FORMAT).content_type,
+        formats.find(ArticleViews.supported_formats[0]).content_type,
         settings.DEFAULT_CHARSET
     )
