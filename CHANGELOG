@@ -1,5 +1,16 @@
 CHANGELOG
 
+v0.11
+- Respite now supports serialization of any object that defines a 'serialize' method.
+- Fixed a bug that caused a TypeError upon attempting to serialize long types.
+- Routes are no longer prefixed with the application name.
+- The 'prefix' argument to 'resource' now defaults to an empty string.
+- Resource#create now returns 201 Created instead of 303 See Other upon creating a new model.
+- Respite now defaults to the first of the view's supported formats instead of RESPITE_DEFAULT_FORMAT
+  for the wildcard content type (*/*).
+- View#_render has a new argument; 'prefix_template_path'. 
+- Respite's default views now render 404s in the request format.
+
 v0.10.4
 - Respite now discards the '_method' parameter on HTTP POST.
 
