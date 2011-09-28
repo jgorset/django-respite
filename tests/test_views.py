@@ -99,9 +99,6 @@ def test_custom_action():
     response = client.get('/news/articles/1/preview')
     assert response.status_code == 200
 
-    response = client.get('/news/articles/2/preview')
-    assert response.status_code == 404
-
 def test_options():
     response = client.options('/news/articles/', HTTP_ACCEPT='application/json')
     assert response.status_code == 200
