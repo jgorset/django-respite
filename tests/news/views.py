@@ -31,7 +31,7 @@ class ArticleViews(Views, Resource):
     @route(
         regex = r'^(?P<id>[0-9]+)/preview(?:\.[a-zA-Z]+)?$',
         method = 'GET',
-        name = 'preview_news_article'
+        name = 'preview_article'
     )
     def preview(self, request, id):
         try:
