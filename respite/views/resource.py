@@ -94,12 +94,14 @@ class Resource(object):
         if form.is_valid():
             object = form.save()
 
-            response = HttpResponse(status=303)
-            response['Location'] = reverse(
-                viewname = cc2us(self.model.__name__),
-                args = [object.id]
+            return self._render(
+                request = request,
+                template = 'show',
+                context = {
+                    self.model.__name__.lower(): object
+                },
+                status = 201
             )
-            return response
         else:
             return self._render(
                 request = request,

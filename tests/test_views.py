@@ -48,7 +48,7 @@ def test_create():
         'author': '1',
         'created_at': '1970-01-01 00:00:00'
     })
-    assert response.status_code == 303
+    assert response.status_code == 201
 
 def test_edit():
     response = client.get('/news/articles/1/edit')
