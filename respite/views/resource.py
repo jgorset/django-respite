@@ -49,10 +49,14 @@ class Resource(object):
         try:
             object = self.model.objects.get(id=id)
         except self.model.DoesNotExist:
-            return render(
+            return self._render(
                 request = request,
-                template_name = '404.html',
-                status = 404
+                template = '404',
+                context = {
+                    'error': 'The %s could not be found.' % self.model.__name__.lower()
+                },
+                status = 404,
+                prefix_template_path = False
             )
 
         return self._render(
@@ -122,10 +126,14 @@ class Resource(object):
         try:
             object = self.model.objects.get(id=id)
         except self.model.DoesNotExist:
-            return render(
+            return self._render(
                 request = request,
-                template_name = '404.html',
-                status = 404
+                template = '404',
+                context = {
+                    'error': 'The %s could not be found.' % self.model.__name__.lower()
+                },
+                status = 404,
+                prefix_template_path = False
             )
 
         form = (self.form or generate_form(self.model))(instance=object)
@@ -153,10 +161,14 @@ class Resource(object):
         try:
             object = self.model.objects.get(id=id)
         except self.model.DoesNotExist:
-            return render(
+            return self._render(
                 request = request,
-                template_name = '404.html',
-                status = 404
+                template = '404',
+                context = {
+                    'error': 'The %s could not be found.' % self.model.__name__.lower()
+                },
+                status = 404,
+                prefix_template_path = False
             )
 
         Form = generate_form(
@@ -190,10 +202,14 @@ class Resource(object):
         try:
             object = self.model.objects.get(id=id)
         except self.model.DoesNotExist:
-            return render(
+            return self._render(
                 request = request,
-                template_name = '404.html',
-                status = 404
+                template = '404',
+                context = {
+                    'error': 'The %s could not be found.' % self.model.__name__.lower()
+                },
+                status = 404,
+                prefix_template_path = False
             )
 
         form = (self.form or generate_form(self.model))(request.PUT, instance=object)
@@ -223,10 +239,14 @@ class Resource(object):
             object = self.model.objects.get(id=id)
             object.delete()
         except self.model.DoesNotExist:
-            return render(
+            return self._render(
                 request = request,
-                template_name = '404.html',
-                status = 404
+                template = '404',
+                context = {
+                    'error': 'The %s could not be found.' % self.model.__name__.lower()
+                },
+                status = 404,
+                prefix_template_path = False
             )
 
         return self._render(

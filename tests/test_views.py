@@ -31,7 +31,12 @@ def test_show():
 
     assert response.status_code == 200
 
-    response = client.get('/news/articles/2')
+    response = client.get('/news/articles/2', HTTP_ACCEPT='application/json')
+    assert response['Content-Type'] == 'application/json; charset=%s' % settings.DEFAULT_CHARSET
+    assert response.status_code == 404
+
+    response = client.get('/news/articles/2', HTTP_ACCEPT='text/html')
+    assert response['Content-Type'] == 'text/html; charset=%s' % settings.DEFAULT_CHARSET
     assert response.status_code == 404
 
 def test_new():
