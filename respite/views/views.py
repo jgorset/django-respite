@@ -93,7 +93,7 @@ class Views(object):
             if default_format in supported_formats:
                 return default_format
 
-    def _render(self, request, template=None, status=200, context={}, headers={}):
+    def _render(self, request, template=None, status=200, context={}, headers={}, prefix_template_path=True):
         """
         Render a HTTP response.
         
@@ -102,6 +102,7 @@ class Views(object):
         :param status: An integer describing the HTTP status code to respond with.
         :param context: A dictionary describing variables to populate the template with.
         :param headers: A dictionary describing HTTP headers.
+        :param prefix_template_path: A boolean describing whether to prefix the template with the view's template path.
         
         Please note that ``template`` must not specify an extension, as one will be appended
         according to the request format. For example, a value of ``blog/posts/index``
@@ -134,19 +135,30 @@ class Views(object):
         if not format:
             return HttpResponse(status=406)
 
-        try:
-            response = render(
-                request = request,
-                template_name = '%s%s.%s' % (self.template_path, template, format.extension),
-                dictionary = context,
-                status = status,
-                content_type = '%s; charset=%s' % (format.content_type, settings.DEFAULT_CHARSET)
-            )
-        except TemplateDoesNotExist:
-            Serializer = serializers.find(format)
+        if template:
 
+            if prefix_template_path:
+                template_path = '%s.%s' % (self.template_path + template, format.extension)
+            else:
+                template_path = '%s.%s' % (template, format.extension)
+
+            try:
+                response = render(
+                    request = request,
+                    template_name = template_path,
+                    dictionary = context,
+                    status = status,
+                    content_type = '%s; charset=%s' % (format.content_type, settings.DEFAULT_CHARSET)
+                )
+            except TemplateDoesNotExist:
+                response = HttpResponse(
+                    content = serializers.find(format)(context).serialize(),
+                    content_type = '%s; charset=%s' % (format.content_type, settings.DEFAULT_CHARSET),
+                    status = status
+                )
+        else:
             response = HttpResponse(
-                content = Serializer(context).serialize(),
+                content = serializers.find(format)(context).serialize(),
                 content_type = '%s; charset=%s' % (format.content_type, settings.DEFAULT_CHARSET),
                 status = status
             )
