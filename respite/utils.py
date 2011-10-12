@@ -24,6 +24,17 @@ def generate_form(model, form=None, fields=False, exclude=False):
 
     return Form
 
+def parse_content_type(content_type):
+    """
+    Return a tuple of content type and charset.
+
+    :param content_type: A string describing a content type.
+    """
+    if ';' in content_type:
+        return content_type.split(';')
+    else:
+        return content_type, 'ISO-8859-1'
+
 def parse_http_accept_header(header):
     """
     Return a list of content types listed in the HTTP Accept header

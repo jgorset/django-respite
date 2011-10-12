@@ -1,6 +1,11 @@
 import re
 
+from urllib import urlencode
+
 from django.http import QueryDict
+from django.utils import simplejson as json
+
+from respite.utils import parse_content_type
 
 class HttpMethodOverrideMiddleware:
     """
@@ -38,3 +43,17 @@ class HttpPatchMiddleware:
     def process_request(self, request):
         if request.method == 'PATCH':
             request.PATCH = QueryDict(request.raw_post_data)
+
+class JsonMiddleware:
+    """
+    Parse JSON in POST, PUT and PATCH requests.
+    """
+
+    def process_request(self, request):
+        content_type = request.META.get('CONTENT_TYPE')
+
+        if content_type and parse_content_type(content_type)[0] == 'application/json':
+            data = json.loads(request.raw_post_data)
+
+            if request.method in ['POST', 'PUT', 'PATCH']:
+                setattr(request, request.method, QueryDict(urlencode(data)))

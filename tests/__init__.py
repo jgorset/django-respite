@@ -22,7 +22,8 @@ settings.configure(
         'django.contrib.messages.middleware.MessageMiddleware',
         'respite.middleware.HttpPutMiddleware',
         'respite.middleware.HttpPatchMiddleware',
-        'respite.middleware.HttpMethodOverrideMiddleware'
+        'respite.middleware.HttpMethodOverrideMiddleware',
+        'respite.middleware.JsonMiddleware'
     ]
 )
 
