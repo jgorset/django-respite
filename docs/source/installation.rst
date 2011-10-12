@@ -17,6 +17,7 @@ In your ``settings`` module...
 * Add ``respite`` to ``INSTALLED_APPS``
 * Add ``respite.middleware.HttpPutMiddleware`` to ``MIDDLEWARE_CLASSES``
 * Add ``respite.middleware.HttpPatchMiddleware`` to ``MIDDLEWARE_CLASSES``
+* Add ``respite.middleware.JsonMiddleware`` to ``MIDDLEWARE_CLASSES``
 
 If you're not just building an API, you might also want to add ``respite.middleware.HttpMethodOverrideMiddleware``
 to your middleware classes; it facilitates for overriding the HTTP method with the ``X-HTTP-Method-Override`` header or a
