@@ -42,7 +42,7 @@ def teardown():
 def test_model_serialization():
     article = Article.objects.get(id=1)
 
-    assert Serializer(article).preprocess() == {
+    assert Serializer(article).serialize() == {
         'id': 1,
         'title': 'Title',
         'content': 'Content',
@@ -61,7 +61,7 @@ def test_model_serialization():
 def test_queryset_serialization():
     articles = Article.objects.all()
 
-    assert Serializer(articles).preprocess() == [
+    assert Serializer(articles).serialize() == [
         {
             'id': 1,
             'title': 'Title',
@@ -103,7 +103,7 @@ def test_serializible_object_serialization():
                 'key': 'value'
             }
 
-    assert Serializer(SerializibleClass()).preprocess() == {
+    assert Serializer(SerializibleClass()).serialize() == {
         'key': 'value'
     }
 
@@ -112,6 +112,6 @@ def test_form_serialization():
 
     form = generate_form(Article)()
 
-    assert Serializer(form).preprocess() == {
+    assert Serializer(form).serialize() == {
         'fields': ['title', 'content', 'is_published', 'created_at', 'author', 'tags']
     }

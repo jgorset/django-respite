@@ -13,10 +13,10 @@ class Serializer(object):
     def __init__(self, source):
         self.source = source
 
-    def preprocess(self):
+    def serialize(self):
         """
-        Preprocess the source object by converting into into simple
-        data types (e.g. lists and dictionaries).
+        Serialize the given object into into simple
+        data types (e.g. lists, dictionaries, strings).
         """
 
         def serialize(anything):

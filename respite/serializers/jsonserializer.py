@@ -8,6 +8,6 @@ from respite.serializers.base import Serializer
 class JSONSerializer(Serializer):
 
     def serialize(self):
-        data = self.preprocess()
+        data = super(JSONSerializer, self).serialize()
 
         return json.dumps(data, ensure_ascii=False)

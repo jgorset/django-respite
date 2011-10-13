@@ -6,7 +6,7 @@ from respite.serializers.base import Serializer
 class XMLSerializer(Serializer):
 
     def serialize(self):
-        data = self.preprocess()
+        data = super(JSONSerializer, self).serialize()
 
         root = ET.Element('response')
 
