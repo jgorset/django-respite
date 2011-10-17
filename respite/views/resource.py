@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from django.core.urlresolvers import reverse
 from django.forms import CharField, HiddenInput
 from django.forms.models import model_to_dict
+from django.db.models import FieldDoesNotExist
 
 from respite.utils import generate_form
 from respite.inflector import pluralize, cc2us
@@ -171,10 +172,20 @@ class Resource(object):
                 prefix_template_path = False
             )
 
+        fields = []
+        for field in request.PATCH:
+
+            try:
+                self.model._meta.get_field_by_name(field)
+            except FieldDoesNotExist:
+                continue
+            else:
+                fields.append(field)
+
         Form = generate_form(
             model = self.model,
             form = self.form,
-            fields = tuple(request.PATCH)
+            fields = fields
         )
 
         form = Form(request.PATCH, instance=object)
