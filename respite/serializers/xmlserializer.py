@@ -6,7 +6,7 @@ from respite.serializers.base import Serializer
 class XMLSerializer(Serializer):
 
     def serialize(self):
-        data = super(JSONSerializer, self).serialize()
+        data = super(XMLSerializer, self).serialize()
 
         root = ET.Element('response')
 
@@ -48,6 +48,12 @@ class XMLSerializer(Serializer):
 
                 return element
 
+            def serialize_none(none):
+                element = ET.Element(key)
+                element.text = ''
+
+                return element
+
             if isinstance(value, bool):
                 return serialize_boolean(value)
 
@@ -62,6 +68,9 @@ class XMLSerializer(Serializer):
 
             if isinstance(value, int):
                 return serialize_integer(value)
+
+            if value is None:
+                return serialize_none(value)
 
             raise TypeError("Respite doesn't know how to serialize %s as XML" % value.__class__.__name__)
 
