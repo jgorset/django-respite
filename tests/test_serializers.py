@@ -1,8 +1,10 @@
-"""Tests for respite.serializers."""
+"""Tests for respite.serializers.*"""
 
 from datetime import datetime
 
 from respite.serializers.base import Serializer
+from respite.serializers.jsonserializer import JSONSerializer
+from respite.serializers.xmlserializer import XMLSerializer
 from respite.utils import generate_form
 
 from news.models import Article, Author, Tag
@@ -40,6 +42,7 @@ def teardown():
     Tag.objects.all().delete()
 
 def test_model_serialization():
+    """Verify that models may be serialized."""
     article = Article.objects.get(id=1)
 
     assert Serializer(article).serialize() == {
@@ -58,7 +61,11 @@ def test_model_serialization():
         }]
     }
 
+    assert JSONSerializer(article).serialize()
+    assert XMLSerializer(article).serialize()
+
 def test_queryset_serialization():
+    """Verify that querysets may be serialized."""
     articles = Article.objects.all()
 
     assert Serializer(articles).serialize() == [
@@ -95,6 +102,7 @@ def test_queryset_serialization():
     ]
 
 def test_serializible_object_serialization():
+    """Verify that any object that defines a ``serialize`` method may be serialized."""
 
     class SerializibleClass(object):
 
@@ -107,7 +115,11 @@ def test_serializible_object_serialization():
         'key': 'value'
     }
 
+    assert JSONSerializer(SerializibleClass()).serialize()
+    assert XMLSerializer(SerializibleClass()).serialize()
+
 def test_form_serialization():
+    """Verify that forms may be serialized."""
     import django.forms
 
     form = generate_form(Article)()
@@ -115,3 +127,6 @@ def test_form_serialization():
     assert Serializer(form).serialize() == {
         'fields': ['title', 'content', 'is_published', 'created_at', 'author', 'tags']
     }
+
+    assert JSONSerializer(form).serialize()
+    assert XMLSerializer(form).serialize()
