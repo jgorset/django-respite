@@ -1,5 +1,11 @@
 CHANGELOG
 
+v1.0.0
+- Respite now parses JSON payloads in the body of POST, PUT and PATCH requests.
+- Fixed a bug that caused Resource#update to raise a FieldError if request.PATCH
+  contained attributes that didn't match its model.
+- Fixed a bug that caused a TypeError upon serializing 'None' as XML.
+
 v0.11
 - Respite now supports serialization of any object that defines a 'serialize' method.
 - Fixed a bug that caused a TypeError upon attempting to serialize long types.
