@@ -5,7 +5,7 @@ Installation and configuration
 
 Respite is best installed via `pip`_::
 
-    $ pip install git+git://github.com/jgorset/respite.git
+    $ pip install respite
     
 .. _configuration:
 
