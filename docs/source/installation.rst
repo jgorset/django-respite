@@ -25,7 +25,7 @@ to your middleware classes; it facilitates for overriding the HTTP method with t
 
 .. note::
 
-    ``HttpMethodOverridedMiddleware`` must be processed before ``HttpPutMiddleware`` and ``HttpPatchMiddleware``.
+    ``HttpMethodOverrideMiddleware`` must be processed before ``HttpPutMiddleware`` and ``HttpPatchMiddleware``.
 
 .. _dependencies:
 
