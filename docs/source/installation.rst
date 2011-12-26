@@ -5,7 +5,7 @@ Installation and configuration
 
 Respite is best installed via `pip`_::
 
-    $ pip install respite
+    $ pip install django-respite
     
 .. _configuration:
 
