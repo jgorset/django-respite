@@ -4,11 +4,10 @@ def generate_form(model, form=None, fields=False, exclude=False):
     """
     Generate a form from a model.
 
-    Arguments:
-    model -- A Django model.
-    form -- A Django form.
-    fields -- A list of fields to include in this form.
-    exclude -- A list of fields to exclude in this form.
+    :param model: A Django model.
+    :param form: A Django form.
+    :param fields: A list of fields to include in this form.
+    :param exclude: A list of fields to exclude in this form.
     """
     _model, _fields, _exclude = model, fields, exclude
 
@@ -40,8 +39,7 @@ def parse_http_accept_header(header):
     Return a list of content types listed in the HTTP Accept header
     ordered by quality.
 
-    Arguments:
-    header -- A string describing the contents of the HTTP Accept header.
+    :param header: A string describing the contents of the HTTP Accept header.
     """
     components = [item.strip() for item in header.split(',')]
 

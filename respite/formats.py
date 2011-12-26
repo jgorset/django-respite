@@ -7,11 +7,10 @@ class Format(object):
         """
         Initialize a new format.
 
-        Arguments:
-        name -- A string describing the name of the format (e.g. 'HyperText Markup Language').
-        acronym -- A string describing the acronym of the format (e.g. 'HTML').
-        extensions -- A list of strings describing the extensions of the format (e.g. 'html').
-        content_types -- A list of strings describing the internet media type* of the format (e.g. 'text/html').
+        :param name: A string describing the name of the format (e.g. 'HyperText Markup Language').
+        :param acronym: A string describing the acronym of the format (e.g. 'HTML').
+        :param extensions: A list of strings describing the extensions of the format (e.g. 'html').
+        :param content_types: A list of strings describing the internet media type* of the format (e.g. 'text/html').
 
         * http://www.iana.org/assignments/media-types/index.html
         """
@@ -43,8 +42,7 @@ def find(identifier):
     """
     Find and return a format by name, acronym or extension.
 
-    Arguments:
-    identifier -- A string describing the format.
+    :param identifier: A string describing the format.
     """
     for format in FORMATS:
         if identifier in [format.name, format.acronym, format.extension]:
@@ -56,8 +54,7 @@ def find_by_name(name):
     """
     Find and return a format by name.
 
-    Arguments:
-    name -- A string describing the name of the format.
+    :param name: A string describing the name of the format.
     """
     for format in FORMATS:
         if name == format.name:
@@ -69,8 +66,7 @@ def find_by_extension(extension):
     """
     Find and return a format by extension.
 
-    Arguments:
-    extension -- A string describing the extension of the format.
+    :param extension: A string describing the extension of the format.
     """
     for format in FORMATS:
         if extension in format.extensions:
@@ -82,8 +78,7 @@ def find_by_content_type(content_type):
     """
     Find and return a format by content type.
 
-    Arguments:
-    content_type -- A string describing the internet media type of the format.
+    :param content_type: A string describing the internet media type of the format.
     """
     for format in FORMATS:
         if content_type in format.content_types:

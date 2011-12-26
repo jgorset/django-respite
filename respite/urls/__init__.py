@@ -86,7 +86,7 @@ def resource(views, routes, prefix=''):
         Transform routes into urlpatterns.
 
         Arguments:
-        routes  --  A list of routes.
+        :param routes: A list of routes.
         """
         urls = []
 
