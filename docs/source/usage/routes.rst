@@ -8,12 +8,24 @@ for a particular collection of views.
 
 .. autofunction:: respite.urls.resource
 
+    ::
+
+        # urls.py
+
+        urlpatterns = resource(
+            prefix = 'posts/',
+            views = PostViews,
+            routes = [
+                ...
+            ]
+        )
+
 Routes
 ------
 
-There are two ways to go about providing a ``resource`` declaration with its ``routes`` argument: You can
-either declare them using the ``route`` function, or attach them to their respective view using the ``route``
-decorator:
+There are two ways in which you might populate the resource's routes: you can declare
+them inline using the ``route`` function, or reference views that have been decorated with
+the ``route`` decorator.
 
 .. autofunction:: respite.urls.routes.route
 
@@ -44,15 +56,37 @@ decorator:
 
 .. autofunction:: respite.decorators.route
 
-    ::
+::
 
-        # urls.py
-
-        urlpatterns = resource(
-            prefix = 'posts/',
-            views = PostViews,
-            routes = [
-                PostViews.index.route,
-                PostViews.show.route
-            ]
+    # views.py
+    
+    class PostViews:
+    
+        @route(
+            regex = r'^(?:$|index(?:\.[a-zA-Z]+)?$)',
+            method = 'GET',
+            name = 'blog_posts'
         )
+        def index(request):
+            ...
+        
+        routes.route(
+            regex = r'^(?P<id>[0-9]+)(?:\.[a-zA-Z]+)?$',
+            method = 'GET',
+            name = 'blog_post'
+        )
+        def show(request, id):
+            ...
+
+::
+
+    # urls.py
+
+    urlpatterns = resource(
+        prefix = 'posts/',
+        views = PostViews,
+        routes = [
+            PostViews.index.route,
+            PostViews.show.route
+        ]
+    )
