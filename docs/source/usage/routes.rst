@@ -70,7 +70,7 @@ the ``route`` decorator.
         def index(request):
             ...
         
-        routes.route(
+        @route(
             regex = r'^(?P<id>[0-9]+)(?:\.[a-zA-Z]+)?$',
             method = 'GET',
             name = 'blog_post'
