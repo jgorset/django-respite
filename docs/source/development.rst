@@ -60,6 +60,6 @@ Major and minor releases do not mark the end of the previous line or lines of de
   may also continue to get bugfixes – but there’s no longer a guarantee of any kind. Thus, if a bug
   were found in 1.1 that affected 0.9 and could be easily applied, a new 0.9.x version might be released.
 
-.. _issue tracker: https://github.com/jgorset/respite/issues
+.. _issue tracker: https://github.com/jgorset/django-respite/issues
 .. _Github: http://github.com
 .. _PEP-8: http://www.python.org/dev/peps/pep-0008/

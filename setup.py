@@ -7,6 +7,6 @@ setup(
     long_description = open('README.rst').read(),
     author = "Johannes Gorset",
     author_email = "jgorset@gmail.com",
-    url = "http://github.com/jgorset/respite",
+    url = "http://github.com/jgorset/django-respite",
     packages = ['respite', 'respite.lib', 'respite.serializers', 'respite.urls', 'respite.views']
 )

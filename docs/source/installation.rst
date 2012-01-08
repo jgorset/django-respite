@@ -63,4 +63,4 @@ To follow Respite's development via Git instead of downloading official releases
 .. _pip: http://www.pip-installer.org/en/latest/
 .. _pytest: http://pytest.org/
 .. _sphinx: http://www.pip-installer.org/en/latest/
-.. _Github mirror: http://github.com/jgorset/respite/
+.. _Github mirror: http://github.com/jgorset/django-respite/
