@@ -218,12 +218,13 @@ app to do something really silly (like reading your blog) and so HTML just doesn
 
 In an ordinary Django application, you would need to write another set of views or use a library
 like `Piston`_ to represent your blog posts in different formats. In an application that leverages
-Respite, though, your views are inherently format-agnostic. For example, you might remember that
-we configured our views to support JSON, too.
+Respite, though, your views are inherently format-agnostic. Your blog is already available
+in JSON, and Respite will serialize its articles automatically.
+`Check it out <http://localhost:8000/blog/posts/index.json`>`_!
 
 .. note::
 
-    You can specify the request format by file extension or the the `accept header`_.
+    You can specify the request format by extension or the the `accept header`_.
     
 .. _accept header: http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.1
 .. _Piston: https://bitbucket.org/jespern/django-piston
