@@ -220,7 +220,7 @@ In an ordinary Django application, you would need to write another set of views 
 like `Piston`_ to represent your blog posts in different formats. In an application that leverages
 Respite, though, your views are inherently format-agnostic. Your blog is already available
 in JSON, and Respite will serialize its articles automatically.
-`Check it out <http://localhost:8000/blog/posts/index.json`>`_!
+`Check it out <http://localhost:8000/blog/posts/index.json>`_!
 
 .. note::
 
