@@ -29,30 +29,30 @@ the ``route`` decorator.
 
 .. autofunction:: respite.urls.routes.route
 
-    ::
+::
 
-        # urls.py
+    # urls.py
 
-        urlpatterns = resource(
-            prefix = 'posts/',
-            views = PostViews,
-            routes = [
-                # Route GET requests to 'posts/' to the 'index' view.
-                routes.route(
-                    regex = r'^(?:$|index(?:\.[a-zA-Z]+)?$)',
-                    view = 'index',
-                    method = 'GET',
-                    name = 'blog_posts'
-                ),
-                # Route GET requests 'posts/1' to the 'show' view.
-                routes.route(
-                    regex = r'^(?P<id>[0-9]+)(?:\.[a-zA-Z]+)?$',
-                    view = 'show',
-                    method = 'GET',
-                    name = 'blog_post'
-                )
-            ]
-        )
+    urlpatterns = resource(
+        prefix = 'posts/',
+        views = PostViews,
+        routes = [
+            # Route GET requests to 'posts/' to the 'index' view.
+            routes.route(
+                regex = r'^(?:$|index(?:\.[a-zA-Z]+)?$)',
+                view = 'index',
+                method = 'GET',
+                name = 'blog_posts'
+            ),
+            # Route GET requests 'posts/1' to the 'show' view.
+            routes.route(
+                regex = r'^(?P<id>[0-9]+)(?:\.[a-zA-Z]+)?$',
+                view = 'show',
+                method = 'GET',
+                name = 'blog_post'
+            )
+        ]
+    )
 
 .. autofunction:: respite.decorators.route
 
