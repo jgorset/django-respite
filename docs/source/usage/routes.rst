@@ -27,6 +27,9 @@ There are two ways in which you might populate the resource's routes: you can de
 them inline using the ``route`` function, or reference views that have been decorated with
 the ``route`` decorator.
 
+Inline routes
+^^^^^^^^^^^^^
+
 .. autofunction:: respite.urls.routes.route
 
 ::
@@ -53,6 +56,9 @@ the ``route`` decorator.
             )
         ]
     )
+
+Referenced routes
+^^^^^^^^^^^^^^^^^
 
 .. autofunction:: respite.decorators.route
 
