@@ -2,7 +2,7 @@
 
 def test_generate_form():
     from respite.utils import generate_form
-    from news.models import Article
+    from .project.app.models import Article
 
     assert generate_form(Article)
 

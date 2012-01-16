@@ -7,7 +7,7 @@ from respite.serializers.jsonserializer import JSONSerializer
 from respite.serializers.xmlserializer import XMLSerializer
 from respite.utils import generate_form
 
-from news.models import Article, Author, Tag
+from .project.app.models import Article, Author, Tag
 
 def setup():
     tag = Tag.objects.create(

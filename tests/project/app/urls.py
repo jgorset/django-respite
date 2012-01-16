@@ -1,6 +1,6 @@
 from respite.urls import resource, routes
 
-from views import ArticleViews
+from .views import ArticleViews
 
 urlpatterns = resource(
     prefix = 'articles/',

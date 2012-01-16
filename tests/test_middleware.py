@@ -1,10 +1,11 @@
 """Tests for respite.middleware."""
 
 from django.utils import simplejson as json
-
-from tests.client import Client
+from django.test.client import Client
 
 from respite.middleware import JsonMiddleware
+
+from . import client
 
 client = Client()
 

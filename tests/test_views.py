@@ -2,10 +2,12 @@
 
 from datetime import datetime
 
+from nose.tools import with_setup
 from django.conf import settings
+from django.test.client import Client
 
-from tests.client import Client
-from tests.news.models import Article, Author
+from . import monkeys
+from .project.app.models import Article, Author
 
 client = Client()
 
@@ -22,10 +24,12 @@ def setup():
 def teardown():
     Article.objects.all().delete()
 
+@with_setup(setup, teardown)
 def test_index():
     response = client.get('/news/articles/')
     assert response.status_code == 200
 
+@with_setup(setup, teardown)
 def test_show():
     response = client.get('/news/articles/1.json')
 
@@ -39,10 +43,12 @@ def test_show():
     assert response['Content-Type'] == 'text/html; charset=%s' % settings.DEFAULT_CHARSET
     assert response.status_code == 404
 
+@with_setup(setup, teardown)
 def test_new():
     response = client.get('/news/articles/new')
     assert response.status_code == 200
 
+@with_setup(setup, teardown)
 def test_create():
     response = client.post('/news/articles/')
     assert response.status_code == 400
@@ -55,10 +61,12 @@ def test_create():
     })
     assert response.status_code == 201
 
+@with_setup(setup, teardown)
 def test_edit():
     response = client.get('/news/articles/1/edit')
     assert response.status_code == 200
 
+@with_setup(setup, teardown)
 def test_replace():
     from urllib import urlencode
 
@@ -77,6 +85,7 @@ def test_replace():
     )
     assert response.status_code == 200
 
+@with_setup(setup, teardown)
 def test_update():
     response = client.patch(
         path = '/news/articles/1',
@@ -91,28 +100,34 @@ def test_update():
     assert article.title == 'New title'
     assert article.is_published == True
 
+@with_setup(setup, teardown)
 def test_destroy():
     response = client.delete('/news/articles/1')
     assert response.status_code == 200
 
+@with_setup(setup, teardown)
 def test_custom_action():
     response = client.get('/news/articles/1/preview')
     assert response.status_code == 200
 
+@with_setup(setup, teardown)
 def test_options():
     response = client.options('/news/articles/', HTTP_ACCEPT='application/json')
     assert response.status_code == 200
     assert set(response['Allow'].split(', ')) == set(['GET', 'POST'])
 
+@with_setup(setup, teardown)
 def test_head():
     response = client.head('/news/articles/1', HTTP_ACCEPT='application/json')
     assert response.status_code == 200
     assert response.content == ''
 
+@with_setup(setup, teardown)
 def test_unsupported_method():
     response = client.post('/news/articles/1')
     assert response.status_code == 405
 
+@with_setup(setup, teardown)
 def test_reverse():
     from django.core.urlresolvers import reverse
 
@@ -122,10 +137,11 @@ def test_reverse():
     assert reverse('new_article')
     assert reverse('preview_article', args=[1])
 
+@with_setup(setup, teardown)
 def test_content_types():
     from django.conf import settings
     from respite import formats
-    from news.views import ArticleViews
+    from .project.app.views import ArticleViews
 
     response = client.get('/news/articles/1', HTTP_ACCEPT='*/*,application/json')
     assert response['Content-Type'] == '%s; charset=%s' % (
