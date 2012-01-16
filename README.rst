@@ -4,7 +4,7 @@ Respite
 About
 -----
 
-Respite makes it easy to create RESTful web applications with Django.
+Respite conforms Django to Representational State Transfer (and, incidentally, HTTP).
 
 Documentation
 -------------
