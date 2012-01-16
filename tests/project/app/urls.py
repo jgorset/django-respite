@@ -1,4 +1,4 @@
-from respite.urls import resource, routes
+from respite.urls import resource
 
 from .views import ArticleViews
 
