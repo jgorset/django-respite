@@ -9,8 +9,20 @@ is linked to throughout) can be found in the :ref:`usage-documentation`.
 
 .. note::
 
-    This tutorial assumes that you are least vaguely familiar with Django and
-    Representational State Transfer.
+    This tutorial assumes that you are familiar with Representational State
+    Transfer. If you're new to this concept or feel you might benefit from brushing
+    up on it, you should get yourself a nice cup of coffee and skim through any or all of
+    the following resources before you continue:
+    
+    * `A Brief Introduction to REST <http://www.infoq.com/articles/rest-introduction>`_
+      by Stefan Tilkov
+    * `An Introduction to REST <http://bitworking.org/news/373/An-Introduction-to-REST>`_
+      by Joe Gregorio
+    * `Representational State Transfer <http://en.wikipedia.org/wiki/Representational_State_Transfer>`_
+      article in Wikipedia
+    * `How to GET a Cup of Coffee <http://www.infoq.com/articles/webber-rest-workflow>`_ by
+      Jim Webber, Savas Parastatidis & Ian Robinson
+
 
 Tutorial
 --------
@@ -22,7 +34,7 @@ A Django application that leverages Respite is not so different from an
 ordinary Django application; it, too, has models, views, templates
 and routes. It's pretty tricky to create a RESTful web application with
 Django by default, though, so Respite does some of these things a little
-differently than you might expect from a vanilla Django application.
+differently than you might expect from an ordinary Django application.
 
 Setup
 ^^^^^
@@ -96,18 +108,18 @@ they supervise::
 You can name and route views however you like, but the canonical way to go about
 it is as follows:
 
-=================== =================== =================== ========================================
-HTTP path           HTTP method         View                Purpose
-=================== =================== =================== ========================================
-articles/           GET                 index               Render a list of articles
-articles/           POST                create              Create a new article
-articles/new        GET                 new                 Render a form to create a new article
-articles/1          GET                 show                Render a specific article
-articles/1/edit     GET                 edit                Render a form to edit a specific article
-articles/1          PUT                 replace             Replace a specific article
-articles/1          PATCH               update              Update a specific article
-articles/1          DELETE              destroy             Delete a specific article
-=================== =================== =================== ========================================
+    =================== =================== =================== ========================================
+    HTTP path           HTTP method         View                Purpose
+    =================== =================== =================== ========================================
+    articles/           GET                 index               Render a list of articles
+    articles/           POST                create              Create a new article
+    articles/new        GET                 new                 Render a form to create a new article
+    articles/1          GET                 show                Render a specific article
+    articles/1/edit     GET                 edit                Render a form to edit a specific article
+    articles/1          PUT                 replace             Replace a specific article
+    articles/1          PATCH               update              Update a specific article
+    articles/1          DELETE              destroy             Delete a specific article
+    =================== =================== =================== ========================================
 
 You can construct your views' HTTP responses however you like, too, but in the end you'll
 probably want to use ``self._render`` because it allows your views to be format-agnostic.
