@@ -231,7 +231,10 @@ app to do something really silly (like reading your blog) and so HTML just doesn
 In an ordinary Django application, you would need to write another set of views or use a library
 like `Piston`_ to represent your blog posts in different formats. In an application that leverages
 Respite, though, your views are inherently format-agnostic. Your blog is already available
-in JSON and XML, and Respite will serialize its articles automatically.
+in JSON and XML, and Respite will serialize its articles automatically::
+
+    $ curl http://localhost:8000/blog/posts/index.json
+    $ curl http://localhost:8000/blog/posts/index.xml
 
 .. note::
 
