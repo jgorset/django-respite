@@ -1,8 +1,10 @@
 from setuptools import setup
 
+from respite import VERSION
+
 setup(
     name = 'django-respite',
-    version = '1.0.0',
+    version = VERSION,
     description = "Respite conforms Django to Representational State Transfer (REST)",
     long_description = open('README.rst').read(),
     author = "Johannes Gorset",
