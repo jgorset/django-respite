@@ -13,40 +13,12 @@
 
 import sys, os
 
-from django.conf import settings
-
-from respite import __version__
-
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 sys.path.insert(0, os.path.abspath('../../'))
 
-# Configure Django so it doesn't throw a fit and allows autodoc to work.
-settings.configure(
-    DATABASES = {
-        'default': {
-            'ENGINE': 'sqlite3',
-            'NAME': ':memory:'
-        }
-    },
-    INSTALLED_APPS = [
-        'respite',
-        'tests.news'
-    ],
-    ROOT_URLCONF = 'tests.urls',
-    RESPITE_DEFAULT_FORMAT = 'html',
-    MIDDLEWARE_CLASSES = [
-        'django.middleware.common.CommonMiddleware',
-        'django.contrib.sessions.middleware.SessionMiddleware',
-        'django.middleware.csrf.CsrfViewMiddleware',
-        'django.contrib.auth.middleware.AuthenticationMiddleware',
-        'django.contrib.messages.middleware.MessageMiddleware',
-        'respite.middleware.HttpPutMiddleware',
-        'respite.middleware.HttpPatchMiddleware',
-        'respite.middleware.HttpMethodOverrideMiddleware'
-    ]
-)
+from respite import __version__
 
 # -- General configuration -----------------------------------------------------
 
