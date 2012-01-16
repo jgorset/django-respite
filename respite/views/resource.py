@@ -14,11 +14,10 @@ from respite.decorators import route
 class Resource(object):
     """
     A collection of views that facilitate for common features.
-    
+
     :attribute model: A reference to a model.
     :attribute form: A reference to a form, or ``None`` to generate one automatically.
     """
-    
     model = None
     form = None
 
