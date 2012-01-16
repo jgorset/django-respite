@@ -85,7 +85,7 @@ they supervise::
             
             return self._render(
                 request = request,
-                template = 'news/articles/index',
+                template = 'blog/posts/index',
                 context = {
                     'posts': posts
                 },
@@ -98,7 +98,7 @@ they supervise::
             
             return self._render(
                 request = request,
-                template = 'news/articles/show',
+                template = 'blog/posts/show',
                 context = {
                     'post': post
                 },
@@ -111,14 +111,14 @@ it is as follows:
     =================== =================== =================== ========================================
     HTTP path           HTTP method         View                Purpose
     =================== =================== =================== ========================================
-    articles/           GET                 index               Render a list of articles
-    articles/           POST                create              Create a new article
-    articles/new        GET                 new                 Render a form to create a new article
-    articles/1          GET                 show                Render a specific article
-    articles/1/edit     GET                 edit                Render a form to edit a specific article
-    articles/1          PUT                 replace             Replace a specific article
-    articles/1          PATCH               update              Update a specific article
-    articles/1          DELETE              destroy             Delete a specific article
+    posts/              GET                 index               Render a list of posts
+    posts/              POST                create              Create a new post
+    posts/new           GET                 new                 Render a form to create a new post
+    posts/1             GET                 show                Render a specific post
+    posts/1/edit        GET                 edit                Render a form to edit a specific post
+    posts/1             PUT                 replace             Replace a specific post
+    posts/1             PATCH               update              Update a specific post
+    πosts/1             DELETE              destroy             Delete a specific post
     =================== =================== =================== ========================================
 
 You can construct your views' HTTP responses however you like, too, but in the end you'll
@@ -171,7 +171,7 @@ Templates
 
 Templates, too, are unchanged in Respite::
 
-    # templates/news/articles/index.html
+    # templates/blog/posts/index.html
 
     <!DOCTYPE html>
     
@@ -193,7 +193,7 @@ Templates, too, are unchanged in Respite::
     
     </html>
     
-    # templates/news/articles/show.html
+    # templates/blog/posts/show.html
 
     <!DOCTYPE html>
     
@@ -231,7 +231,7 @@ app to do something really silly (like reading your blog) and so HTML just doesn
 In an ordinary Django application, you would need to write another set of views or use a library
 like `Piston`_ to represent your blog posts in different formats. In an application that leverages
 Respite, though, your views are inherently format-agnostic. Your blog is already available
-in JSON and XML, and Respite will serialize its articles automatically::
+in JSON and XML, and Respite will serialize its posts automatically::
 
     $ curl http://localhost:8000/blog/posts/index.json
     $ curl http://localhost:8000/blog/posts/index.xml
