@@ -1,7 +1,7 @@
 .. _routing:
 
 Routing
-======
+=======
 
 Respite connects views to URLs through ``resource`` declarations, each of which define routes
 for a particular collection of views.
