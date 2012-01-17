@@ -8,6 +8,7 @@ from django.db.models import FieldDoesNotExist
 from respite.utils import generate_form
 from respite.inflector import pluralize, cc2us
 from respite.views.views import Views
+from respite.urls import templates
 
 from respite.decorators import route
 
@@ -22,7 +23,7 @@ class Resource(object):
     form = None
 
     @route(
-        regex = lambda prefix: r'^%s(?:$|index(?:\.[a-zA-Z]+)?$)' % prefix,
+        regex = lambda prefix: r'^%s(?:$|index%s$)' % (prefix, templates.format),
         method = 'GET',
         name = lambda views: pluralize(cc2us(views.model.__name__))
     )
@@ -40,7 +41,7 @@ class Resource(object):
         )
 
     @route(
-        regex = lambda prefix: r'^%s(?P<id>[0-9]+)(?:\.[a-zA-Z]+)?$' % prefix,
+        regex = lambda prefix: r'^%s(?P<id>[0-9]+)%s$' % (prefix, templates.format),
         method = 'GET',
         name = lambda views: cc2us(views.model.__name__)
     )
@@ -69,7 +70,7 @@ class Resource(object):
         )
 
     @route(
-        regex = lambda prefix: r'^%snew(?:\.[a-zA-Z]+)?$' % prefix,
+        regex = lambda prefix: r'^%snew%s$' % (prefix, templates.format),
         method = 'GET',
         name = lambda views: 'new_%s' % cc2us(views.model.__name__)
     )
@@ -87,7 +88,7 @@ class Resource(object):
         )
 
     @route(
-        regex = lambda prefix: r'^%s(?:$|index(?:\.[a-zA-Z]+)?$)' % prefix,
+        regex = lambda prefix: r'^%s(?:$|index%s$)' % (prefix, templates.format),
         method = 'POST',
         name = lambda views: pluralize(cc2us(views.model.__name__))
     )
@@ -117,7 +118,7 @@ class Resource(object):
             )
 
     @route(
-        regex = lambda prefix: r'^%s(?P<id>[0-9]+)/edit(?:\.[a-zA-Z]+)?$' % prefix,
+        regex = lambda prefix: r'^%s(?P<id>[0-9]+)/edit%s$' % (prefix, templates.format),
         method = 'GET',
         name = lambda views: 'edit_%s' % cc2us(views.model.__name__)
     )
@@ -152,7 +153,7 @@ class Resource(object):
         )
 
     @route(
-        regex = lambda prefix: r'^%s(?P<id>[0-9]+)(?:\.[a-zA-Z]+)?$' % prefix,
+        regex = lambda prefix: r'^%s(?P<id>[0-9]+)%s$' % (prefix, templates.format),
         method = 'PATCH',
         name = lambda views: cc2us(views.model.__name__)
     )
@@ -203,7 +204,7 @@ class Resource(object):
             )
 
     @route(
-        regex = lambda prefix: r'^%s(?P<id>[0-9]+)(?:\.[a-zA-Z]+)?$' % prefix,
+        regex = lambda prefix: r'^%s(?P<id>[0-9]+)%s$' % (prefix, templates.format),
         method = 'PUT',
         name = lambda views: cc2us(views.model.__name__)
     )
@@ -239,7 +240,7 @@ class Resource(object):
             )
 
     @route(
-        regex = lambda prefix: r'^%s(?P<id>[0-9]+)(?:\.[a-zA-Z]+)?$' % prefix,
+        regex = lambda prefix: r'^%s(?P<id>[0-9]+)%s$' % (prefix, templates.format),
         method = 'DELETE',
         name = lambda views: cc2us(views.model.__name__)
     )
