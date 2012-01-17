@@ -1,6 +1,6 @@
 from setuptools import setup
 
-from respite import __version__
+execfile('respite/version.py')
 
 setup(
     name = 'django-respite',
