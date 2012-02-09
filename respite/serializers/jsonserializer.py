@@ -7,7 +7,13 @@ from respite.serializers.base import Serializer
     
 class JSONSerializer(Serializer):
 
-    def serialize(self):
+    def serialize(self, **kwargs):
         data = super(JSONSerializer, self).serialize()
 
-        return json.dumps(data, ensure_ascii=False)
+        jsondata = json.dumps(data, ensure_ascii=False)
+
+        request = kwargs.get('request', None)
+        if request and request.GET.has_key('jsonp'):
+            return '%s(%s)' % (request.GET.get('jsonp'), jsondata)
+        else:
+            return jsondata

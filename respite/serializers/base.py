@@ -13,7 +13,7 @@ class Serializer(object):
     def __init__(self, source):
         self.source = source
 
-    def serialize(self):
+    def serialize(self, **kwargs):
         """
         Serialize the given object into into simple
         data types (e.g. lists, dictionaries, strings).
