@@ -4,6 +4,7 @@ from datetime import datetime
 
 from respite.serializers.base import Serializer
 from respite.serializers.jsonserializer import JSONSerializer
+from respite.serializers.jsonpserializer import JSONPSerializer
 from respite.serializers.xmlserializer import XMLSerializer
 from respite.utils import generate_form
 
@@ -62,6 +63,7 @@ def test_model_serialization():
     }
 
     assert JSONSerializer(article).serialize()
+    assert JSONPSerializer(article).serialize()
     assert XMLSerializer(article).serialize()
 
 def test_queryset_serialization():
@@ -100,6 +102,10 @@ def test_queryset_serialization():
             }]
         }
     ]
+    
+    assert JSONSerializer(articles).serialize()
+    assert JSONPSerializer(articles).serialize()
+    assert XMLSerializer(articles).serialize()
 
 def test_serializible_object_serialization():
     """Verify that any object that defines a ``serialize`` method may be serialized."""
@@ -116,6 +122,7 @@ def test_serializible_object_serialization():
     }
 
     assert JSONSerializer(SerializibleClass()).serialize()
+    assert JSONPSerializer(SerializibleClass()).serialize()
     assert XMLSerializer(SerializibleClass()).serialize()
 
 def test_form_serialization():
@@ -129,4 +136,5 @@ def test_form_serialization():
     }
 
     assert JSONSerializer(form).serialize()
+    assert JSONPSerializer(form).serialize()
     assert XMLSerializer(form).serialize()

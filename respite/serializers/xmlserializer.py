@@ -1,6 +1,6 @@
 from xml.etree import ElementTree as ET
 
-from respite.inflector import singularize
+from respite.inflector import singularize, pluralize
 from respite.serializers.base import Serializer
 
 class XMLSerializer(Serializer):
@@ -74,7 +74,8 @@ class XMLSerializer(Serializer):
 
             raise TypeError("Respite doesn't know how to serialize %s as XML" % value.__class__.__name__)
 
-        for key, value in data.items():
-            root.append(serialize(key, value))
+        root.append(
+            serialize("items", data)
+        )
 
         return '<?xml version="1.0" encoding="UTF-8"?>' + ET.tostring(root)
