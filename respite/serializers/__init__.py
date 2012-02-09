@@ -5,7 +5,7 @@ from respite import formats
 
 SERIALIZERS = {
     formats.find('JavaScript Object Notation'): JSONSerializer,
-    formats.find('JavaScript Scripting Language'): JSONPSerializer,
+    formats.find('JavaScript'): JSONPSerializer,
     formats.find('Extensible Markup Language'): XMLSerializer
 }
 
