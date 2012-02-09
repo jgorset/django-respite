@@ -78,7 +78,7 @@ class Serializer(object):
                 """
 
                 if hasattr(model, 'serialize'):
-                    return serialize(model.serialize(request))
+                    return serialize(model.serialize())
                 else:
                     data = OrderedDict()
                     for field in model._meta.fields + model._meta.many_to_many:
