@@ -19,6 +19,8 @@ class Serializer(object):
         data types (e.g. lists, dictionaries, strings).
         """
 
+        request = kwargs.get('request', None)
+
         def serialize(anything):
             
             def serialize_dictionary(dictionary):
@@ -78,7 +80,7 @@ class Serializer(object):
                 """
 
                 if hasattr(model, 'serialize'):
-                    return serialize(model.serialize())
+                    return serialize(model.serialize(request))
                 else:
                     data = OrderedDict()
                     for field in model._meta.fields + model._meta.many_to_many:
