@@ -136,6 +136,7 @@ class Views(object):
             return HttpResponse(status=406)
 
         if template:
+
             if prefix_template_path:
                 template_path = '%s.%s' % (self.template_path + template, format.extension)
             else:
