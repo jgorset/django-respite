@@ -5,7 +5,7 @@ from respite.serializers.base import Serializer
 
 class XMLSerializer(Serializer):
 
-    def serialize(self):
+    def serialize(self, **kwargs):
         data = super(XMLSerializer, self).serialize()
 
         root = ET.Element('response')

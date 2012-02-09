@@ -1,9 +1,11 @@
 from respite.serializers.jsonserializer import JSONSerializer
+from respite.serializers.jsonpserializer import JSONPSerializer
 from respite.serializers.xmlserializer import XMLSerializer
 from respite import formats
 
 SERIALIZERS = {
     formats.find('JavaScript Object Notation'): JSONSerializer,
+    formats.find('JavaScript Scripting Language'): JSONPSerializer,
     formats.find('Extensible Markup Language'): XMLSerializer
 }
 
