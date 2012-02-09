@@ -7,7 +7,7 @@ from respite.serializers.base import Serializer
     
 class JSONSerializer(Serializer):
 
-    def serialize(self):
+    def serialize(self, **kwargs):
         data = super(JSONSerializer, self).serialize()
 
         return json.dumps(data, ensure_ascii=False)
