@@ -5,8 +5,6 @@ from django.test.client import Client
 
 from respite.middleware import JsonMiddleware
 
-from . import client
-
 client = Client()
 
 def test_json_middleware():
