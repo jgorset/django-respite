@@ -32,7 +32,6 @@ def test_index():
 @with_setup(setup, teardown)
 def test_show():
     response = client.get('/news/articles/1.json')
-
     assert response.status_code == 200
 
     response = client.get('/news/articles/2', HTTP_ACCEPT='application/json')

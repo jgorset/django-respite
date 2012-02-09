@@ -2,9 +2,9 @@ try:
     import json
 except ImportError:
     from django.utils import simplejson as json
-    
+
 from respite.serializers.jsonserializer import JSONSerializer
-    
+
 class JSONPSerializer(JSONSerializer):
 
     def serialize(self, request):
