@@ -2,6 +2,8 @@
 
 from datetime import datetime
 
+from django.test.client import RequestFactory
+
 from respite.serializers.base import Serializer
 from respite.serializers.jsonserializer import JSONSerializer
 from respite.serializers.jsonpserializer import JSONPSerializer
@@ -9,6 +11,8 @@ from respite.serializers.xmlserializer import XMLSerializer
 from respite.utils import generate_form
 
 from .project.app.models import Article, Author, Tag
+
+factory = RequestFactory()
 
 def setup():
     tag = Tag.objects.create(
@@ -45,8 +49,9 @@ def teardown():
 def test_model_serialization():
     """Verify that models may be serialized."""
     article = Article.objects.get(id=1)
+    request = factory.get('/')
 
-    assert Serializer(article).serialize() == {
+    assert Serializer(article).serialize(request) == {
         'id': 1,
         'title': 'Title',
         'content': 'Content',
@@ -62,15 +67,16 @@ def test_model_serialization():
         }]
     }
 
-    assert JSONSerializer(article).serialize()
-    assert JSONPSerializer(article).serialize()
-    assert XMLSerializer(article).serialize()
+    assert JSONSerializer(article).serialize(request)
+    assert JSONPSerializer(article).serialize(request)
+    assert XMLSerializer(article).serialize(request)
 
 def test_queryset_serialization():
     """Verify that querysets may be serialized."""
     articles = Article.objects.all()
+    request = factory.get('/')
 
-    assert Serializer(articles).serialize() == [
+    assert Serializer(articles).serialize(request) == [
         {
             'id': 1,
             'title': 'Title',
@@ -102,13 +108,14 @@ def test_queryset_serialization():
             }]
         }
     ]
-    
-    assert JSONSerializer(articles).serialize()
-    assert JSONPSerializer(articles).serialize()
-    assert XMLSerializer(articles).serialize()
+
+    assert JSONSerializer(articles).serialize(request)
+    assert JSONPSerializer(articles).serialize(request)
+    assert XMLSerializer(articles).serialize(request)
 
 def test_serializible_object_serialization():
     """Verify that any object that defines a ``serialize`` method may be serialized."""
+    request = factory.get('/')
 
     class SerializibleClass(object):
 
@@ -117,24 +124,26 @@ def test_serializible_object_serialization():
                 'key': 'value'
             }
 
-    assert Serializer(SerializibleClass()).serialize() == {
+    assert Serializer(SerializibleClass()).serialize(request) == {
         'key': 'value'
     }
 
-    assert JSONSerializer(SerializibleClass()).serialize()
-    assert JSONPSerializer(SerializibleClass()).serialize()
-    assert XMLSerializer(SerializibleClass()).serialize()
+    assert JSONSerializer(SerializibleClass()).serialize(request)
+    assert JSONPSerializer(SerializibleClass()).serialize(request)
+    assert XMLSerializer(SerializibleClass()).serialize(request)
 
 def test_form_serialization():
     """Verify that forms may be serialized."""
     import django.forms
 
+    request = factory.get('/')
+
     form = generate_form(Article)()
 
-    assert Serializer(form).serialize() == {
+    assert Serializer(form).serialize(request) == {
         'fields': ['title', 'content', 'is_published', 'created_at', 'author', 'tags']
     }
 
-    assert JSONSerializer(form).serialize()
-    assert JSONPSerializer(form).serialize()
-    assert XMLSerializer(form).serialize()
+    assert JSONSerializer(form).serialize(request)
+    assert JSONPSerializer(form).serialize(request)
+    assert XMLSerializer(form).serialize(request)
