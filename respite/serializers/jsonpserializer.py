@@ -10,8 +10,9 @@ class JSONPSerializer(JSONSerializer):
     def serialize(self, request):
         data = super(JSONPSerializer, self).serialize(request)
 
-        callback = 'callback'
-        if request and request.GET.has_key('callback'):
-            callback = request.GET.get('callback')
+        if 'callback' in request.GET:
+            callback = request.GET['callback']
+        else:
+            callback = 'callback'
 
         return '%s(%s)' % (callback, data)
