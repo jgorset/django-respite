@@ -152,13 +152,13 @@ class Views(object):
                 )
             except TemplateDoesNotExist:
                 response = HttpResponse(
-                    content = serializers.find(format)(context).serialize(),
+                    content = serializers.find(format)(context).serialize(request=request),
                     content_type = '%s; charset=%s' % (format.content_type, settings.DEFAULT_CHARSET),
                     status = status
                 )
         else:
             response = HttpResponse(
-                content = serializers.find(format)(context).serialize(),
+                content = serializers.find(format)(context).serialize(request=request),
                 content_type = '%s; charset=%s' % (format.content_type, settings.DEFAULT_CHARSET),
                 status = status
             )
