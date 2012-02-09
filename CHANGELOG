@@ -1,5 +1,9 @@
 CHANGELOG
 
+v1.1.0
+- Respite now serializes JSONP.
+- Fixed a bug that caused an AttributeError upon attempting to serialize a top-level list as XML.
+
 v1.0.0
 - Respite now parses JSON payloads in the body of POST, PUT and PATCH requests.
 - Fixed a bug that caused Resource#update to raise a FieldError if request.PATCH
