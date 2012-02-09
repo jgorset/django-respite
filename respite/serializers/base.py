@@ -13,13 +13,11 @@ class Serializer(object):
     def __init__(self, source):
         self.source = source
 
-    def serialize(self, **kwargs):
+    def serialize(self, request):
         """
         Serialize the given object into into simple
         data types (e.g. lists, dictionaries, strings).
         """
-
-        request = kwargs.get('request', None)
 
         def serialize(anything):
             

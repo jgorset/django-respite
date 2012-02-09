@@ -5,8 +5,8 @@ from respite.serializers.base import Serializer
 
 class XMLSerializer(Serializer):
 
-    def serialize(self, **kwargs):
-        data = super(XMLSerializer, self).serialize()
+    def serialize(self, request):
+        data = super(XMLSerializer, self).serialize(request)
 
         root = ET.Element('response')
 
