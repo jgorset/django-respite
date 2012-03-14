@@ -51,6 +51,29 @@ class Serializer(object):
 
                 return data
 
+            def serialize_datequeryset(datequeryset):
+                """DateQuerysets are serialized as lists of dates."""
+                data = []
+
+                # Serialize datequeryset as a list of datetime objects
+                for date in datequeryset:
+                    data.append(serialize_date(date))
+
+                return data
+
+            def serialize_valueslistqueryset(valueslistqueryset):
+                """DateQuerysets are serialized as lists of values."""
+                data = []
+
+                # Serialize valueslistqueryset as a list of values
+                for value in valueslistqueryset:
+                    if isinstance(value, tuple):
+                        data.append(serialize_list(value))
+                    else:
+                        data.append(serialize(value))
+
+                return data
+
             def serialize_manager(manager):
                 """Managers are serialized as list of models."""
                 data = []
@@ -125,7 +148,7 @@ class Serializer(object):
             def serialize_date(datetime):
                 """Dates are serialized as ISO 8601-compatible strings."""
                 return datetime.isoformat()
-            
+
             def serialize_field_file(field_file):
                 """Filefields are serialized as strings describing their URL."""
                 try:
@@ -145,6 +168,12 @@ class Serializer(object):
 
             if isinstance(anything, list):
                 return serialize_list(anything)
+
+            if isinstance(anything, django.db.models.query.DateQuerySet):
+                return serialize_datequeryset(anything)
+
+            if isinstance(anything, django.db.models.query.ValuesListQuerySet):
+                return serialize_valueslistqueryset(anything)
 
             if isinstance(anything, django.db.models.query.QuerySet):
                 return serialize_queryset(anything)
