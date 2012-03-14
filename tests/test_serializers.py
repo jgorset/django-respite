@@ -113,6 +113,37 @@ def test_queryset_serialization():
     assert JSONPSerializer(articles).serialize(request)
     assert XMLSerializer(articles).serialize(request)
 
+def test_datequeryset_serialization():
+    """Verify that datequerysets may be serialized."""
+    created_at_dates = Article.objects.all().dates('created_at', 'month')
+    request = factory.get('/')
+
+    assert Serializer(created_at_dates).serialize(request) == [
+        '1970-01-01T00:00:00'
+    ]
+
+    assert JSONSerializer(created_at_dates).serialize(request)
+    assert JSONPSerializer(created_at_dates).serialize(request)
+    assert XMLSerializer(created_at_dates).serialize(request)
+
+def test_valueslistqueryset_serialization():
+    """Verify that valueslistquerysets may be serialized."""
+    values_list = Article.objects.all().values_list('is_published')
+    request = factory.get('/')
+
+    assert Serializer(values_list).serialize(request) == [
+        [
+            False
+        ],
+        [
+            False
+        ]
+    ]
+
+    assert JSONSerializer(values_list).serialize(request)
+    assert JSONPSerializer(values_list).serialize(request)
+    assert XMLSerializer(values_list).serialize(request)
+
 def test_serializible_object_serialization():
     """Verify that any object that defines a ``serialize`` method may be serialized."""
     request = factory.get('/')
