@@ -10,4 +10,4 @@ class JSONSerializer(Serializer):
     def serialize(self, request):
         data = super(JSONSerializer, self).serialize(request)
 
-        return json.dumps(data, ensure_ascii=False)
+        return json.dumps(data, ensure_ascii=False, indent=4)
