@@ -9,6 +9,8 @@ from django.test.client import Client
 from . import monkeys
 from .project.app.models import Article, Author
 
+import json
+
 client = Client()
 
 def setup():
@@ -108,6 +110,16 @@ def test_destroy():
 def test_custom_action():
     response = client.get('/news/articles/1/preview')
     assert response.status_code == 200
+
+@with_setup(setup, teardown)
+def test_custom_action_with_error():
+    response = client.get('/news/articles/1337/preview.json')
+    assert json.loads(response.content) == {
+        'error': {
+            'message': 'The article could not be found.'
+        }
+    }
+    assert response.status_code == 404
 
 @with_setup(setup, teardown)
 def test_options():
