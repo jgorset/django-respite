@@ -37,15 +37,7 @@ class ArticleViews(Views, Resource):
         try:
             article = Article.objects.get(id=id)
         except Article.DoesNotExist:
-            return self._render(
-                request = request,
-                template = '404',
-                context = {
-                    'error': 'The article could not be found.'
-                },
-                status = 404,
-                prefix_template_path = False
-            )
+            return self._error(request, 404, message='The article could not be found.')
 
         return self._render(
             request = request,

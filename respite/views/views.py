@@ -167,3 +167,27 @@ class Views(object):
             response[header] = value
 
         return response
+
+    def _error(self, request, status, headers={}, prefix_template_path=False, **kwargs):
+        """
+        Convenience method to render an error response. The template is inferred from the status code.
+
+        :param request: A django.http.HttpRequest instance.
+        :param status: An integer describing the HTTP status code to respond with.
+        :param headers: A dictionary describing HTTP headers.
+        :param prefix_template_path: A boolean describing whether to prefix the template with the view's template path.
+        :param kwargs: Any additional keyword arguments to inject. These are wrapped under ``error`` for convenience.
+
+        For implementation details, see ``render``
+        """
+
+        return self._render(
+            request = request,
+            template = str(status),
+            status = status,
+            context = {
+                'error': kwargs
+            },
+            headers = headers,
+            prefix_template_path = prefix_template_path
+        )
