@@ -1,8 +1,15 @@
 History
 -------
 
+1.1.1
+^^^^^
+
+* You may now render errors more easily with ``View#_error``.
+* Respite will now automatically serialize DateQuerySet and ValuesListQuerySet.
+
 1.1.0
 ^^^^^
+
 * Respite now serializes JSONP.
 * Fixed a bug that caused an AttributeError upon attempting to serialize a top-level list as XML.
 
