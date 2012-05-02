@@ -151,11 +151,19 @@ class Views(object):
                     content_type = '%s; charset=%s' % (format.content_type, settings.DEFAULT_CHARSET)
                 )
             except TemplateDoesNotExist:
-                response = HttpResponse(
-                    content = serializers.find(format)(context).serialize(request),
-                    content_type = '%s; charset=%s' % (format.content_type, settings.DEFAULT_CHARSET),
-                    status = status
-                )
+                try:
+                    response = HttpResponse(
+                        content = serializers.find(format)(context).serialize(request),
+                        content_type = '%s; charset=%s' % (format.content_type, settings.DEFAULT_CHARSET),
+                        status = status
+                    )
+                except serializers.UnknownSerializer:
+                    raise self.Error(
+                        'No template exists at %(template_path)s, and no serializer found for %(format)s' % {
+                            'template_path': template_path,
+                            'format': format
+                        }
+                    )
         else:
             response = HttpResponse(
                 content = serializers.find(format)(context).serialize(request),
@@ -191,3 +199,6 @@ class Views(object):
             headers = headers,
             prefix_template_path = prefix_template_path
         )
+
+    class Error(StandardError):
+        pass
