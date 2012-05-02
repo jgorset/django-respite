@@ -77,7 +77,7 @@ def before(method_name):
                     }
                 )
 
-            def load(self, request, id):
+            def _load(self, request, id):
                 try:
                     return request, Article.objects.get(id=id)
                 except Article.DoesNotExist:
