@@ -137,7 +137,7 @@ we defined earlier like so::
 
     # blog/urls.py
 
-    from respite.urls import resource, routes
+    from respite.urls import resource, routes, templates
 
     from views import PostViews
 
@@ -147,14 +147,14 @@ we defined earlier like so::
         routes = [
             # Route 'posts/' to the 'index' view.
             routes.route(
-                regex = r'^(?:$|index(?:\.[a-zA-Z]+)?$)',
+                regex = r'^(?:$|index%s$)' % (templates.format),
                 view = 'index',
                 method = 'GET',
                 name = 'blog_posts'
             ),
             # Route 'posts/1' to the 'show' view.
             routes.route(
-                regex = r'^(?P<id>[0-9]+)(?:\.[a-zA-Z]+)?$',
+                regex = r'^(?P<id>[0-9]+)%s$' % (templates.format),
                 view = 'show',
                 method = 'GET',
                 name = 'blog_post'
