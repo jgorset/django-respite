@@ -200,5 +200,5 @@ class Views(object):
             prefix_template_path = prefix_template_path
         )
 
-    class Error(StandardError):
+    class Error(Exception):
         pass
