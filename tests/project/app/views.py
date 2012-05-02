@@ -1,7 +1,7 @@
 from django.shortcuts import render
 
 from respite import Views, Resource
-from respite.decorators import route
+from respite.decorators import route, before
 
 from models import Article
 
@@ -33,12 +33,8 @@ class ArticleViews(Views, Resource):
         method = 'GET',
         name = 'preview_article'
     )
-    def preview(self, request, id):
-        try:
-            article = Article.objects.get(id=id)
-        except Article.DoesNotExist:
-            return self._error(request, 404, message='The article could not be found.')
-
+    @before('_load')
+    def preview(self, request, article):
         return self._render(
             request = request,
             template = 'preview',
@@ -47,3 +43,10 @@ class ArticleViews(Views, Resource):
             },
             status = 200
         )
+
+    def _load(self, request, id):
+        """Load the article with the given id."""
+        try:
+            return request, Article.objects.get(id=id)
+        except Article.DoesNotExist:
+            return self._error(request, 404, message='The article could not be found.')
