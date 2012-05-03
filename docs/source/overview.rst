@@ -122,7 +122,8 @@ it is as follows:
     =================== =================== =================== ========================================
 
 You can construct your views' HTTP responses however you like, too, but in the end you'll
-probably want to use ``self._render`` because it allows your views to be format-agnostic.
+probably want to use ``self._render`` because it allows your views to be format-agnostic (more on this
+later).
 
 .. admonition:: See also
 
@@ -150,14 +151,14 @@ we defined earlier like so::
                 regex = r'^(?:$|index%s$)' % (templates.format),
                 view = 'index',
                 method = 'GET',
-                name = 'blog_posts'
+                name = 'posts'
             ),
             # Route 'posts/1' to the 'show' view.
             routes.route(
                 regex = r'^(?P<id>[0-9]+)%s$' % (templates.format),
                 view = 'show',
                 method = 'GET',
-                name = 'blog_post'
+                name = 'post'
             )
         ]
     )
