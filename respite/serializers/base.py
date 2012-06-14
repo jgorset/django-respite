@@ -166,7 +166,7 @@ class Serializer(object):
             if isinstance(anything, dict):
                 return serialize_dictionary(anything)
 
-            if isinstance(anything, list):
+            if isinstance(anything, (list, set)):
                 return serialize_list(anything)
 
             if isinstance(anything, django.db.models.query.DateQuerySet):
