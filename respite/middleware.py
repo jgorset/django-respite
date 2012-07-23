@@ -55,5 +55,11 @@ class JsonMiddleware:
         if content_type and parse_content_type(content_type)[0] == 'application/json':
             data = json.loads(request.raw_post_data)
 
+            # Since the urlencode library doesn't deal very well with unicode 
+            # data (and doesn't provide a way to specify an encoding) we iter 
+            # through all items and encode them to utf-8.
+            for k, v in data.iteritems():
+                data[k] = unicode(v).encode('utf-8')
+
             if request.method in ['POST', 'PUT', 'PATCH']:
                 setattr(request, request.method, QueryDict(urlencode(data)))
