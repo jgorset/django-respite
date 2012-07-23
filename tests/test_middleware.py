@@ -13,9 +13,9 @@ def test_json_middleware():
         'baz': 'baz'
     }
 
-    request = rf.put('/news/articles', 
-        data = json.dumps(payload), 
-        content_type = 'application/json; charset=utf-8', 
+    request = rf.put('/news/articles',
+        data = json.dumps(payload),
+        content_type = 'application/json; charset=utf-8'
     )
 
     JsonMiddleware().process_request(request)
