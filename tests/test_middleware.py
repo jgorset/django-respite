@@ -1,19 +1,24 @@
 """Tests for respite.middleware."""
 
-from django.utils import simplejson as json
-from django.test.client import Client
-
-from respite.middleware import JsonMiddleware
-
-client = Client()
-
 def test_json_middleware():
-    response = client.post(
-        path = '/',
-        data = json.dumps({
-            'foo': 'foo',
-            'bar': 'bar',
-            'baz': 'baz'
-        }),
-        content_type = 'application/json'
+    from django.utils import simplejson as json
+    from respite.middleware import JsonMiddleware
+    from utils import RequestFactory
+
+    rf = RequestFactory()
+
+    payload = {
+        'foo': 'foo',
+        'bar': 'bar',
+        'baz': 'baz'
+    }
+
+    request = rf.put('/news/articles',
+        data = json.dumps(payload),
+        content_type = 'application/json; charset=utf-8'
     )
+
+    JsonMiddleware().process_request(request)
+
+    for k, v in request.PUT.iteritems():
+        assert payload.get(k) == v

@@ -172,7 +172,7 @@ def test_form_serialization():
     form = generate_form(Article)()
 
     assert Serializer(form).serialize(request) == {
-        'fields': ['title', 'content', 'is_published', 'created_at', 'author', 'tags']
+        'fields': ['title', 'content', 'is_published', 'created_at', 'tags', 'author']
     }
 
     assert JSONSerializer(form).serialize(request)

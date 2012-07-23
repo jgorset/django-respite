@@ -1,3 +1,5 @@
+import re
+
 from django import forms
 
 def generate_form(model, form=None, fields=False, exclude=False):
@@ -29,8 +31,11 @@ def parse_content_type(content_type):
 
     :param content_type: A string describing a content type.
     """
-    if ';' in content_type:
-        return content_type.split(';')
+    match = re.search('; ?charset=(.+)$', content_type, re.IGNORECASE)
+    if match:
+        charset = match.group().lstrip('; ?charset=')
+        media_type = content_type.split(';')[0]
+        return media_type, charset
     else:
         return content_type, 'ISO-8859-1'
 
