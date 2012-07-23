@@ -61,7 +61,7 @@ class JsonMiddleware:
                 # data (and doesn't provide a way to specify an encoding) we iter 
                 # through all items and encode them to utf-8.
                 for k, v in data.iteritems():
-                    data[k] = unicode(v).encode('utf-8')
+                    data[k] = unicode(v).encode(charset)
 
                 if request.method in ['POST', 'PUT', 'PATCH']:
                     setattr(request, request.method, QueryDict(urlencode(data)))
