@@ -1,6 +1,16 @@
 History
 -------
 
+1.1.2
+^^^^^
+
+* Database settings now compatible with django 1.4.
+* Added a test for the JSON serializer.
+* Fixes a bug when submitting unicode content through the JSON middleware.
+* The JSON middleware now accept encodings other than UTF-8.
+* Fixed a bug where the `parse_content_type` included "charset=".
+* Fixed a bug in the form serializer test.
+
 1.1.1
 ^^^^^
 
