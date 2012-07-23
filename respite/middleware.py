@@ -52,14 +52,16 @@ class JsonMiddleware:
     def process_request(self, request):
         content_type = request.META.get('CONTENT_TYPE')
 
-        if content_type and parse_content_type(content_type)[0] == 'application/json':
-            data = json.loads(request.raw_post_data)
+        if content_type:
+            media_type, charset = parse_content_type(content_type)
+            if media_type == 'application/json':
+                data = json.loads(request.raw_post_data, encoding=charset)
 
-            # Since the urlencode library doesn't deal very well with unicode 
-            # data (and doesn't provide a way to specify an encoding) we iter 
-            # through all items and encode them to utf-8.
-            for k, v in data.iteritems():
-                data[k] = unicode(v).encode('utf-8')
+                # Since the urlencode library doesn't deal very well with unicode 
+                # data (and doesn't provide a way to specify an encoding) we iter 
+                # through all items and encode them to utf-8.
+                for k, v in data.iteritems():
+                    data[k] = unicode(v).encode('utf-8')
 
-            if request.method in ['POST', 'PUT', 'PATCH']:
-                setattr(request, request.method, QueryDict(urlencode(data)))
+                if request.method in ['POST', 'PUT', 'PATCH']:
+                    setattr(request, request.method, QueryDict(urlencode(data)))
