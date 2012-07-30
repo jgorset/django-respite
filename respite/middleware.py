@@ -23,6 +23,7 @@ class HttpMethodOverrideMiddleware:
 
         if '_method' in request.POST:
             request._raw_post_data = re.sub(r'_method=(PUT|PATCH|DELETE)&?', '', request.raw_post_data)
+        request.META.setdefault('HTTP_X_CSRFTOKEN',request.POST.get('csrfmiddlewaretoken', ''))
 
 class HttpPutMiddleware:
     """
