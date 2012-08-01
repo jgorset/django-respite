@@ -32,3 +32,4 @@ def test_http_method_override_middleware():
     HttpMethodOverrideMiddleware().process_request(request)
 
     assert_equal(request.method, 'PUT')
+    assert_equal(request.POST, {})

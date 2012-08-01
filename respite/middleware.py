@@ -21,9 +21,12 @@ class HttpMethodOverrideMiddleware:
                 request.POST.get('_method')
             ).upper()
 
-        # Discard the "_method" key in the interest of keeping the request pristine.
-        if '_method' in request.POST:
-            request._raw_post_data = re.sub(r'_method=(PUT|PATCH|DELETE)&?', '', request.raw_post_data)
+            # In the interest of keeping the request pristine, we discard the "_method" key
+            # and set its "POST" attribute to an empty QueryDict.
+            if '_method' in request.POST:
+                request._raw_post_data = re.sub(r'_method=(PUT|PATCH|DELETE)&?', '', request.raw_post_data)
+
+            request.POST = QueryDict('')
 
 class HttpPutMiddleware:
     """
