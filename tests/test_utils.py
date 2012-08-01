@@ -19,5 +19,5 @@ def test_parse_http_accept_header():
 def test_parse_content_type():
     from respite.utils import parse_content_type
 
-    assert_equal(['text/html', 'ISO-8859-1'], parse_content_type('text/html'))
-    assert_equal(['text/html', 'ISO-8859-4'], parse_content_type('text/html; charset=ISO-8859-4'))
+    assert_equal(('text/html', 'ISO-8859-1'), parse_content_type('text/html'))
+    assert_equal(('text/html', 'ISO-8859-4'), parse_content_type('text/html; charset=ISO-8859-4'))
