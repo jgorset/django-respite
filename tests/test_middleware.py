@@ -40,7 +40,7 @@ def test_http_put_middleware():
     request = RequestFactory().put(
         path = '/',
         data = urlencode({
-            'foo': 'bar',
+            'foo': 'bar'
         }),
         content_type = "application/x-www-form-urlencoded"
     )
