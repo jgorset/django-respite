@@ -59,10 +59,11 @@ class JsonMiddleware:
     """
 
     def process_request(self, request):
-        content_type = request.META.get('CONTENT_TYPE')
+        if 'CONTENT_TYPE' in request.META:
+            content_type, encoding = parse_content_type(request.META['CONTENT_TYPE'])
 
-        if content_type and parse_content_type(content_type)[0] == 'application/json':
-            data = json.loads(request.raw_post_data)
+            if content_type == 'application/json':
+                data = json.loads(request.raw_post_data, encoding)
 
-            if request.method in ['POST', 'PUT', 'PATCH']:
-                setattr(request, request.method, QueryDict(urlencode(data)))
+                if request.method in ['POST', 'PUT', 'PATCH']:
+                    setattr(request, request.method, QueryDict(urlencode(data)))

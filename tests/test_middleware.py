@@ -12,7 +12,7 @@ from respite.middleware import *
 client = Client()
 
 def test_json_middleware():
-    response = client.post(
+    request = RequestFactory().post(
         path = '/',
         data = json.dumps({
             'foo': 'foo',
@@ -21,6 +21,14 @@ def test_json_middleware():
         }),
         content_type = 'application/json'
     )
+
+    JsonMiddleware().process_request(request)
+
+    assert_equal(request.POST, {
+        'foo': ['foo'],
+        'bar': ['bar'],
+        'baz': ['baz']
+    })
 
 def test_http_method_override_middleware():
     request = RequestFactory().post(
