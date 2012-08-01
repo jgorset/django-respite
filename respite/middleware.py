@@ -21,6 +21,11 @@ class HttpMethodOverrideMiddleware:
                 request.POST.get('_method')
             ).upper()
 
+            # Proxy the CSRF middleware token to a header for compatibility with non-idempotent
+            # methods besides POST.
+            if 'csrfmiddlewaretoken' in request.POST:
+                request.META.setdefault('HTTP_X_CSRFTOKEN', request.POST['csrfmiddlewaretoken'])
+
             # In the interest of keeping the request pristine, we discard the "_method" key
             # and set its "POST" attribute to an empty QueryDict.
             if '_method' in request.POST:
