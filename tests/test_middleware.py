@@ -2,10 +2,12 @@
 
 from nose.tools import *
 
+from urllib import urlencode
+
 from django.utils import simplejson as json
 from django.test.client import Client, RequestFactory
 
-from respite.middleware import JsonMiddleware, HttpMethodOverrideMiddleware
+from respite.middleware import *
 
 client = Client()
 
@@ -33,3 +35,18 @@ def test_http_method_override_middleware():
 
     assert_equal(request.method, 'PUT')
     assert_equal(request.POST, {})
+
+def test_http_put_middleware():
+    request = RequestFactory().put(
+        path = '/',
+        data = urlencode({
+            'foo': 'bar',
+        }),
+        content_type = "application/x-www-form-urlencoded"
+    )
+
+    HttpPutMiddleware().process_request(request)
+
+    assert_equal(request.PUT, {
+        'foo': ['bar']
+    })
