@@ -1,6 +1,8 @@
 Respite
 =======
 
+.. image:: https://secure.travis-ci.org/jgorset/django-respite.png?branch=master
+
 About
 -----
 
