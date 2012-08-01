@@ -1,5 +1,7 @@
 """Tests for respite.utils."""
 
+from nose.tools import *
+
 def test_generate_form():
     from respite.utils import generate_form
     from .project.app.models import Article
@@ -13,3 +15,9 @@ def test_parse_http_accept_header():
     expected_output = ['application/xml', 'image/png', 'text/html', 'text/plain', '*/*']
 
     assert parse_http_accept_header(input) == expected_output
+
+def test_parse_content_type():
+    from respite.utils import parse_content_type
+
+    assert_equal(['text/html', 'ISO-8859-1'], parse_content_type('text/html'))
+    assert_equal(['text/html', 'ISO-8859-4'], parse_content_type('text/html; charset=ISO-8859-4'))

@@ -30,7 +30,7 @@ def parse_content_type(content_type):
     :param content_type: A string describing a content type.
     """
     if ';' in content_type:
-        return content_type.split(';')
+        return content_type.split('; charset=')
     else:
         return content_type, 'ISO-8859-1'
 
