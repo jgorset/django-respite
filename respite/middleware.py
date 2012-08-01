@@ -21,6 +21,7 @@ class HttpMethodOverrideMiddleware:
                 request.POST.get('_method')
             ).upper()
 
+        # Discard the "_method" key in the interest of keeping the request pristine.
         if '_method' in request.POST:
             request._raw_post_data = re.sub(r'_method=(PUT|PATCH|DELETE)&?', '', request.raw_post_data)
 
