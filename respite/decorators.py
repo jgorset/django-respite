@@ -11,7 +11,7 @@ def override_supported_formats(formats):
     Override the views class' supported formats for the decorated function.
 
     Arguments:
-    formats -- A list of strings describing formats, e.g. ['html', 'json']
+    formats -- A list of strings describing formats, e.g. ``['html', 'json']``.
     """
     def decorator(function):
         @wraps(function)
