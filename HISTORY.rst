@@ -1,6 +1,20 @@
 History
 -------
 
+1.2.0
+^^^^^
+
+* Added support for set serialization.
+* You may now preprocess views with the ``before`` decorator, which replaces its
+  arguments with the given method's return values.
+* Respite now yields a more helpful exception upon failing to serialize a context
+  that there is no template for.
+* Fixed a bug that caused CSRF errors on POST request that override the request method.
+* Fixed a bug that caused ``parse_content_type``'s return type to vary.
+* Fixed a bug that caused ``parse_content_type``'s charset to include "charset=".
+* Fixed a bug that caused ``request.POST`` to remain populated when the request method was overriden.
+* ``Views.Error`` now inherits from ``Exception`` instead of ``StandardError``.
+
 1.1.1
 ^^^^^
 
