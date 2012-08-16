@@ -37,6 +37,7 @@ FORMATS = [
     Format('Extensible Markup Language', 'XML', ['xml'], ['application/xml', 'text/xml']),
     Format('JavaScript Object Notation', 'JSON', ['json'], ['application/json']),
     Format('JavaScript', 'JS', ['js'], ['application/javascript']),
+    Format('Yet Another Markup Language', 'YAML', ['yaml'], ['application/x-yaml'])
 ]
 
 def find(identifier):
