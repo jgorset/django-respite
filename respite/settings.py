@@ -8,4 +8,4 @@ from django.core.exceptions import ImproperlyConfigured
 # DEFAULT_FORMAT = 'HyperText Markup Language'
 # DEFAULT_FORMAT = 'HTML'
 # DEFAULT_FORMAT = 'html
-DEFAULT_FORMAT = getattr(settings, 'RESPITE_DEFAULT_FORMAT', None)
+DEFAULT_FORMAT = getattr(settings, 'RESPITE_DEFAULT_FORMAT', 'html')

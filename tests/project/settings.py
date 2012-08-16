@@ -23,5 +23,3 @@ INSTALLED_APPS = [
 ]
 
 ROOT_URLCONF = 'tests.project.urls'
-
-RESPITE_DEFAULT_FORMAT = 'html'
