@@ -27,6 +27,11 @@ def teardown():
     Article.objects.all().delete()
 
 @with_setup(setup, teardown)
+def test_disregards_multiple_formats_in_accept_header():
+    response = client.get('/news/articles/', HTTP_ACCEPT='application/json, application/xml')
+    assert_equal(response['Content-Type'], 'text/html; charset=utf-8')
+
+@with_setup(setup, teardown)
 def test_index():
     response = client.get('/news/articles/')
     assert response.status_code == 200

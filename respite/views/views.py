@@ -63,35 +63,44 @@ class Views(object):
             except formats.UnknownFormat:
                 return None
 
-            return format if format in supported_formats else None
+            if format in supported_formats:
+                return format
+            else:
+                return None
 
         # Determine format by HTTP Accept header...
         if 'HTTP_ACCEPT' in request.META:
+            content_types = parse_http_accept_header(request.META['HTTP_ACCEPT'])
 
-            # Parse the HTTP Accept header, returning a list of accepted content types sorted by quality
-            for accepted_content_type in parse_http_accept_header(request.META['HTTP_ACCEPT']):
+            # Only consider 'accept' headers with a single format in an attempt to play nice
+            # with browsers that ask for formats they really should not want.
+            if len(content_types) == 1:
+                content_type = content_types[0]
 
-                # Default to the view's preferred format for the wilcard content type.
-                if accepted_content_type == '*/*':
+                # If the request has no preference as to the format of its response, prefer the
+                # first of the view's supported formats.
+                if content_type == '*/*':
                     return supported_formats[0]
 
                 try:
-                    format = formats.find_by_content_type(accepted_content_type)
+                    format = formats.find_by_content_type(content_type)
                 except formats.UnknownFormat:
-                    continue
+                    return None
 
                 if format in supported_formats:
                     return format
                 else:
-                    continue
+                    return None
 
-        # If none of the formats given in the HTTP 'accept' header are supported by these views,
-        # or no HTTP 'accept' header was given at all, default to the format given in
-        # DEFAULT_FORMAT if that's supported.
+        # If no format is given by either extension or header, default to the format given in
+        # RESPITE_DEFAULT_FORMAT (given, of course, that it's supported by the view).
         if DEFAULT_FORMAT:
-            default_format = formats.find(DEFAULT_FORMAT)
-            if default_format in supported_formats:
-                return default_format
+            format = formats.find(DEFAULT_FORMAT)
+
+            if format in supported_formats:
+                return format
+            else:
+                return None
 
     def _render(self, request, template=None, status=200, context={}, headers={}, prefix_template_path=True):
         """
