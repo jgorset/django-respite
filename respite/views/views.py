@@ -26,7 +26,7 @@ class Views(object):
 
         return self._render(
             request = request,
-            template = None,
+            template = 'options',
             context = {
                 'options': options
             },

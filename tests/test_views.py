@@ -2,7 +2,7 @@
 
 from datetime import datetime
 
-from nose.tools import with_setup
+from nose.tools import *
 from django.conf import settings
 from django.test.client import Client
 
@@ -129,6 +129,12 @@ def test_options():
     response = client.options('/news/articles/', HTTP_ACCEPT='application/json')
     assert response.status_code == 200
     assert set(response['Allow'].split(', ')) == set(['GET', 'POST'])
+
+@with_setup(setup, teardown)
+def test_options_with_template():
+    response = client.options('/news/articles/', HTTP_ACCEPT='text/html')
+    assert response.status_code == 200
+    assert_regexp_matches(response.content, '<options template>')
 
 @with_setup(setup, teardown)
 def test_head():
