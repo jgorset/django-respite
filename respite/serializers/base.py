@@ -6,6 +6,7 @@ except ImportError:
 import django.db.models
 import django.forms
 import datetime
+from decimal import Decimal
 
 class Serializer(object):
     """Base class for serializers."""
@@ -163,6 +164,13 @@ class Serializer(object):
                 except ValueError:
                     return None
 
+            def serialize_decimal_field(decimal_field):
+                """Decimal fields are serialized as strings."""
+                try:
+                    return str(decimal_field)
+                except ValueError:
+                    return None
+
             if isinstance(anything, dict):
                 return serialize_dictionary(anything)
 
@@ -196,11 +204,11 @@ class Serializer(object):
             if isinstance(anything, django.db.models.manager.Manager):
                 return serialize_manager(anything)
 
-            if type(anything) is django.db.models.fields.files.FieldFile:
-                return serialize_field_file(anything)
+            if isinstance(anything, Decimal):
+                return serialize_decimal_field(anything)
 
-            if type(anything) is django.db.models.fields.files.ImageFieldFile:
-                return serialize_image_field_file(anything)
+            if hasattr(anything,'storage'):
+                return serialize_field_file(anything)
 
             if anything is None:
                 return None
