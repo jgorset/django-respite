@@ -4,6 +4,7 @@ except ImportError:
     from ..lib.ordereddict import OrderedDict
 
 import django.db.models
+import django.core.files
 import django.forms
 import datetime
 from decimal import Decimal
@@ -207,7 +208,7 @@ class Serializer(object):
             if isinstance(anything, Decimal):
                 return serialize_decimal_field(anything)
 
-            if hasattr(anything,'storage'):
+            if isinstance(anything, django.core.files.base.File):
                 return serialize_field_file(anything)
 
             if anything is None:
