@@ -14,6 +14,10 @@ class HttpMethodOverrideMiddleware:
     """
 
     def process_request(self, request):
+        # In the interest of keeping the request pristine, we discard the "_method" key
+        # and set its "POST" attribute to an empty QueryDict.
+        request._raw_post_data = re.sub(r'_method=(PUT|PATCH|DELETE)&?', '', request.raw_post_data)
+
         if 'HTTP_X_HTTP_METHOD_OVERRIDE' in request.META \
         or '_method' in request.POST:
             request.method = (
@@ -25,11 +29,6 @@ class HttpMethodOverrideMiddleware:
             # methods besides POST.
             if 'csrfmiddlewaretoken' in request.POST:
                 request.META.setdefault('HTTP_X_CSRFTOKEN', request.POST['csrfmiddlewaretoken'])
-
-            # In the interest of keeping the request pristine, we discard the "_method" key
-            # and set its "POST" attribute to an empty QueryDict.
-            if '_method' in request.POST:
-                request._raw_post_data = re.sub(r'_method=(PUT|PATCH|DELETE)&?', '', request.raw_post_data)
 
             request.POST = QueryDict('')
 
