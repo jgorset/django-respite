@@ -136,10 +136,9 @@ def test_options():
     assert set(response['Allow'].split(', ')) == set(['GET', 'POST'])
 
 @with_setup(setup, teardown)
-def test_options_with_template():
+def test_options_with_unsupported_format():
     response = client.options('/news/articles/', HTTP_ACCEPT='text/html')
-    assert response.status_code == 200
-    assert_regexp_matches(response.content, '<options template>')
+    assert response.status_code == 406
 
 @with_setup(setup, teardown)
 def test_head():
