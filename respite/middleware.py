@@ -14,8 +14,7 @@ class HttpMethodOverrideMiddleware:
     """
 
     def process_request(self, request):
-        # In the interest of keeping the request pristine, we discard the "_method" key
-        # and set its "POST" attribute to an empty QueryDict.
+        # In the interest of keeping the request pristine, we discard the "_method" key.
         request._raw_post_data = re.sub(r'_method=(GET|POST|PUT|PATCH|DELETE|OPTIONS)&?', '', request.raw_post_data)
 
         if 'HTTP_X_HTTP_METHOD_OVERRIDE' in request.META \
