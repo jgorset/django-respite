@@ -12,7 +12,7 @@ Respite is best installed with `pip`_::
 Configuration
 -------------
 
-In your ``settings`` module...
+In your ``settings`` module:
 
 * Add ``respite`` to ``INSTALLED_APPS``
 * Add ``respite.middleware.HttpPutMiddleware`` to ``MIDDLEWARE_CLASSES``
@@ -46,12 +46,12 @@ Development dependencies
 If you are interested in contributing to Respite, you will also need to install
 some or all of the following packages:
 
-* `pytest`_
+* `nose`_
 * `sphinx`_
 
 For an up-to-date list of exact testing/development requirements, including version numbers, please
-see the ``DEPENDENCIES`` file included with the source distribution. This file is intended to be used
-with ``pip``, e.g. ``pip install -r DEPENDENCIES``.
+see the ``requirements.txt`` file included with the source distribution. This file is intended to be used
+with ``pip``, e.g. ``pip install -r requirements.txt``.
 
 .. _source-code-checkouts:
 
@@ -61,6 +61,6 @@ Source code checkouts
 To follow Respite's development via Git instead of downloading official releases, please see our `Github mirror`_.
 
 .. _pip: http://www.pip-installer.org/en/latest/
-.. _pytest: http://pytest.org/
+.. _nose: https://nose.readthedocs.org/en/latest/
 .. _sphinx: http://www.pip-installer.org/en/latest/
 .. _Github mirror: http://github.com/jgorset/django-respite/
