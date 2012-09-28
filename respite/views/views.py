@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from django.template import TemplateDoesNotExist
 from django.conf import settings
 
+from respite.decorators import override_supported_formats
 from respite.settings import DEFAULT_FORMAT
 from respite.utils import parse_http_accept_header
 from respite import serializers
@@ -18,6 +19,7 @@ class Views(object):
     template_path = ''
     supported_formats = ['html']
 
+    @override_supported_formats(['json', 'xml'])
     def options(self, request, map, *args, **kwargs):
         """List communication options."""
         options = {}
