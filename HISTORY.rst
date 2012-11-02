@@ -1,6 +1,18 @@
 History
 -------
 
+1.3.0
+^^^^^
+
+* Added support for YAML.
+* ``RESPITE_DEFAULT_FORMAT`` now defaults to HTML.
+* You may now use templates with HTTP OPTIONS requests.
+* HTTP OPTIONS no longer supports HTML.
+* Respite will now disregard HTTP ACCEPT headers with more than a single format.
+* Added support for serialization of decimals and storage fields.
+* Fixed a bug that caused overriding the HTTP method to break under Django 1.3.1 and 1.3.2.
+* Fixed a bug that prevented the context of some views in ``Resource`` from being transposed to underscore case.
+
 1.2.0
 ^^^^^
 
