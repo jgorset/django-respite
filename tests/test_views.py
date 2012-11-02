@@ -39,6 +39,7 @@ def test_index():
 @with_setup(setup, teardown)
 def test_show():
     response = client.get('/news/articles/1.json')
+    assert 'article' in json.loads(response.content)
     assert response.status_code == 200
 
     response = client.get('/news/articles/2', HTTP_ACCEPT='application/json')
@@ -51,12 +52,14 @@ def test_show():
 
 @with_setup(setup, teardown)
 def test_new():
-    response = client.get('/news/articles/new')
+    response = client.get('/news/articles/new.json')
+    assert 'form' in json.loads(response.content)
     assert response.status_code == 200
 
 @with_setup(setup, teardown)
 def test_create():
-    response = client.post('/news/articles/')
+    response = client.post('/news/articles/', HTTP_ACCEPT='application/json')
+    assert 'form' in json.loads(response.content)
     assert response.status_code == 400
 
     response = client.post('/news/articles/', {
@@ -64,7 +67,9 @@ def test_create():
         'content': 'Content',
         'author': '1',
         'created_at': '1970-01-01 00:00:00'
-    })
+    }, HTTP_ACCEPT='application/json')
+
+    assert 'article' in json.loads(response.content)
     assert response.status_code == 201
 
 @with_setup(setup, teardown)

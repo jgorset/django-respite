@@ -64,7 +64,7 @@ class Resource(object):
             request = request,
             template = 'show',
             context = {
-                self.model.__name__.lower(): object
+                cc2us(self.model.__name__): object
             },
             status = 200
         )
@@ -103,7 +103,7 @@ class Resource(object):
                 request = request,
                 template = 'show',
                 context = {
-                    self.model.__name__.lower(): object
+                    cc2us(self.model.__name__): object
                 },
                 status = 201
             )
@@ -146,7 +146,7 @@ class Resource(object):
             request = request,
             template = 'edit',
             context = {
-                self.model.__name__.lower(): object,
+                cc2us(self.model.__name__): object,
                 'form': form
             },
             status = 200
