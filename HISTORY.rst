@@ -8,7 +8,7 @@ History
 * ``RESPITE_DEFAULT_FORMAT`` now defaults to HTML.
 * ``HTTP OPTIONS`` no longer supports HTML.
 * You may now use templates for OPTIONS requests.
-* Respite will now disregard ``accept`` headers with more than a single format.
+* Respite will now disregard ``accept`` headers with more than a single format.
 * Added support for serialization of decimals and storage fields.
 * Fixed a bug that caused overriding the request method to break under Django 1.3.1 and 1.3.2.
 * Fixed a bug that prevented the context of some views from being transposed to underscore case.
