@@ -1,4 +1,5 @@
 import re
+import sys
 
 from urllib import urlencode
 
@@ -6,6 +7,13 @@ from django.http import QueryDict
 from django.utils import simplejson as json
 
 from respite.utils import parse_content_type
+
+_module = sys.modules[__name__]
+
+# We need a module-level variable to cache the contents of request.POST
+# in order to copy it to request.PATCH and request.PUT in HttpPatchMiddleware
+# and HttpPutMiddleware, respectively.
+_post_cache = None
 
 class HttpMethodOverrideMiddleware:
     """
@@ -26,6 +34,7 @@ class HttpMethodOverrideMiddleware:
             if 'csrfmiddlewaretoken' in request.POST:
                 request.META.setdefault('HTTP_X_CSRFTOKEN', request.POST['csrfmiddlewaretoken'])
 
+            _module._post_cache = request.POST
             request.POST = QueryDict('')
 
 class HttpPutMiddleware:
@@ -36,7 +45,7 @@ class HttpPutMiddleware:
 
     def process_request(self, request):
         if request.method == 'PUT':
-            request.PUT = QueryDict(request.raw_post_data)
+            request.PUT = _post_cache
 
 class HttpPatchMiddleware:
     """
@@ -46,7 +55,7 @@ class HttpPatchMiddleware:
 
     def process_request(self, request):
         if request.method == 'PATCH':
-            request.PATCH = QueryDict(request.raw_post_data)
+            request.PATCH = _post_cache
 
 class JsonMiddleware:
     """
