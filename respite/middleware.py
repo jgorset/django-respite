@@ -1,19 +1,22 @@
 import re
-import sys
 
 from urllib import urlencode
+try:
+    from cStringIO import StringIO
+except ImportError:
+    from StringIO import StringIO
 
 from django.http import QueryDict
+from django.http.multipartparser import MultiPartParser
 from django.utils import simplejson as json
 
 from respite.utils import parse_content_type
 
-_module = sys.modules[__name__]
-
-# We need a module-level variable to cache the contents of request.POST
-# in order to copy it to request.PATCH and request.PUT in HttpPatchMiddleware
-# and HttpPutMiddleware, respectively.
-_post_cache = None
+def parse_multipart_data(request):
+    """Parse a request with multipart data"""
+    data = StringIO(request.raw_post_data)
+    parser = MultiPartParser(request.META, data, request.upload_handlers, request.encoding)
+    return parser.parse()
 
 class HttpMethodOverrideMiddleware:
     """
@@ -22,6 +25,9 @@ class HttpMethodOverrideMiddleware:
     """
 
     def process_request(self, request):
+        # In the interest of keeping the request pristine, we discard the "_method" key.
+        request._raw_post_data = re.sub(r'_method=(GET|POST|PUT|PATCH|DELETE|OPTIONS)&?', '', request.raw_post_data)
+        
         if 'HTTP_X_HTTP_METHOD_OVERRIDE' in request.META \
         or '_method' in request.POST:
             request.method = (
@@ -34,7 +40,6 @@ class HttpMethodOverrideMiddleware:
             if 'csrfmiddlewaretoken' in request.POST:
                 request.META.setdefault('HTTP_X_CSRFTOKEN', request.POST['csrfmiddlewaretoken'])
 
-            _module._post_cache = request.POST
             request.POST = QueryDict('')
 
 class HttpPutMiddleware:
@@ -45,7 +50,11 @@ class HttpPutMiddleware:
 
     def process_request(self, request):
         if request.method == 'PUT':
-            request.PUT = _post_cache
+            # If the request contains multipart data we need to parse the request body. 
+            if request.META.get('CONTENT_TYPE', '').startswith('multipart'):
+                request.PUT = parse_multipart_data(request)[0]
+            else:
+                request.PUT = QueryDict(request.raw_post_data)
 
 class HttpPatchMiddleware:
     """
@@ -55,7 +64,11 @@ class HttpPatchMiddleware:
 
     def process_request(self, request):
         if request.method == 'PATCH':
-            request.PATCH = _post_cache
+            # If the request contains multipart data we need to parse the request body. 
+            if request.META.get('CONTENT_TYPE', '').startswith('multipart'):
+                request.PATCH = parse_multipart_data(request)[0]
+            else:
+                request.PATCH = QueryDict(request.raw_post_data)
 
 class JsonMiddleware:
     """
