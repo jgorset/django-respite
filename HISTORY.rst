@@ -1,6 +1,11 @@
 History
 -------
 
+1.3.1
+^^^^^
+
+* Fixed a bug that caused multipart content to be parsed incorrectly for PUT and PATCH requests.
+
 1.3.0
 ^^^^^
 
