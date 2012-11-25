@@ -1,11 +1,22 @@
 import re
 
 from urllib import urlencode
+try:
+    from cStringIO import StringIO
+except ImportError:
+    from StringIO import StringIO
 
 from django.http import QueryDict
+from django.http.multipartparser import MultiPartParser
 from django.utils import simplejson as json
 
 from respite.utils import parse_content_type
+
+def parse_multipart_data(request):
+    """Parse a request with multipart data"""
+    data = StringIO(request.raw_post_data)
+    parser = MultiPartParser(request.META, data, request.upload_handlers, request.encoding)
+    return parser.parse()
 
 class HttpMethodOverrideMiddleware:
     """
@@ -14,6 +25,9 @@ class HttpMethodOverrideMiddleware:
     """
 
     def process_request(self, request):
+        # In the interest of keeping the request pristine, we discard the "_method" key.
+        request._raw_post_data = re.sub(r'_method=(GET|POST|PUT|PATCH|DELETE|OPTIONS)&?', '', request.raw_post_data)
+        
         if 'HTTP_X_HTTP_METHOD_OVERRIDE' in request.META \
         or '_method' in request.POST:
             request.method = (
@@ -36,7 +50,11 @@ class HttpPutMiddleware:
 
     def process_request(self, request):
         if request.method == 'PUT':
-            request.PUT = QueryDict(request.raw_post_data)
+            # If the request contains multipart data we need to parse the request body. 
+            if request.META.get('CONTENT_TYPE', '').startswith('multipart'):
+                request.PUT = parse_multipart_data(request)[0]
+            else:
+                request.PUT = QueryDict(request.raw_post_data)
 
 class HttpPatchMiddleware:
     """
@@ -46,7 +64,11 @@ class HttpPatchMiddleware:
 
     def process_request(self, request):
         if request.method == 'PATCH':
-            request.PATCH = QueryDict(request.raw_post_data)
+            # If the request contains multipart data we need to parse the request body. 
+            if request.META.get('CONTENT_TYPE', '').startswith('multipart'):
+                request.PATCH = parse_multipart_data(request)[0]
+            else:
+                request.PATCH = QueryDict(request.raw_post_data)
 
 class JsonMiddleware:
     """
