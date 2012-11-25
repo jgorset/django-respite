@@ -1,22 +1,11 @@
 import re
 
 from urllib import urlencode
-try:
-    from cStringIO import StringIO
-except ImportError:
-    from StringIO import StringIO
 
 from django.http import QueryDict
-from django.http.multipartparser import MultiPartParser
 from django.utils import simplejson as json
 
-from respite.utils import parse_content_type
-
-def parse_multipart_data(request):
-    """Parse a request with multipart data"""
-    data = StringIO(request.raw_post_data)
-    parser = MultiPartParser(request.META, data, request.upload_handlers, request.encoding)
-    return parser.parse()
+from respite.utils import parse_content_type, parse_multipart_data
 
 class HttpMethodOverrideMiddleware:
     """

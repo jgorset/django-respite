@@ -1,4 +1,10 @@
 from django import forms
+from django.http.multipartparser import MultiPartParser
+
+try:
+    from cStringIO import StringIO
+except ImportError:
+    from StringIO import StringIO
 
 def generate_form(model, form=None, fields=False, exclude=False):
     """
@@ -66,3 +72,9 @@ def parse_http_accept_header(header):
         content_types.append(i[0])
 
     return content_types
+
+def parse_multipart_data(request):
+    """Parse a request with multipart data"""
+    data = StringIO(request.raw_post_data)
+    parser = MultiPartParser(request.META, data, request.upload_handlers, request.encoding)
+    return parser.parse()
