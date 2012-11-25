@@ -36,7 +36,7 @@ In order to install and use Respite, you will need four primary pieces of softwa
 
 * the Python programming language version 2.7
 * the ``setuptools`` packaging/installation library.
-* Django version 1.3 or later.
+* Django version 1.3.1 or later.
 
 .. _development dependencies:
 
