@@ -79,6 +79,9 @@ def parse_multipart_data(request):
 
     :param request: A HttpRequest instance.
     """
-    data = StringIO(request.raw_post_data)
-    parser = MultiPartParser(request.META, data, request.upload_handlers, request.encoding)
-    return parser.parse()
+    return MultiPartParser(
+        META=request.META,
+        input_data=StringIO(request.raw_post_data),
+        upload_handlers=request.upload_handlers,
+        encoding=request.encoding
+    ).parse()
