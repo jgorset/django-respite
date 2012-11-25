@@ -21,3 +21,6 @@ def test_parse_content_type():
 
     assert_equal(('text/html', 'ISO-8859-1'), parse_content_type('text/html'))
     assert_equal(('text/html', 'ISO-8859-4'), parse_content_type('text/html; charset=ISO-8859-4'))
+
+    assert_equal(('application/json', 'UTF-8'), parse_content_type('application/json'))
+    assert_equal(('application/json', 'ISO-8859-1'), parse_content_type('application/json; charset=ISO-8859-1'))

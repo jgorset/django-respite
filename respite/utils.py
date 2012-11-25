@@ -1,6 +1,8 @@
 from django import forms
 from django.http.multipartparser import MultiPartParser
 
+from respite import formats
+
 try:
     from cStringIO import StringIO
 except ImportError:
@@ -38,7 +40,17 @@ def parse_content_type(content_type):
     if '; charset=' in content_type:
         return tuple(content_type.split('; charset='))
     else:
-        return (content_type, 'ISO-8859-1')
+        if 'text' in content_type:
+            encoding = 'ISO-8859-1'
+        else:
+            try:
+                format = formats.find_by_content_type(content_type)
+            except formats.UnknownFormat:
+                encoding = 'ISO-8859-1'
+            else:
+                encoding = format.default_encoding or 'ISO-8859-1'
+
+        return (content_type, encoding)
 
 def parse_http_accept_header(header):
     """
