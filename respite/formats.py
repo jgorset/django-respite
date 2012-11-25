@@ -21,12 +21,12 @@ class Format(object):
 
     @property
     def extension(self):
-        """Return the desired extension for this format."""
+        """Return the preferred extension for this format."""
         return self.extensions[0]
 
     @property
     def content_type(self):
-        """Return the desired content type for this format."""
+        """Return the preferred content type for this format."""
         return self.content_types[0]
 
     def __str__(self):
