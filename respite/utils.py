@@ -74,7 +74,11 @@ def parse_http_accept_header(header):
     return content_types
 
 def parse_multipart_data(request):
-    """Parse a request with multipart data"""
+    """
+    Parse a request with multipart data.
+
+    :param request: A HttpRequest instance.
+    """
     data = StringIO(request.raw_post_data)
     parser = MultiPartParser(request.META, data, request.upload_handlers, request.encoding)
     return parser.parse()
