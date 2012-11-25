@@ -3,7 +3,7 @@ class Format(object):
     A format represents a file format.
     """
 
-    def __init__(self, name, acronym, extensions, content_types):
+    def __init__(self, name, acronym, extensions, content_types, default_encoding=None):
         """
         Initialize a new format.
 
@@ -11,6 +11,7 @@ class Format(object):
         :param acronym: A string describing the acronym of the format (e.g. 'HTML').
         :param extensions: A list of strings describing the extensions of the format (e.g. 'html').
         :param content_types: A list of strings describing the internet media type* of the format (e.g. 'text/html').
+        :param default_encoding: A string describing the default encoding of this format.
 
         * http://www.iana.org/assignments/media-types/index.html
         """
@@ -18,6 +19,7 @@ class Format(object):
         self.acronym = acronym
         self.extensions = extensions
         self.content_types = content_types
+        self.default_encoding = default_encoding
 
     @property
     def extension(self):
@@ -35,8 +37,8 @@ class Format(object):
 FORMATS = [
     Format('HyperText Markup Language', 'HTML', ['html'], ['text/html']),
     Format('Extensible Markup Language', 'XML', ['xml'], ['application/xml', 'text/xml']),
-    Format('JavaScript Object Notation', 'JSON', ['json'], ['application/json']),
-    Format('JavaScript', 'JS', ['js'], ['application/javascript']),
+    Format('JavaScript Object Notation', 'JSON', ['json'], ['application/json'], 'UTF-8'),
+    Format('JavaScript', 'JS', ['js'], ['application/javascript'], 'UTF-8'),
     Format('Yet Another Markup Language', 'YAML', ['yaml'], ['application/x-yaml'])
 ]
 
