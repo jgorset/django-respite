@@ -18,16 +18,17 @@ class JsonQueryDict(QueryDict):
             encoding = settings.DEFAULT_CHARSET
         self.encoding = encoding
 
-        for key, value in data.items():
-            if isinstance(value, (list, set)):
-                self.setlistdefault(key, [])
-                items = [JsonQueryDict(item) for item in value]
-                super(MultiValueDict, self).__setitem__(key, items)
-            elif isinstance(value, dict):
-                self.appendlist(force_unicode(key, encoding, errors='replace'),
-                                JsonQueryDict(value))
-            else:
-                self.appendlist(force_unicode(key, encoding, errors='replace'), 
-                                force_unicode(value, encoding, errors='replace'))
+        if isinstance(data, dict):
+            for key, value in data.items():
+                if isinstance(value, (list, set)):
+                    self.setlistdefault(key, [])
+                    items = [JsonQueryDict(item) for item in value]
+                    super(MultiValueDict, self).__setitem__(key, items)
+                elif isinstance(value, dict):
+                    self.appendlist(force_unicode(key, encoding, errors='replace'),
+                                    JsonQueryDict(value))
+                else:
+                    self.appendlist(force_unicode(key, encoding, errors='replace'), 
+                                    force_unicode(value, encoding, errors='replace'))
 
         self._mutable = mutable
