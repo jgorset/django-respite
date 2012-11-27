@@ -27,6 +27,12 @@ to your middleware classes; it facilitates for overriding the HTTP method with t
 
     ``HttpMethodOverrideMiddleware`` must be processed before ``HttpPutMiddleware`` and ``HttpPatchMiddleware``.
 
+.. note::
+
+    If you are using respite with backbone.js or any other frameworks that uses jQuery.ajax to make requests to the
+    server, you might want to add ``<script src="{{ STATIC_URL }}respite/js/jquery.respite.js"></script>`` to your 
+    base template. This configures jQuery to be compliant with respite's way of handling ``Accept`` headers.
+
 .. _dependencies:
 
 Dependencies
