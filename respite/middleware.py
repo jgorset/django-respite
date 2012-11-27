@@ -6,6 +6,7 @@ from django.http import QueryDict
 from django.utils import simplejson as json
 
 from respite.utils import parse_content_type, parse_multipart_data
+from respite.utils.datastructures import JsonQueryDict
 
 class HttpMethodOverrideMiddleware:
     """
@@ -72,4 +73,4 @@ class JsonMiddleware:
                 data = json.loads(request.raw_post_data, encoding)
 
                 if request.method in ['POST', 'PUT', 'PATCH']:
-                    setattr(request, request.method, QueryDict(urlencode(data)))
+                    setattr(request, request.method, JsonQueryDict(data))
