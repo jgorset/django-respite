@@ -10,5 +10,5 @@ setup(
     author = "Johannes Gorset",
     author_email = "jgorset@gmail.com",
     url = "http://github.com/jgorset/django-respite",
-    packages = ['respite', 'respite.lib', 'respite.serializers', 'respite.urls', 'respite.views']
+    packages = ['respite', 'respite.lib', 'respite.serializers', 'respite.urls', 'respite.views', 'respite.utils']
 )

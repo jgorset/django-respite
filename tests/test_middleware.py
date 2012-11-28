@@ -17,7 +17,11 @@ def test_json_middleware():
         data = json.dumps({
             'foo': 'foo',
             'bar': 'bar',
-            'baz': 'baz'
+            'baz': 'baz',
+            'hogera': [
+                {'hoge': 'hoge'},
+                {'fuga': 'fuga'}
+            ]
         }),
         content_type = 'application/json'
     )
@@ -27,7 +31,11 @@ def test_json_middleware():
     assert_equal(request.POST, {
         'foo': ['foo'],
         'bar': ['bar'],
-        'baz': ['baz']
+        'baz': ['baz'],
+        'hogera': [
+            {'hoge': ['hoge']},
+            {'fuga': ['fuga']}
+        ]
     })
 
 def test_http_method_override_middleware():
