@@ -1,7 +1,10 @@
 from copy import deepcopy
 
+import django
+
 from django.conf.urls.defaults import *
 from django.http import HttpResponse
+from django.utils.translation import ugettext_lazy
 
 from respite.inflector import pluralize, cc2us
 
@@ -117,6 +120,9 @@ def resource(views, routes, prefix=''):
                 if sibling.regex == route.regex:
                     kwargs[sibling.method] = sibling.view
                     routes.remove(sibling)
+
+            if django.VERSION[0:2] == (1, 4):
+                route.regex = ugettext_lazy(route.regex)
 
             urls.append(
                 url(
