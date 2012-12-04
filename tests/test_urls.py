@@ -25,7 +25,7 @@ def test_localized_urls():
         assert_equal('/nyheter/artikler/1', url)
 
         url = reverse('edit_article', args=[1])
-        assert_equal('/nyheter/artikler/1/edit', url)
+        assert_equal('/nyheter/artikler/1/endre', url)
 
         url = reverse('new_article')
-        assert_equal('/nyheter/artikler/new', url)
+        assert_equal('/nyheter/artikler/ny', url)

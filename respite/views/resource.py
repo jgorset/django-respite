@@ -4,7 +4,7 @@ from django.core.urlresolvers import reverse
 from django.forms import CharField, HiddenInput
 from django.forms.models import model_to_dict
 from django.db.models import FieldDoesNotExist
-from django.utils.translation import string_concat
+from django.utils.translation import string_concat, ugettext_lazy as _
 
 from respite.utils import generate_form
 from respite.inflector import pluralize, cc2us
@@ -24,7 +24,7 @@ class Resource(object):
     form = None
 
     @route(
-        regex = lambda prefix: string_concat('^', prefix, '(?:$|index%s$)' % templates.format),
+        regex = lambda prefix: string_concat('^', prefix, '(?:$|', _('index'), templates.format, '$)'),
         method = 'GET',
         name = lambda views: pluralize(cc2us(views.model.__name__))
     )
@@ -42,7 +42,7 @@ class Resource(object):
         )
 
     @route(
-        regex = lambda prefix: string_concat('^', prefix, '(?P<id>[0-9]+)%s$' % templates.format),
+        regex = lambda prefix: string_concat('^', prefix, '(?P<id>[0-9]+)', templates.format, '$'),
         method = 'GET',
         name = lambda views: cc2us(views.model.__name__)
     )
@@ -71,7 +71,7 @@ class Resource(object):
         )
 
     @route(
-        regex = lambda prefix: string_concat('^', prefix, 'new%s$' % templates.format),
+        regex = lambda prefix: string_concat('^', prefix, _('new'), templates.format, '$'),
         method = 'GET',
         name = lambda views: 'new_%s' % cc2us(views.model.__name__)
     )
@@ -89,7 +89,7 @@ class Resource(object):
         )
 
     @route(
-        regex = lambda prefix: string_concat('^', prefix, '(?:$|index%s$)' % templates.format),
+        regex = lambda prefix: string_concat('^', prefix, '(?:$|', _('index'), templates.format, '$)'),
         method = 'POST',
         name = lambda views: pluralize(cc2us(views.model.__name__))
     )
@@ -119,7 +119,7 @@ class Resource(object):
             )
 
     @route(
-        regex = lambda prefix: string_concat('^', prefix, '(?P<id>[0-9]+)/edit%s$' % templates.format),
+        regex = lambda prefix: string_concat('^', prefix, '(?P<id>[0-9]+)/', _('edit'), templates.format, '$'),
         method = 'GET',
         name = lambda views: 'edit_%s' % cc2us(views.model.__name__)
     )
