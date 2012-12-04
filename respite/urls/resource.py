@@ -101,7 +101,6 @@ def resource(views, routes, prefix=''):
                 routes[i].name = route.name(views)
 
         for route in list(routes):
-
             # Collect this route and its siblings (i.e. routes that share
             # same regular expression) in a dictionary of keys that describe
             # HTTP methods and values that describe the corresponding
