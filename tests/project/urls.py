@@ -1,8 +1,9 @@
 from django.conf.urls.defaults import *
+from django.utils.translation import ugettext_lazy as _
 
 from views import home
 
 urlpatterns = patterns('',
     (r'^$', home),
-    (r'^news/', include('tests.project.app.urls'))
+    (_(r'^news/'), include('tests.project.app.urls'))
 )

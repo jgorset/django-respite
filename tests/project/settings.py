@@ -1,3 +1,5 @@
+import os
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -21,5 +23,16 @@ INSTALLED_APPS = [
     'respite',
     'tests.project.app'
 ]
+
+LOCALE_PATHS = (
+    os.path.join(os.path.dirname(__file__), 'locale'),
+)
+
+LANGUAGES = (
+    ('nb', 'Norwegian'),
+    ('en', 'English')
+)
+
+LANGUAGE_CODE = 'en'
 
 ROOT_URLCONF = 'tests.project.urls'
