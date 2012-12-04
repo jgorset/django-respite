@@ -1,5 +1,7 @@
 """Tests for respite.serializers.*"""
 
+from nose.tools import *
+
 from datetime import datetime
 
 from django.test.client import RequestFactory
@@ -171,9 +173,9 @@ def test_form_serialization():
 
     form = generate_form(Article)()
 
-    assert Serializer(form).serialize(request) == {
-        'fields': ['title', 'content', 'is_published', 'created_at', 'author', 'tags']
-    }
+    assert_equal(Serializer(form).serialize(request), {
+        'fields': ['title', 'content', 'is_published', 'created_at', 'tags', 'author']
+    })
 
     assert JSONSerializer(form).serialize(request)
     assert JSONPSerializer(form).serialize(request)
