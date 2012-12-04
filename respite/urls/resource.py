@@ -95,7 +95,7 @@ def resource(views, routes, prefix=''):
             if callable(route.regex):
                 routes[i].regex = route.regex(prefix)
             else:
-                routes[i].regex = string_concat('^', prefix, route.regex[1:] if route.regex[0] == '^' else route.regex)
+                routes[i].regex = string_concat('^', prefix, route.regex)
 
             if callable(route.name):
                 routes[i].name = route.name(views)
