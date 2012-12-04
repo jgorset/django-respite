@@ -16,6 +16,9 @@ def test_urls():
     url = reverse('new_article')
     assert_equal('/news/articles/new', url)
 
+    url = reverse('preview_article', args=[1])
+    assert_equal('/news/articles/1/preview', url)
+
 def test_localized_urls():
     with translation.override('nb'):
         url = reverse('articles')
@@ -29,3 +32,6 @@ def test_localized_urls():
 
         url = reverse('new_article')
         assert_equal('/nyheter/artikler/ny', url)
+
+        url = reverse('preview_article', args=[1])
+        assert_equal('/nyheter/artikler/1/forh%C3%A5ndsvis', url)

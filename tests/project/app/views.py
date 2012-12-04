@@ -1,7 +1,10 @@
 from django.shortcuts import render
+from django.utils.translation import string_concat
+from django.utils.translation import ugettext_lazy as _
 
 from respite import Views, Resource
 from respite.decorators import route, before
+from respite.urls import templates
 
 from models import Article
 
@@ -29,7 +32,7 @@ class ArticleViews(Views, Resource):
         )
 
     @route(
-        regex = r'^(?P<id>[0-9]+)/preview(?:\.[a-zA-Z]+)?$',
+        regex = string_concat('(?P<id>[0-9]+)/', _('preview'), templates.format, '$'),
         method = 'GET',
         name = 'preview_article'
     )
