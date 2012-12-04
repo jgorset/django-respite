@@ -9,7 +9,7 @@ class ArticleViews(Views, Resource):
     model = Article
     template_path = 'articles/'
     supported_formats = ['html', 'json', 'yaml']
-    
+
     @route(
         regex = Resource.index.route.regex,
         method = Resource.index.route.method,
