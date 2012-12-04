@@ -2,6 +2,7 @@ from copy import deepcopy
 
 from django.conf.urls.defaults import *
 from django.http import HttpResponse
+from django.utils.translation import string_concat
 
 from respite.inflector import pluralize, cc2us
 
@@ -94,7 +95,7 @@ def resource(views, routes, prefix=''):
             if callable(route.regex):
                 routes[i].regex = route.regex(prefix)
             else:
-                routes[i].regex = u'^%s' % prefix + (route.regex[1:] if route.regex[0] == '^' else route.regex)
+                routes[i].regex = string_concat('^', prefix, route.regex[1:] if route.regex[0] == '^' else route.regex)
 
             if callable(route.name):
                 routes[i].name = route.name(views)
