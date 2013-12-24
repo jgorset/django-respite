@@ -6,7 +6,7 @@ from respite import Views, Resource
 from respite.decorators import route, before
 from respite.urls import templates
 
-from models import Article
+from .models import Article
 
 class ArticleViews(Views, Resource):
     model = Article

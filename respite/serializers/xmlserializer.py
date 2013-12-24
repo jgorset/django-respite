@@ -1,3 +1,4 @@
+import six
 from xml.etree import ElementTree as ET
 
 from respite.inflector import singularize, pluralize
@@ -57,7 +58,7 @@ class XMLSerializer(Serializer):
             if isinstance(value, bool):
                 return serialize_boolean(value)
 
-            if isinstance(value, basestring):
+            if isinstance(value, six.string_types):
                 return serialize_string(value)
 
             if isinstance(value, list):
@@ -78,4 +79,4 @@ class XMLSerializer(Serializer):
             serialize("items", data)
         )
 
-        return '<?xml version="1.0" encoding="UTF-8"?>' + ET.tostring(root)
+        return b'<?xml version="1.0" encoding="UTF-8"?>' + ET.tostring(root)

@@ -1,11 +1,10 @@
 """Monkeypatches."""
 
-from urllib import urlencode
-from urlparse import urlparse
+from six.moves.urllib.parse import urlencode, urlparse
 
 from django.test.client import Client, FakePayload
 
-from utils import monkeypatch_method
+from .utils import monkeypatch_method
 
 @monkeypatch_method(Client)
 def patch(self, path, data, content_type, **extra):

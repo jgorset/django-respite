@@ -20,6 +20,7 @@ MIDDLEWARE_CLASSES = [
 ]
 
 INSTALLED_APPS = [
+    'django_nose',
     'respite',
     'tests.project.app'
 ]
@@ -36,3 +37,7 @@ LANGUAGES = (
 LANGUAGE_CODE = 'en'
 
 ROOT_URLCONF = 'tests.project.urls'
+
+SECRET_KEY = 'my secret'
+
+TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'

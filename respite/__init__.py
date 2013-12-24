@@ -1,2 +1,2 @@
 from respite.views import *
-from version import __version__
+from respite.version import __version__

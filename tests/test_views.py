@@ -39,7 +39,7 @@ def test_index():
 @with_setup(setup, teardown)
 def test_show():
     response = client.get('/news/articles/1.json')
-    assert 'article' in json.loads(response.content)
+    assert 'article' in json.loads(response.content.decode())
     assert response.status_code == 200
 
     response = client.get('/news/articles/2', HTTP_ACCEPT='application/json')
@@ -53,13 +53,13 @@ def test_show():
 @with_setup(setup, teardown)
 def test_new():
     response = client.get('/news/articles/new.json')
-    assert 'form' in json.loads(response.content)
+    assert 'form' in json.loads(response.content.decode())
     assert response.status_code == 200
 
 @with_setup(setup, teardown)
 def test_create():
     response = client.post('/news/articles/', HTTP_ACCEPT='application/json')
-    assert 'form' in json.loads(response.content)
+    assert 'form' in json.loads(response.content.decode())
     assert response.status_code == 400
 
     response = client.post('/news/articles/', {
@@ -69,7 +69,7 @@ def test_create():
         'created_at': '1970-01-01 00:00:00'
     }, HTTP_ACCEPT='application/json')
 
-    assert 'article' in json.loads(response.content)
+    assert 'article' in json.loads(response.content.decode())
     assert response.status_code == 201
 
 @with_setup(setup, teardown)
@@ -79,7 +79,7 @@ def test_edit():
 
 @with_setup(setup, teardown)
 def test_replace():
-    from urllib import urlencode
+    from six.moves.urllib.parse import urlencode
 
     response = client.put('/news/articles/1')
     assert response.status_code == 400
@@ -127,7 +127,7 @@ def test_custom_action():
 @with_setup(setup, teardown)
 def test_custom_action_with_error():
     response = client.get('/news/articles/1337/preview.json')
-    assert json.loads(response.content) == {
+    assert json.loads(response.content.decode()) == {
         'error': {
             'message': 'The article could not be found.'
         }
@@ -149,7 +149,7 @@ def test_options_with_unsupported_format():
 def test_head():
     response = client.head('/news/articles/1', HTTP_ACCEPT='application/json')
     assert response.status_code == 200
-    assert response.content == ''
+    assert response.content == b''
 
 @with_setup(setup, teardown)
 def test_unsupported_method():
