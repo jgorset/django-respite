@@ -1,2 +1,2 @@
-from views import Views
-from resource import Resource
+from respite.views.views import Views
+from respite.views.resource import Resource

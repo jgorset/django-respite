@@ -1,13 +1,15 @@
+import six
 try:
     from collections import OrderedDict
 except ImportError:
     from ..lib.ordereddict import OrderedDict
 
+import datetime
+from decimal import Decimal
+
 import django.db.models
 import django.core.files
 import django.forms
-import datetime
-from decimal import Decimal
 
 class Serializer(object):
     """Base class for serializers."""
@@ -193,10 +195,10 @@ class Serializer(object):
             if isinstance(anything, (django.forms.Form, django.forms.ModelForm)):
                 return serialize_form(anything)
 
-            if isinstance(anything, (str, unicode)):
+            if isinstance(anything, six.string_types):
                 return anything
 
-            if isinstance(anything, (int, float, long)):
+            if isinstance(anything, (float,) + six.integer_types):
                 return anything
 
             if isinstance(anything, (datetime.date, datetime.datetime)):

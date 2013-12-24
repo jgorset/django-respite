@@ -121,7 +121,7 @@ def test_datequeryset_serialization():
     request = factory.get('/')
 
     assert Serializer(created_at_dates).serialize(request) == [
-        '1970-01-01T00:00:00'
+        '1970-01-01'
     ]
 
     assert JSONSerializer(created_at_dates).serialize(request)

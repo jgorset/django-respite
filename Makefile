@@ -1,5 +1,5 @@
 test:
-	DJANGO_SETTINGS_MODULE=tests.project.settings nosetests
+	django-admin.py test --settings=tests.project.settings
 
 documentation:
 	cd docs; make html

@@ -2,7 +2,7 @@
 
 from nose.tools import *
 
-from urllib import urlencode
+from six.moves.urllib.parse import urlencode
 
 from django.utils import simplejson as json
 from django.test.client import Client, RequestFactory

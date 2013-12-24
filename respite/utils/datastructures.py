@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.utils import simplejson as json
 from django.utils.datastructures import MultiValueDict
-from django.utils.encoding import force_unicode
+from django.utils.encoding import force_text
 from django.http import QueryDict
 
 class NestedQueryDict(QueryDict):
@@ -25,10 +25,10 @@ class NestedQueryDict(QueryDict):
                     items = [NestedQueryDict(item) for item in value]
                     super(MultiValueDict, self).__setitem__(key, items)
                 elif isinstance(value, dict):
-                    self.appendlist(force_unicode(key, encoding, errors='replace'),
+                    self.appendlist(force_text(key, encoding, errors='replace'),
                                     NestedQueryDict(value))
                 else:
-                    self.appendlist(force_unicode(key, encoding, errors='replace'), 
-                                    force_unicode(value, encoding, errors='replace'))
+                    self.appendlist(force_text(key, encoding, errors='replace'), 
+                                    force_text(value, encoding, errors='replace'))
 
         self._mutable = mutable

@@ -1,11 +1,8 @@
 from django.http.multipartparser import MultiPartParser
 
-from respite import formats
+import respite.formats as formats
 
-try:
-    from cStringIO import StringIO
-except ImportError:
-    from StringIO import StringIO
+from io import BytesIO
 
 def parse_content_type(content_type):
     """
@@ -69,7 +66,7 @@ def parse_multipart_data(request):
     """
     return MultiPartParser(
         META=request.META,
-        input_data=StringIO(request.raw_post_data),
+        input_data=BytesIO(request.body),
         upload_handlers=request.upload_handlers,
         encoding=request.encoding
     ).parse()
