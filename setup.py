@@ -1,6 +1,9 @@
 from setuptools import setup
+from setuptools.compat import execfile
 
-execfile('respite/version.py')
+# Include version.py without importing respite/__init__.py which can only be
+# imported in a Django context because it imports respite/views.py.
+exec(compile(open('respite/version.py', "rb").read(), '', 'exec'), globals(), locals())
 
 setup(
     name = 'django-respite',
