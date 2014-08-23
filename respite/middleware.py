@@ -16,8 +16,8 @@ class HttpMethodOverrideMiddleware:
 
     def process_request(self, request):
         # In the interest of keeping the request pristine, we discard the "_method" key.
-        request._raw_post_data = re.sub(r'_method=(GET|POST|PUT|PATCH|DELETE|OPTIONS)&?', '', request.raw_post_data)
-        
+        request._body = re.sub(r'_method=(GET|POST|PUT|PATCH|DELETE|OPTIONS)&?', '', request.body)
+
         if 'HTTP_X_HTTP_METHOD_OVERRIDE' in request.META \
         or '_method' in request.POST:
             request.method = (
@@ -44,7 +44,7 @@ class HttpPutMiddleware:
             if request.META.get('CONTENT_TYPE', '').startswith('multipart'):
                 request.PUT = parse_multipart_data(request)[0]
             else:
-                request.PUT = QueryDict(request.raw_post_data)
+                request.PUT = QueryDict(request.body)
 
 class HttpPatchMiddleware:
     """
@@ -58,7 +58,7 @@ class HttpPatchMiddleware:
             if request.META.get('CONTENT_TYPE', '').startswith('multipart'):
                 request.PATCH = parse_multipart_data(request)[0]
             else:
-                request.PATCH = QueryDict(request.raw_post_data)
+                request.PATCH = QueryDict(request.body)
 
 class JsonMiddleware:
     """
@@ -70,7 +70,7 @@ class JsonMiddleware:
             content_type, encoding = parse_content_type(request.META['CONTENT_TYPE'])
 
             if content_type == 'application/json':
-                data = json.loads(request.raw_post_data, encoding)
+                data = json.loads(request.body, encoding)
 
                 if request.method in ['POST', 'PUT', 'PATCH']:
                     setattr(request, request.method, NestedQueryDict(data))
