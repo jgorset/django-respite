@@ -38,3 +38,5 @@ LANGUAGE_CODE = 'en'
 ROOT_URLCONF = 'tests.project.urls'
 
 SECRET_KEY = 'much-secret'
+
+ALLOWED_HOSTS = ['*']
