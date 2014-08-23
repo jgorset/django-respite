@@ -181,6 +181,9 @@ class Serializer(object):
             if isinstance(anything, django.db.models.query.DateQuerySet):
                 return serialize_datequeryset(anything)
 
+            if isinstance(anything, django.db.models.query.DateTimeQuerySet):
+                return serialize_datequeryset(anything)
+
             if isinstance(anything, django.db.models.query.ValuesListQuerySet):
                 return serialize_valueslistqueryset(anything)
 
