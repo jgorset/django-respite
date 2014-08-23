@@ -40,7 +40,7 @@ class HttpPutMiddleware:
 
     def process_request(self, request):
         if request.method == 'PUT':
-            # If the request contains multipart data we need to parse the request body. 
+            # If the request contains multipart data we need to parse the request body.
             if request.META.get('CONTENT_TYPE', '').startswith('multipart'):
                 request.PUT = parse_multipart_data(request)[0]
             else:
@@ -54,7 +54,7 @@ class HttpPatchMiddleware:
 
     def process_request(self, request):
         if request.method == 'PATCH':
-            # If the request contains multipart data we need to parse the request body. 
+            # If the request contains multipart data we need to parse the request body.
             if request.META.get('CONTENT_TYPE', '').startswith('multipart'):
                 request.PATCH = parse_multipart_data(request)[0]
             else:

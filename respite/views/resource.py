@@ -94,7 +94,7 @@ class Resource(object):
         name = lambda views: pluralize(cc2us(views.model.__name__))
     )
     def create(self, request):
-        """Create a new object."""    
+        """Create a new object."""
         form = (self.form or generate_form(self.model))(request.POST)
 
         if form.is_valid():

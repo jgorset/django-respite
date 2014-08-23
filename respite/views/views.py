@@ -12,7 +12,7 @@ from respite import formats
 class Views(object):
     """
     Base class for views.
-    
+
     :attribute template_path: A string describing a path to prefix templates with, or ``''`` by default.
     :attribute supported_formats: A list of strings describing formats supported by these views, or ``['html']`` by default.
     """
@@ -107,34 +107,34 @@ class Views(object):
     def _render(self, request, template=None, status=200, context={}, headers={}, prefix_template_path=True):
         """
         Render a HTTP response.
-        
+
         :param request: A django.http.HttpRequest instance.
         :param template: A string describing the path to a template.
         :param status: An integer describing the HTTP status code to respond with.
         :param context: A dictionary describing variables to populate the template with.
         :param headers: A dictionary describing HTTP headers.
         :param prefix_template_path: A boolean describing whether to prefix the template with the view's template path.
-        
+
         Please note that ``template`` must not specify an extension, as one will be appended
         according to the request format. For example, a value of ``blog/posts/index``
         would populate ``blog/posts/index.html`` for requests that query the resource's
         HTML representation.
-        
+
         If no template that matches the request format exists at the given location, or if ``template`` is ``None``,
         Respite will attempt to serialize the template context automatically. You can change the way your models
         are serialized by defining ``serialize`` methods that return a dictionary::
-        
+
             class NuclearMissile(models.Model):
                 serial_number = models.IntegerField()
                 is_armed = models.BooleanField()
                 launch_code = models.IntegerField()
-                
+
                 def serialize(self):
                     return {
                         'serial_number': self.serial_number,
                         'is_armed': self.is_armed
                     }
-        
+
         If the request format is not supported by the view (as determined by the ``supported_formats``
         property or a specific view's ``override_supported_formats`` decorator), this function will
         yield HTTP 406 Not Acceptable.
