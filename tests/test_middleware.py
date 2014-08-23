@@ -1,10 +1,10 @@
 """Tests for respite.middleware."""
+import json
 
 from nose.tools import *
 
 from urllib import urlencode
 
-from django.utils import simplejson as json
 from django.test.client import Client, RequestFactory
 
 from respite.middleware import *

@@ -1,9 +1,9 @@
 import re
+import json
 
 from urllib import urlencode
 
 from django.http import QueryDict
-from django.utils import simplejson as json
 
 from respite.utils import parse_content_type, parse_multipart_data
 from respite.utils.datastructures import NestedQueryDict
