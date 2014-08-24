@@ -1,6 +1,6 @@
 from copy import deepcopy
 
-from django.conf.urls.defaults import *
+from django.conf.urls import *
 from django.http import HttpResponse
 from django.utils.translation import string_concat
 

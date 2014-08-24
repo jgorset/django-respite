@@ -121,6 +121,19 @@ def test_datequeryset_serialization():
     request = factory.get('/')
 
     assert Serializer(created_at_dates).serialize(request) == [
+        '1970-01-01'
+    ]
+
+    assert JSONSerializer(created_at_dates).serialize(request)
+    assert JSONPSerializer(created_at_dates).serialize(request)
+    assert XMLSerializer(created_at_dates).serialize(request)
+
+def test_datetimequeryset_serialization():
+    """Verify that datetimequerysets may be serialized."""
+    created_at_dates = Article.objects.all().datetimes('created_at', 'month')
+    request = factory.get('/')
+
+    assert Serializer(created_at_dates).serialize(request) == [
         '1970-01-01T00:00:00'
     ]
 

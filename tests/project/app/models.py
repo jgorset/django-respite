@@ -15,7 +15,7 @@ class Author(models.Model):
 class Article(models.Model):
     title = models.CharField(max_length=255)
     content = models.TextField()
-    is_published = models.BooleanField()
+    is_published = models.BooleanField(default=False)
     created_at = models.DateTimeField()
     tags = models.ManyToManyField(Tag, blank=True)
     author = models.ForeignKey(Author, related_name='articles')

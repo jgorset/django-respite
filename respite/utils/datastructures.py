@@ -1,5 +1,6 @@
+import json
+
 from django.conf import settings
-from django.utils import simplejson as json
 from django.utils.datastructures import MultiValueDict
 from django.utils.encoding import force_unicode
 from django.http import QueryDict

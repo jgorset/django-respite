@@ -69,7 +69,7 @@ def parse_multipart_data(request):
     """
     return MultiPartParser(
         META=request.META,
-        input_data=StringIO(request.raw_post_data),
+        input_data=StringIO(request.body),
         upload_handlers=request.upload_handlers,
         encoding=request.encoding
     ).parse()

@@ -22,7 +22,7 @@ class Serializer(object):
         """
 
         def serialize(anything):
-            
+
             def serialize_dictionary(dictionary):
                 """Dictionaries are serialized recursively."""
                 data = OrderedDict()
@@ -32,15 +32,15 @@ class Serializer(object):
                     data.update({ key: serialize(value) })
 
                 return data
-                
+
             def serialize_list(list):
                 """Lists are serialized recursively."""
                 data = []
-                
+
                 # Serialize each of the list's items
                 for item in list:
                     data.append(serialize(item))
-                    
+
                 return data
 
             def serialize_queryset(queryset):
@@ -179,6 +179,9 @@ class Serializer(object):
                 return serialize_list(anything)
 
             if isinstance(anything, django.db.models.query.DateQuerySet):
+                return serialize_datequeryset(anything)
+
+            if isinstance(anything, django.db.models.query.DateTimeQuerySet):
                 return serialize_datequeryset(anything)
 
             if isinstance(anything, django.db.models.query.ValuesListQuerySet):
