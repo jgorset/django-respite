@@ -1,6 +1,13 @@
 History
 -------
 
+1.4.0
+^^^^^
+
+* Added support for Django 1.6.
+* Added support for setting a content type's default format.
+* Configured jQuery to be compliant with Respite's accept headers.
+
 1.3.1
 ^^^^^
 
