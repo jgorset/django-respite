@@ -11,4 +11,4 @@ Respite conforms Django to Representational State Transfer (and, incidentally, H
 Documentation
 -------------
 
-Respite's documentation is available on `Read the Docs <http://readthedocs.org/docs/django-respite>`_.
+Respite's documentation is available on `Read the Docs <http://django-respite.readthedocs.org/en/latest/>`_.
