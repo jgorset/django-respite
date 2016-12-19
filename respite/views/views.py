@@ -74,11 +74,7 @@ class Views(object):
         if 'HTTP_ACCEPT' in request.META:
             content_types = parse_http_accept_header(request.META['HTTP_ACCEPT'])
 
-            # Only consider 'accept' headers with a single format in an attempt to play nice
-            # with browsers that ask for formats they really should not want.
-            if len(content_types) == 1:
-                content_type = content_types[0]
-
+            for content_type in content_types:
                 # If the request has no preference as to the format of its response, prefer the
                 # first of the view's supported formats.
                 if content_type == '*/*':
@@ -87,12 +83,13 @@ class Views(object):
                 try:
                     format = formats.find_by_content_type(content_type)
                 except formats.UnknownFormat:
-                    return None
+                    pass
 
                 if format in supported_formats:
                     return format
                 else:
-                    return None
+                    pass
+            return None
 
         # If no format is given by either extension or header, default to the format given in
         # RESPITE_DEFAULT_FORMAT (given, of course, that it's supported by the view).
